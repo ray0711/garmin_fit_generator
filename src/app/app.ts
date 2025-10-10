@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import {FitControl} from './fit-control/fit-control';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, FitControl],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
