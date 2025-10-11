@@ -57,39 +57,9 @@ export class FitEncoder {
         } as WORKOUT_MESG)
 
 
-        // encoder.writeMesg({
-        //     mesgNum: Profile.MesgNum.SLAVE_DEVICE,
-        //     manufacturer: "development",
-        //     product: 1,
-        //     timeCreated: new Date(),
-        //     type: "activity"
-        // });
+        const fitFile = encoder.close();
+        return fitFile;
 
-// // Unknown values in the message will be ignored by the Encoder
-//     encoder.onMesg(Profile.MesgNum.FILE_ID, {
-//       manufacturer: "development",
-//       product: 1,
-//       timeCreated: new Date(),
-//       type: "activity",
-//       customField: 12345, // This value will be ignored by the Encoder
-//     });
-//
-// // Subfield values in the message will be ignored by the Encoder
-//     encoder.onMesg(Profile.MesgNum.FILE_ID, {
-//       manufacturer: "development",
-//       product: 4440, // This is the main product field, which is a uint16
-//       garminProduct: "edge1050", // This value will be ignored by the Encoder, use the main field value instead
-//       timeCreated: new Date(),
-//       type: "activity",
-//     });
-
-// Closing the encoder returns the file as an UInt8 Array
-        const fitFIle = encoder.close();
-        return fitFIle;
-
-// Write the file to disk,
-
-        // fs.writeFileSync("example.fit", uint8Array);
     }
 
 }

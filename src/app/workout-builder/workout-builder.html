@@ -1,0 +1,33 @@
+<div  class="workout-container">
+  <div class="list-header">
+    <h2>Building Blocks</h2>
+    <div
+      cdkDropList
+      [cdkDropListData]="buildingBlocks"
+      [cdkDropListConnectedTo]="[cartList]"
+      cdkDropListSortingDisabled
+      cdkDropListHasAnchor
+      class="workout-list">
+      @for (block of staticBuildingBlocks; track $index) {
+        <div class="block-box" cdkDrag [cdkDragData]="block"><app-control [block]="block" /></div>
+      }
+      @for (block of dynamicBuildingBlocks; track $index) {
+        <div class="block-box" cdkDrag [cdkDragData]="block"><app-control /></div>
+      }
+    </div>
+  </div>
+
+  <div class="list-header">
+    <h2>Workout</h2>
+    <div
+      cdkDropList
+      #cartList="cdkDropList"
+      [cdkDropListData]="workout"
+      class="workout-list"
+      (cdkDropListDropped)="drop($event)">
+      @for (exercise of workout; track $index) {
+        <div class="block-box" cdkDrag><app-control [block]="exercise"/></div>
+      }
+    </div>
+  </div>
+</div>

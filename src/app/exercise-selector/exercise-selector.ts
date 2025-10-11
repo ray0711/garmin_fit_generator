@@ -104,7 +104,6 @@ interface FilterOption {
 })
 export class ExerciseSelectorComponent implements OnInit {
   displayedColumns: string[] = ['CATEGORY_GARMIN',  'Name', 'DESCRIPTION', 'IMAGE'];
-  readonly panelOpenState = signal(false);
   allExercises: Exercise[] = [];
   filteredExercises: Exercise[] = [];
 

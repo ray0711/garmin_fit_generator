@@ -2,10 +2,12 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {FitControl} from './fit-control/fit-control';
 import {ExerciseSelectorComponent} from './exercise-selector/exercise-selector';
+import {WorkoutBuilder} from './workout-builder/workout-builder';
+import {MatStep, MatStepper} from '@angular/material/stepper';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FitControl, ExerciseSelectorComponent],
+  imports: [RouterOutlet, FitControl, ExerciseSelectorComponent, MatStepper, MatStep, WorkoutBuilder],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
