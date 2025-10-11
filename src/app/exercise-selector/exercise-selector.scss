@@ -1,0 +1,47 @@
+.table-container {
+  overflow-x: auto;
+  padding: 1em;
+  .exercises-table {
+    width: auto;
+    table-layout: fixed;
+    th.resizable-header {
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+      width: 20em;
+      .resize-handle {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 5px;
+        height: 100%;
+        cursor: col-resize;
+        z-index: 1;
+        background-color: rgba(0, 0, 0, 0.2);
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+
+
+    td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .exercise-description {
+      width: 20em;
+      white-space: wrap;
+  }
+}
+
+
+}
+
+.exercise-image {
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: contain;
+}
