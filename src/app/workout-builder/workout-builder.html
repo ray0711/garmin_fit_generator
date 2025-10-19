@@ -8,14 +8,9 @@
         cdkDropListSortingDisabled
         cdkDropListHasAnchor
         class="workout-list">
-        @for (block of staticBuildingBlocks; track $index) {
+        @for (block of buildingBlocks; track block.name) {
           <div class="block-box" cdkDrag [cdkDragData]="block">
             <app-control [block]="block"/>
-          </div>
-        }
-        @for (block of dynamicBuildingBlocks; track $index) {
-          <div class="block-box" cdkDrag [cdkDragData]="block">
-            <app-control/>
           </div>
         }
       </div>

@@ -598,3 +598,12 @@ export enum Manufacturer {
   runna = 337,
   actigraphcorp = 5759,
 }
+export enum intensity {
+  active = 0,
+  rest = 1,
+  warmup = 2,
+  cooldown = 3,
+  recovery = 4,
+  interval = 5,
+  other = 6,
+}

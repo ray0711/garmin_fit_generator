@@ -1,4 +1,4 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, EventEmitter, OnInit, output, Output, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
@@ -15,65 +15,8 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
+import {Exercise} from '../Exercise';
 
-interface Exercise {
-  CATEGORY_GARMIN: string;
-  NAME_GARMIN: string;
-  Name: string;
-  DETAILED_INFO: boolean;
-  URL: string;
-  DIFFICULTY: string;
-  DESCRIPTION: string;
-  IMAGE: string;
-  // Muscle groups
-  MUSCLE_ABS: number;
-  MUSCLE_OBLIQUES: number;
-  MUSCLE_LOWER_BACK: number;
-  MUSCLE_GLUTES: number;
-  MUSCLE_HAMSTRINGS: number;
-  MUSCLE_HIPS: number;
-  MUSCLE_CALVES: number;
-  MUSCLE_ABDUCTORS: number;
-  MUSCLE_BICEPS: number;
-  MUSCLE_SHOULDERS: number;
-  MUSCLE_TRAPS: number;
-  MUSCLE_CHEST: number;
-  MUSCLE_QUADS: number;
-  MUSCLE_LATS: number;
-  MUSCLE_ADDUCTORS: number;
-  MUSCLE_TRICEPS: number;
-  MUSCLE_FOREARM: number;
-  // Equipment
-  EQUIPMENT_ANKLE_WEIGHT: number;
-  EQUIPMENT_BAND: number;
-  EQUIPMENT_BARBELL: number;
-  EQUIPMENT_BATTLE_ROPE: number;
-  EQUIPMENT_BENCH: number;
-  EQUIPMENT_BIKE: number;
-  EQUIPMENT_BOSU_BALL: number;
-  EQUIPMENT_BOX: number;
-  EQUIPMENT_CABLE_MACHINE: number;
-  EQUIPMENT_DUMBBELL: number;
-  EQUIPMENT_EZ_BAR: number;
-  EQUIPMENT_FOAM_ROLLER: number;
-  EQUIPMENT_JUMP_ROPE: number;
-  EQUIPMENT_KETTLEBELL: number;
-  EQUIPMENT_MACHINE: number;
-  EQUIPMENT_MEDICINE_BALL: number;
-  EQUIPMENT_OTHER: number;
-  EQUIPMENT_PLATE: number;
-  EQUIPMENT_PULLUP_BAR: number;
-  EQUIPMENT_RINGS: number;
-  EQUIPMENT_ROPE: number;
-  EQUIPMENT_SANDBAG: number;
-  EQUIPMENT_SLED: number;
-  EQUIPMENT_SLIDING_DISC: number;
-  EQUIPMENT_SMITH_MACHINE: number;
-  EQUIPMENT_SQUAT_RACK: number;
-  EQUIPMENT_SWISS_BALL: number;
-  EQUIPMENT_TRX: number;
-  EQUIPMENT_WEIGHT_VEST: number;
-}
 
 interface FilterOption {
   label: string;
@@ -116,6 +59,10 @@ export class ExerciseSelectorComponent implements OnInit {
   private resizingColumn: string | null = null;
   private startX = 0;
   private startWidth = 0;
+
+  exerciseSelected = output<Exercise>();
+
+
   constructor(private http: HttpClient) {
   }
 
@@ -309,4 +256,8 @@ export class ExerciseSelectorComponent implements OnInit {
     document.removeEventListener('mousemove', this.onResizeMove);
     document.removeEventListener('mouseup', this.onResizeEnd);
   };
+
+  add_exercise(exercise: Exercise) {
+    this.exerciseSelected.emit(exercise);
+  }
 }

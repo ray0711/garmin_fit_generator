@@ -2,10 +2,10 @@
   <div class="content">
     <mat-stepper>
       <mat-step label="Select Exercises">
-        <app-exercise-selector/>
+        <app-exercise-selector (exerciseSelected)="onExerciseSelected($event)"></app-exercise-selector>
       </mat-step>
       <mat-step label="Build Workout">
-        <app-workout-builder/>
+        <app-workout-builder [selectedExercise]="selectedExercise()"></app-workout-builder>
       </mat-step>
       <mat-step label="Generate FIT">
         <app-fit-control/>

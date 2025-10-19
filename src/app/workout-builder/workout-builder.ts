@@ -1,22 +1,12 @@
-import {Component, ViewChild} from '@angular/core';
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  copyArrayItem,
-  CdkDrag,
-  CdkDropList, CdkDropListGroup,
-} from '@angular/cdk/drag-drop';
+import {Component, effect, input, ViewChild} from '@angular/core';
+import {CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup,} from '@angular/cdk/drag-drop';
 import {Block, BlockLevel, RepeatBlock, WorkoutBlock} from './block';
 import {Control} from './control/control';
-import {
-  MatTree,
-  MatTreeNode,
-  MatTreeNodeDef,
-  MatTreeNodePadding,
-  MatTreeNodeToggle
-} from '@angular/material/tree';
+import {MatTree, MatTreeNode, MatTreeNodeDef, MatTreeNodePadding, MatTreeNodeToggle} from '@angular/material/tree';
 import {MatIconButton} from '@angular/material/button';
 import {ArrayDataSource} from '@angular/cdk/collections';
+import {Exercise} from '../Exercise';
+import {intensity} from '../../types/fitsdk_enums';
 
 
 @Component({
@@ -37,11 +27,10 @@ import {ArrayDataSource} from '@angular/cdk/collections';
   styleUrl: './workout-builder.scss'
 })
 export class WorkoutBuilder {
-  staticBuildingBlocks: Block[] = [new RepeatBlock()
-    , new WorkoutBlock('Pause 1'), new WorkoutBlock('Pause 2')];
-  dynamicBuildingBlocks: Block[] = [new WorkoutBlock('Lift')
-    , new WorkoutBlock('Push')
-    , new WorkoutBlock('Push Ups')];
+  selectedExercise = input<Exercise | undefined>();
+
+  staticBuildingBlocks: Block[] = [new RepeatBlock(), new WorkoutBlock('Pause', 'FIXME:', 'FIXME', intensity.rest)];
+  dynamicBuildingBlocks: Block[] = [];
 
   buildingBlocks: Block[] = this.staticBuildingBlocks.concat(this.dynamicBuildingBlocks);
 
@@ -50,6 +39,20 @@ export class WorkoutBuilder {
 
   @ViewChild('workoutTree') tree!: MatTree<BlockLevel>;
 
+
+  constructor() {
+    effect(() => {
+      const exercise = this.selectedExercise();
+      if (exercise) {
+        let newBlock = new WorkoutBlock(exercise.Name, exercise.CATEGORY_GARMIN, exercise.NAME_GARMIN);
+        if(!this.buildingBlocks.includes(newBlock)){
+          this.dynamicBuildingBlocks = [...this.dynamicBuildingBlocks, newBlock].sort((a, b) => a.name.localeCompare(b.name))
+          this.buildingBlocks = this.staticBuildingBlocks.concat(this.dynamicBuildingBlocks);
+        }
+
+      }
+    });
+  }
 
   dropPredicate(drag: CdkDrag<any>, drop: CdkDropList<any>): boolean {
      if(drop.data){
