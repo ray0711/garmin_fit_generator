@@ -1,166 +1,600 @@
 // declare module '@garmin/fitsdk/enums' {
 export enum Sport {
-    "generic",
-    "running",
-    "cycling",
-    "transition", // Mulitsport transition
-    "fitnessEquipment",
-    "swimming",
-    "basketball",
-    "soccer",
-    "tennis",
-    "americanFootball",
-    "training",
-    "walking",
-    "crossCountrySkiing",
-    "alpineSkiing",
-    "snowboarding",
-    "rowing",
-    "mountaineering",
-    "hiking",
-    "multisport",
-    "paddling",
-    "flying",
-    "eBiking",
-    "motorcycling",
-    "boating",
-    "driving",
-    "golf",
-    "hangGliding",
-    "horsebackRiding",
-    "hunting",
-    "fishing",
-    "inlineSkating",
-    "rockClimbing",
-    "sailing",
-    "iceSkating",
-    "skyDiving",
-    "snowshoeing",
-    "snowmobiling",
-    "standUpPaddleboarding",
-    "surfing",
-    "wakeboarding",
-    "waterSkiing",
-    "kayaking",
-    "rafting",
-    "windsurfing",
-    "kitesurfing",
-    "tactical",
-    "jumpmaster",
-    "boxing",
-    "floorClimbing",
-    "baseball",
-    "diving",
-    "hiit",
-    "racket",
-    "wheelchairPushWalk",
-    "wheelchairPushRun",
-    "meditation",
-    "discGolf",
-    "cricket",
-    "rugby",
-    "hockey",
-    "lacrosse",
-    "volleyball",
-    "waterTubing",
-    "wakesurfing",
-    "mixedMartialArts",
-    "snorkeling",
-    "dance",
-    "jumpRope",
-    "all", // All is for goals only to include all sports.
+  "generic",
+  "running",
+  "cycling",
+  "transition", // Mulitsport transition
+  "fitnessEquipment",
+  "swimming",
+  "basketball",
+  "soccer",
+  "tennis",
+  "americanFootball",
+  "training",
+  "walking",
+  "crossCountrySkiing",
+  "alpineSkiing",
+  "snowboarding",
+  "rowing",
+  "mountaineering",
+  "hiking",
+  "multisport",
+  "paddling",
+  "flying",
+  "eBiking",
+  "motorcycling",
+  "boating",
+  "driving",
+  "golf",
+  "hangGliding",
+  "horsebackRiding",
+  "hunting",
+  "fishing",
+  "inlineSkating",
+  "rockClimbing",
+  "sailing",
+  "iceSkating",
+  "skyDiving",
+  "snowshoeing",
+  "snowmobiling",
+  "standUpPaddleboarding",
+  "surfing",
+  "wakeboarding",
+  "waterSkiing",
+  "kayaking",
+  "rafting",
+  "windsurfing",
+  "kitesurfing",
+  "tactical",
+  "jumpmaster",
+  "boxing",
+  "floorClimbing",
+  "baseball",
+  "diving",
+  "hiit",
+  "racket",
+  "wheelchairPushWalk",
+  "wheelchairPushRun",
+  "meditation",
+  "discGolf",
+  "cricket",
+  "rugby",
+  "hockey",
+  "lacrosse",
+  "volleyball",
+  "waterTubing",
+  "wakesurfing",
+  "mixedMartialArts",
+  "snorkeling",
+  "dance",
+  "jumpRope",
+  "all", // All is for goals only to include all sports.
 }
 
 export enum SubSport {
-    "generic",
-    "treadmill", // Run/Fitness Equipment
-    "street", // Run
-    "trail", // Run
-    "track", // Run
-    "spin", // Cycling
-    "indoorCycling", // Cycling/Fitness Equipment
-    "road", // Cycling
-    "mountain", // Cycling
-    "downhill", // Cycling
-    "recumbent", // Cycling
-    "cyclocross", // Cycling
-    "handCycling", // Cycling
-    "trackCycling", // Cycling
-    "indoorRowing", // Fitness Equipment
-    "elliptical", // Fitness Equipment
-    "stairClimbing", // Fitness Equipment
-    "lapSwimming", // Swimming
-    "openWater", // Swimming
-    "flexibilityTraining", // Training
-    "strengthTraining", // Training
-    "warmUp", // Tennis
-    "match", // Tennis
-    "exercise", // Tennis
-    "challenge",
-    "indoorSkiing", // Fitness Equipment
-    "cardioTraining", // Training
-    "indoorWalking", // Walking/Fitness Equipment
-    "eBikeFitness", // E-Biking
-    "bmx", // Cycling
-    "casualWalking", // Walking
-    "speedWalking", // Walking
-    "bikeToRunTransition", // Transition
-    "runToBikeTransition", // Transition
-    "swimToBikeTransition", // Transition
-    "atv", // Motorcycling
-    "motocross", // Motorcycling
-    "backcountry", // Alpine Skiing/Snowboarding
-    "resort", // Alpine Skiing/Snowboarding
-    "rcDrone", // Flying
-    "wingsuit", // Flying
-    "whitewater", // Kayaking/Rafting
-    "skateSkiing", // Cross Country Skiing
-    "yoga", // Training
-    "pilates", // Fitness Equipment
-    "indoorRunning", // Run
-    "gravelCycling", // Cycling
-    "eBikeMountain", // Cycling
-    "commuting", // Cycling
-    "mixedSurface", // Cycling
-    "navigate",
-    "trackMe",
-    "map",
-    "singleGasDiving", // Diving
-    "multiGasDiving", // Diving
-    "gaugeDiving", // Diving
-    "apneaDiving", // Diving
-    "apneaHunting", // Diving
-    "virtualActivity",
-    "obstacle", // Used for events where participants run, crawl through mud, climb over walls, etc.
-    "breathing",
-    "sailRace", // Sailing
-    "ultra", // Ultramarathon
-    "indoorClimbing", // Climbing
-    "bouldering", // Climbing
-    "hiit", // High Intensity Interval Training
-    "amrap", // HIIT
-    "emom", // HIIT
-    "tabata", // HIIT
-    "pickleball", // Racket
-    "padel", // Racket
-    "indoorWheelchairWalk",
-    "indoorWheelchairRun",
-    "indoorHandCycling",
-    "squash",
-    "badminton",
-    "racquetball",
-    "tableTennis",
-    "flyCanopy", // Flying
-    "flyParaglide", // Flying
-    "flyParamotor", // Flying
-    "flyPressurized", // Flying
-    "flyNavigate", // Flying
-    "flyTimer", // Flying
-    "flyAltimeter", // Flying
-    "flyWx", // Flying
-    "flyVfr", // Flying
-    "flyIfr", // Flying
-    "all"
+  "generic",
+  "treadmill", // Run/Fitness Equipment
+  "street", // Run
+  "trail", // Run
+  "track", // Run
+  "spin", // Cycling
+  "indoorCycling", // Cycling/Fitness Equipment
+  "road", // Cycling
+  "mountain", // Cycling
+  "downhill", // Cycling
+  "recumbent", // Cycling
+  "cyclocross", // Cycling
+  "handCycling", // Cycling
+  "trackCycling", // Cycling
+  "indoorRowing", // Fitness Equipment
+  "elliptical", // Fitness Equipment
+  "stairClimbing", // Fitness Equipment
+  "lapSwimming", // Swimming
+  "openWater", // Swimming
+  "flexibilityTraining", // Training
+  "strengthTraining", // Training
+  "warmUp", // Tennis
+  "match", // Tennis
+  "exercise", // Tennis
+  "challenge",
+  "indoorSkiing", // Fitness Equipment
+  "cardioTraining", // Training
+  "indoorWalking", // Walking/Fitness Equipment
+  "eBikeFitness", // E-Biking
+  "bmx", // Cycling
+  "casualWalking", // Walking
+  "speedWalking", // Walking
+  "bikeToRunTransition", // Transition
+  "runToBikeTransition", // Transition
+  "swimToBikeTransition", // Transition
+  "atv", // Motorcycling
+  "motocross", // Motorcycling
+  "backcountry", // Alpine Skiing/Snowboarding
+  "resort", // Alpine Skiing/Snowboarding
+  "rcDrone", // Flying
+  "wingsuit", // Flying
+  "whitewater", // Kayaking/Rafting
+  "skateSkiing", // Cross Country Skiing
+  "yoga", // Training
+  "pilates", // Fitness Equipment
+  "indoorRunning", // Run
+  "gravelCycling", // Cycling
+  "eBikeMountain", // Cycling
+  "commuting", // Cycling
+  "mixedSurface", // Cycling
+  "navigate",
+  "trackMe",
+  "map",
+  "singleGasDiving", // Diving
+  "multiGasDiving", // Diving
+  "gaugeDiving", // Diving
+  "apneaDiving", // Diving
+  "apneaHunting", // Diving
+  "virtualActivity",
+  "obstacle", // Used for events where participants run, crawl through mud, climb over walls, etc.
+  "breathing",
+  "sailRace", // Sailing
+  "ultra", // Ultramarathon
+  "indoorClimbing", // Climbing
+  "bouldering", // Climbing
+  "hiit", // High Intensity Interval Training
+  "amrap", // HIIT
+  "emom", // HIIT
+  "tabata", // HIIT
+  "pickleball", // Racket
+  "padel", // Racket
+  "indoorWheelchairWalk",
+  "indoorWheelchairRun",
+  "indoorHandCycling",
+  "squash",
+  "badminton",
+  "racquetball",
+  "tableTennis",
+  "flyCanopy", // Flying
+  "flyParaglide", // Flying
+  "flyParamotor", // Flying
+  "flyPressurized", // Flying
+  "flyNavigate", // Flying
+  "flyTimer", // Flying
+  "flyAltimeter", // Flying
+  "flyWx", // Flying
+  "flyVfr", // Flying
+  "flyIfr", // Flying
+  "all"
 }
 
-// }
+export enum WktStepDuration {
+  time = 0,
+  distance = 1,
+  hrLessThan = 2,
+  hrGreaterThan = 3,
+  calories = 4,
+  open = 5,
+  repeatUntilStepsCmplt = 6,
+  repeatUntilTime = 7,
+  repeatUntilDistance = 8,
+  repeatUntilCalories = 9,
+  repeatUntilHrLessThan = 10,
+  repeatUntilHrGreaterThan = 11,
+  repeatUntilPowerLessThan = 12,
+  repeatUntilPowerGreaterThan = 13,
+  powerLessThan = 14,
+  powerGreaterThan = 15,
+  trainingPeaksTss = 16,
+  repeatUntilPowerLastLapLessThan = 17,
+  repeatUntilMaxPowerLastLapLessThan = 18,
+  power3sLessThan = 19,
+  power10sLessThan = 20,
+  power30sLessThan = 21,
+  power3sGreaterThan = 22,
+  power10sGreaterThan = 23,
+  power30sGreaterThan = 24,
+  powerLapLessThan = 25,
+  powerLapGreaterThan = 26,
+  repeatUntilTrainingPeaksTss = 27,
+  repetitionTime = 28,
+  reps = 29,
+  timeOnly = 31,
+}
+
+export enum WktStepTarget {
+  speed = 0,
+  heartRate = 1,
+  open = 2,
+  cadence = 3,
+  power = 4,
+  grade = 5,
+  resistance = 6,
+  power3s = 7,
+  power10s = 8,
+  power30s = 9,
+  powerLap = 10,
+  swimStroke = 11,
+  speedLap = 12,
+  heartRateLap = 13,
+}
+
+export enum MesgNum {
+  FILE_ID = 0,
+  FILE_CREATOR = 49,
+  TIMESTAMP_CORRELATION = 162,
+  SOFTWARE = 35,
+  SLAVE_DEVICE = 106,
+  CAPABILITIES = 1,
+  FILE_CAPABILITIES = 37,
+  MESG_CAPABILITIES = 38,
+  FIELD_CAPABILITIES = 39,
+  DEVICE_SETTINGS = 2,
+  USER_PROFILE = 3,
+  HRM_PROFILE = 4,
+  SDM_PROFILE = 5,
+  BIKE_PROFILE = 6,
+  CONNECTIVITY = 127,
+  WATCHFACE_SETTINGS = 159,
+  OHR_SETTINGS = 188,
+  TIME_IN_ZONE = 216,
+  ZONES_TARGET = 7,
+  SPORT = 12,
+  HR_ZONE = 8,
+  SPEED_ZONE = 53,
+  CADENCE_ZONE = 131,
+  POWER_ZONE = 9,
+  MET_ZONE = 10,
+  TRAINING_SETTINGS = 13,
+  DIVE_SETTINGS = 258,
+  DIVE_ALARM = 262,
+  DIVE_APNEA_ALARM = 393,
+  DIVE_GAS = 259,
+  GOAL = 15,
+  ACTIVITY = 34,
+  SESSION = 18,
+  LAP = 19,
+  LENGTH = 101,
+  RECORD = 20,
+  EVENT = 21,
+  DEVICE_INFO = 23,
+  DEVICE_AUX_BATTERY_INFO = 375,
+  TRAINING_FILE = 72,
+  WEATHER_CONDITIONS = 128,
+  WEATHER_ALERT = 129,
+  GPS_METADATA = 160,
+  CAMERA_EVENT = 161,
+  GYROSCOPE_DATA = 164,
+  ACCELEROMETER_DATA = 165,
+  MAGNETOMETER_DATA = 208,
+  BAROMETER_DATA = 209,
+  THREE_D_SENSOR_CALIBRATION = 167,
+  ONE_D_SENSOR_CALIBRATION = 210,
+  VIDEO_FRAME = 169,
+  OBDII_DATA = 174,
+  NMEA_SENTENCE = 177,
+  AVIATION_ATTITUDE = 178,
+  VIDEO = 184,
+  VIDEO_TITLE = 185,
+  VIDEO_DESCRIPTION = 186,
+  VIDEO_CLIP = 187,
+  SET = 225,
+  JUMP = 285,
+  SPLIT = 312,
+  SPLIT_SUMMARY = 313,
+  CLIMB_PRO = 317,
+  FIELD_DESCRIPTION = 206,
+  DEVELOPER_DATA_ID = 207,
+  COURSE = 31,
+  COURSE_POINT = 32,
+  SEGMENT_ID = 148,
+  SEGMENT_LEADERBOARD_ENTRY = 149,
+  SEGMENT_POINT = 150,
+  SEGMENT_LAP = 142,
+  SEGMENT_FILE = 151,
+  WORKOUT = 26,
+  WORKOUT_SESSION = 158,
+  WORKOUT_STEP = 27,
+  EXERCISE_TITLE = 264,
+  SCHEDULE = 28,
+  TOTALS = 33,
+  WEIGHT_SCALE = 30,
+  BLOOD_PRESSURE = 51,
+  MONITORING_INFO = 103,
+  MONITORING = 55,
+  MONITORING_HR_DATA = 211,
+  SPO2_DATA = 269,
+  HR = 132,
+  STRESS_LEVEL = 227,
+  MAX_MET_DATA = 229,
+  HSA_BODY_BATTERY_DATA = 314,
+  HSA_EVENT = 315,
+  HSA_ACCELEROMETER_DATA = 302,
+  HSA_GYROSCOPE_DATA = 376,
+  HSA_STEP_DATA = 304,
+  HSA_SPO2_DATA = 305,
+  HSA_STRESS_DATA = 306,
+  HSA_RESPIRATION_DATA = 307,
+  HSA_HEART_RATE_DATA = 308,
+  HSA_CONFIGURATION_DATA = 389,
+  HSA_WRIST_TEMPERATURE_DATA = 409,
+  MEMO_GLOB = 145,
+  SLEEP_LEVEL = 275,
+  ANT_CHANNEL_ID = 82,
+  ANT_RX = 80,
+  ANT_TX = 81,
+  EXD_SCREEN_CONFIGURATION = 200,
+  EXD_DATA_FIELD_CONFIGURATION = 201,
+  EXD_DATA_CONCEPT_CONFIGURATION = 202,
+  DIVE_SUMMARY = 268,
+  AAD_ACCEL_FEATURES = 289,
+  HRV = 78,
+  BEAT_INTERVALS = 290,
+  HRV_STATUS_SUMMARY = 370,
+  HRV_VALUE = 371,
+  RAW_BBI = 372,
+  RESPIRATION_RATE = 297,
+  CHRONO_SHOT_SESSION = 387,
+  CHRONO_SHOT_DATA = 388,
+  TANK_UPDATE = 319,
+  TANK_SUMMARY = 323,
+  SLEEP_ASSESSMENT = 346,
+  SLEEP_DISRUPTION_SEVERITY_PERIOD = 470,
+  SLEEP_DISRUPTION_OVERNIGHT_SEVERITY = 471,
+  SKIN_TEMP_OVERNIGHT = 398,
+  PAD = 105
+}
+
+export enum FileType {
+  device = 1,
+  settings = 2,
+  sport = 3,
+  activity = 4,
+  workout = 5,
+  course = 6,
+  schedules = 7,
+  weight = 9,
+  totals = 10,
+  goals = 11,
+  bloodPressure = 14,
+  monitoringA = 15,
+  activitySummary = 20,
+  monitoringDaily = 28,
+  monitoringB = 32,
+  segment = 34,
+  segmentList = 35,
+  exdConfiguration = 40,
+  mfgRangeMin = 0xF7,
+  mfgRangeMax = 0xFE,
+}
+
+export enum Manufacturer {
+  garmin = 1,
+  garminFr405Antfs = 2,
+  zephyr = 3,
+  dayton = 4,
+  idt = 5,
+  srm = 6,
+  quarq = 7,
+  ibike = 8,
+  saris = 9,
+  sparkHk = 10,
+  tanita = 11,
+  echowell = 12,
+  dynastreamOem = 13,
+  nautilus = 14,
+  dynastream = 15,
+  timex = 16,
+  metrigear = 17,
+  xelic = 18,
+  beurer = 19,
+  cardiosport = 20,
+  aAndD = 21,
+  hmm = 22,
+  suunto = 23,
+  thitaElektronik = 24,
+  gpulse = 25,
+  cleanMobile = 26,
+  pedalBrain = 27,
+  peaksware = 28,
+  saxonar = 29,
+  lemondFitness = 30,
+  dexcom = 31,
+  wahooFitness = 32,
+  octaneFitness = 33,
+  archinoetics = 34,
+  theHurtBox = 35,
+  citizenSystems = 36,
+  magellan = 37,
+  osynce = 38,
+  holux = 39,
+  concept2 = 40,
+  shimano = 41,
+  oneGiantLeap = 42,
+  aceSensor = 43,
+  brimBrothers = 44,
+  xplova = 45,
+  perceptionDigital = 46,
+  bf1systems = 47,
+  pioneer = 48,
+  spantec = 49,
+  metalogics = 50,
+  fourIiiis = 51,
+  seikoEpson = 52,
+  seikoEpsonOem = 53,
+  iforPowell = 54,
+  maxwellGuider = 55,
+  starTrac = 56,
+  breakaway = 57,
+  alatechTechnologyLtd = 58,
+  mioTechnologyEurope = 59,
+  rotor = 60,
+  geonaute = 61,
+  idBike = 62,
+  specialized = 63,
+  wtek = 64,
+  physicalEnterprises = 65,
+  northPoleEngineering = 66,
+  bkool = 67,
+  cateye = 68,
+  stagesCycling = 69,
+  sigmasport = 70,
+  tomtom = 71,
+  peripedal = 72,
+  wattbike = 73,
+  moxy = 76,
+  ciclosport = 77,
+  powerbahn = 78,
+  acornProjectsAps = 79,
+  lifebeam = 80,
+  bontrager = 81,
+  wellgo = 82,
+  scosche = 83,
+  magura = 84,
+  woodway = 85,
+  elite = 86,
+  nielsenKellerman = 87,
+  dkCity = 88,
+  tacx = 89,
+  directionTechnology = 90,
+  magtonic = 91,
+  onePartCarbon = 92,
+  insideRideTechnologies = 93,
+  soundOfMotion = 94,
+  stryd = 95,
+  icg = 96,
+  miPulse = 97,
+  bsxAthletics = 98,
+  look = 99,
+  campagnoloSrl = 100,
+  bodyBikeSmart = 101,
+  praxisworks = 102,
+  limitsTechnology = 103,
+  topactionTechnology = 104,
+  cosinuss = 105,
+  fitcare = 106,
+  magene = 107,
+  giantManufacturingCo = 108,
+  tigrasport = 109,
+  salutron = 110,
+  technogym = 111,
+  brytonSensors = 112,
+  latitudeLimited = 113,
+  soaringTechnology = 114,
+  igpsport = 115,
+  thinkrider = 116,
+  gopherSport = 117,
+  waterrower = 118,
+  orangetheory = 119,
+  inpeak = 120,
+  kinetic = 121,
+  johnsonHealthTech = 122,
+  polarElectro = 123,
+  seesense = 124,
+  nciTechnology = 125,
+  iqsquare = 126,
+  leomo = 127,
+  ifitCom = 128,
+  corosByte = 129,
+  versaDesign = 130,
+  chileaf = 131,
+  cycplus = 132,
+  gravaaByte = 133,
+  sigeyi = 134,
+  coospo = 135,
+  geoid = 136,
+  bosch = 137,
+  kyto = 138,
+  kineticSports = 139,
+  decathlonByte = 140,
+  tqSystems = 141,
+  tagHeuer = 142,
+  keiserFitness = 143,
+  zwiftByte = 144,
+  porscheEp = 145,
+  blackbird = 146,
+  meilanByte = 147,
+  ezon = 148,
+  laisi = 149,
+  myzone = 150,
+  abawo = 151,
+  bafang = 152,
+  luhongTechnology = 153,
+  development = 255,
+  healthandlife = 257,
+  lezyne = 258,
+  scribeLabs = 259,
+  zwift = 260,
+  watteam = 261,
+  recon = 262,
+  faveroElectronics = 263,
+  dynovelo = 264,
+  strava = 265,
+  precor = 266,
+  bryton = 267,
+  sram = 268,
+  navman = 269,
+  cobi = 270,
+  spivi = 271,
+  mioMagellan = 272,
+  evesports = 273,
+  sensitivusGauge = 274,
+  podoon = 275,
+  lifeTimeFitness = 276,
+  falcoEMotors = 277,
+  minoura = 278,
+  cycliq = 279,
+  luxottica = 280,
+  trainerRoad = 281,
+  theSufferfest = 282,
+  fullspeedahead = 283,
+  virtualtraining = 284,
+  feedbacksports = 285,
+  omata = 286,
+  vdo = 287,
+  magneticdays = 288,
+  hammerhead = 289,
+  kineticByKurt = 290,
+  shapelog = 291,
+  dabuziduo = 292,
+  jetblack = 293,
+  coros = 294,
+  virtugo = 295,
+  velosense = 296,
+  cycligentinc = 297,
+  trailforks = 298,
+  mahleEbikemotion = 299,
+  nurvv = 300,
+  microprogram = 301,
+  zone5cloud = 302,
+  greenteg = 303,
+  yamahaMotors = 304,
+  whoop = 305,
+  gravaa = 306,
+  onelap = 307,
+  monarkExercise = 308,
+  form = 309,
+  decathlon = 310,
+  syncros = 311,
+  heatup = 312,
+  cannondale = 313,
+  trueFitness = 314,
+  rGTCycling = 315,
+  vasa = 316,
+  raceRepublic = 317,
+  fazua = 318,
+  orekaTraining = 319,
+  lsec = 320,
+  lululemonStudio = 321,
+  shanyue = 322,
+  spinningMda = 323,
+  hilldating = 324,
+  aeroSensor = 325,
+  nike = 326,
+  magicshine = 327,
+  ictrainer = 328,
+  absoluteCycling = 329,
+  eoSwimbetter = 330,
+  mywhoosh = 331,
+  ravemen = 332,
+  tektroRacingProducts = 333,
+  daradInnovationCorporation = 334,
+  cycloptim = 335,
+  runna = 337,
+  actigraphcorp = 5759,
+}

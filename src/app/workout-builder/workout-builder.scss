@@ -19,13 +19,29 @@
 }
 
 .block-box {
-  padding: 20px 10px;
+  padding: 10px 5px;
   border-bottom: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  //justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: white;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+.repeat-block-box {
+  padding: 20px 10px;
+  border-bottom: solid 1px #ccc;
+  color: rgba(100, 0, 0, 0.87);
+  background: rgba(055, 255, 255, 0.5);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  //justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
   background: white;

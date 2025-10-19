@@ -1,33 +1,47 @@
-<div  class="workout-container">
-  <div class="list-header">
-    <h2>Building Blocks</h2>
-    <div
-      cdkDropList
-      [cdkDropListData]="buildingBlocks"
-      [cdkDropListConnectedTo]="[cartList]"
-      cdkDropListSortingDisabled
-      cdkDropListHasAnchor
-      class="workout-list">
-      @for (block of staticBuildingBlocks; track $index) {
-        <div class="block-box" cdkDrag [cdkDragData]="block"><app-control [block]="block" /></div>
-      }
-      @for (block of dynamicBuildingBlocks; track $index) {
-        <div class="block-box" cdkDrag [cdkDragData]="block"><app-control /></div>
-      }
+<div class="workout-container">
+  <div cdkDropListGroup>
+    <div class="list-header">
+      <h2>Building Blocks</h2>
+      <div
+        cdkDropList
+        [cdkDropListData]="buildingBlocks"
+        cdkDropListSortingDisabled
+        cdkDropListHasAnchor
+        class="workout-list">
+        @for (block of staticBuildingBlocks; track $index) {
+          <div class="block-box" cdkDrag [cdkDragData]="block">
+            <app-control [block]="block"/>
+          </div>
+        }
+        @for (block of dynamicBuildingBlocks; track $index) {
+          <div class="block-box" cdkDrag [cdkDragData]="block">
+            <app-control/>
+          </div>
+        }
+      </div>
     </div>
-  </div>
 
-  <div class="list-header">
-    <h2>Workout</h2>
-    <div
-      cdkDropList
-      #cartList="cdkDropList"
-      [cdkDropListData]="workout"
-      class="workout-list"
-      (cdkDropListDropped)="drop($event)">
-      @for (exercise of workout; track $index) {
-        <div class="block-box" cdkDrag><app-control [block]="exercise"/></div>
-      }
+    <div class="list-header">
+      <h2>Workout Tree</h2>
+      <mat-tree [dataSource]="datasource"  [levelAccessor]="levelAccessor" class="workout-list"
+                cdkDropList
+
+                [cdkDropListEnterPredicate]="dropPredicate"
+
+                (cdkDropListDropped)="drop($event)"
+                #workoutTree
+
+      >
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding class="block-box" cdkDropList cdkDrag >
+          <button matIconButton disabled></button>
+          <app-control [block]="node.block"/>
+        </mat-tree-node>
+        <mat-tree-node *matTreeNodeDef="let node;when isRepeat" matTreeNodePadding matTreeNodeToggle
+                       [cdkTreeNodeTypeaheadLabel]="node.block.name" class="repeat-block-box" cdkDropList cdkDrag [cdkDropListSortPredicate]="sortPredicate">
+          <button matIconButton disabled></button>
+          <app-control [block]="node.block"/>
+        </mat-tree-node>
+      </mat-tree>
     </div>
   </div>
 </div>
