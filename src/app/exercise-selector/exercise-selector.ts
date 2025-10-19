@@ -51,7 +51,7 @@ export class ExerciseSelectorComponent implements OnInit {
   filteredExercises: Exercise[] = [];
 
   // Dynamic filters
-  filters: { [key: string]: FilterOption } = {};
+  filters: Record<string, FilterOption> = {};
   filterableColumns: string[] = [];
 
   // Always displayed columns (not filterable)
@@ -71,7 +71,7 @@ export class ExerciseSelectorComponent implements OnInit {
   }
 
   loadExercises(): void {
-    this.http.get<{ [key: string]: Exercise }>('Exercises.json').subscribe({
+    this.http.get<Record<string, Exercise>>('Exercises.json').subscribe({
       next: (data) => {
         // Convert object to array
         this.allExercises = Object.values(data);

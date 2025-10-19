@@ -13,8 +13,8 @@ import {MatButton} from "@angular/material/button";
 export class FitControl {
 
     download(): void {
-        let fitEncode: FitEncoder = new FitEncoder();
-        let fitFile: Uint8Array<ArrayBufferLike> = fitEncode.encode();
+        const fitEncode: FitEncoder = new FitEncoder();
+        const fitFile: Uint8Array<ArrayBufferLike> = fitEncode.encode();
         const a = document.createElement('a');
         const buffer = fitFile.buffer as ArrayBuffer;
         const objectUrl = URL.createObjectURL(new Blob([buffer], {type: 'application/octet-stream'}));

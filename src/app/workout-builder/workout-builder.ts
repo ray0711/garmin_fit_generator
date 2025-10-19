@@ -35,7 +35,7 @@ export class WorkoutBuilder {
   buildingBlocks: Block[] = this.staticBuildingBlocks.concat(this.dynamicBuildingBlocks);
 
   workout: Block[] = [];
-  datasource: ArrayDataSource<BlockLevel> = new ArrayDataSource(this.flatWorkout());
+  datasource = new ArrayDataSource<BlockLevel>(this.flatWorkout());
 
   @ViewChild('workoutTree') tree!: MatTree<BlockLevel>;
 
@@ -44,7 +44,7 @@ export class WorkoutBuilder {
     effect(() => {
       const exercise = this.selectedExercise();
       if (exercise) {
-        let newBlock = new WorkoutBlock(exercise.Name, exercise.CATEGORY_GARMIN, exercise.NAME_GARMIN);
+        const newBlock = new WorkoutBlock(exercise.Name, exercise.CATEGORY_GARMIN, exercise.NAME_GARMIN);
         if(!this.buildingBlocks.includes(newBlock)){
           this.dynamicBuildingBlocks = [...this.dynamicBuildingBlocks, newBlock].sort((a, b) => a.name.localeCompare(b.name))
           this.buildingBlocks = this.staticBuildingBlocks.concat(this.dynamicBuildingBlocks);
@@ -74,13 +74,13 @@ export class WorkoutBuilder {
     if (event.previousContainer === event.container) {
       // existing item
 
-      let currentIndex = event.currentIndex;
-      let previousIndex = event.previousIndex;
-      let flatWorkout = this.flatWorkout();
-      let moving = flatWorkout[event.previousIndex];
-      let movingParent = this.findParent(flatWorkout, moving);
-      let itemBefore = flatWorkout[event.currentIndex - 1];
-      let itemBeforeParent = this.findParent(flatWorkout, itemBefore);
+      const currentIndex = event.currentIndex;
+      const previousIndex = event.previousIndex;
+      const flatWorkout = this.flatWorkout();
+      const moving = flatWorkout[event.previousIndex];
+      const movingParent = this.findParent(flatWorkout, moving);
+      const itemBefore = flatWorkout[event.currentIndex - 1];
+      const itemBeforeParent = this.findParent(flatWorkout, itemBefore);
 
       // delete
       if (movingParent) {
@@ -116,7 +116,7 @@ export class WorkoutBuilder {
   }
 
   findParent(list: BlockLevel[], blockLevel: BlockLevel): RepeatBlock | undefined {
-    let parent = list.find((element, index: number) => element?.block instanceof RepeatBlock
+    const parent = list.find((element, index: number) => element?.block instanceof RepeatBlock
       && element?.block.children.includes(blockLevel?.block));
     return parent?.block as RepeatBlock | undefined;
   }

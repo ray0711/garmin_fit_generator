@@ -1,21 +1,3 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {MatTableModule} from '@angular/material/table';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSortModule} from '@angular/material/sort';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatSelectModule} from '@angular/material/select';
-import {FormsModule} from '@angular/forms';
-import {MatIcon} from '@angular/material/icon';
-import {
-  MatAccordion,
-  MatExpansionPanel,
-  MatExpansionPanelHeader,
-  MatExpansionPanelTitle
-} from '@angular/material/expansion';
-import {HttpClient} from '@angular/common/http';
-
 export interface Exercise {
   CATEGORY_GARMIN: string;
   NAME_GARMIN: string;

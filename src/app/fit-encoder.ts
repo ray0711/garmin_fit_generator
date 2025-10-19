@@ -69,7 +69,7 @@ encoder.Write(workoutMesg);
     })
 
     for (let i = 0; i < 10; i++) {
-      let step: Message_WORKOUT_STEP = {
+      const step: Message_WORKOUT_STEP = {
         mesgNum: MesgNum.WORKOUT_STEP,
         durationType: WktStepDuration.time,
         durationValue: 10,

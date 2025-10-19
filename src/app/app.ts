@@ -20,7 +20,7 @@ export class App {
   private _snackBar = inject(MatSnackBar);
   selectedExercise = signal<Exercise|undefined>(undefined);
 
-  onExerciseSelected(exercise: any): void {
+  onExerciseSelected(exercise: Exercise): void {
     this.selectedExercise.set( exercise);
     this._snackBar.open("Added to workout: " + exercise.Name);
   }

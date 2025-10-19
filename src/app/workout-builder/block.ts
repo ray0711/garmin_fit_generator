@@ -1,22 +1,22 @@
 import {intensity} from '../../types/fitsdk_enums';
 
 export type Block = RepeatBlock | WorkoutBlock;
-export type BasicBlock = {
+export interface BasicBlock {
   name: string;
   clone(): Block;
   flat(level: number): BlockLevel[];
 }
 
-export type BlockLevel  = {
+export interface BlockLevel {
   block: Block;
   level: number;
 }
 
 export class RepeatBlock implements BasicBlock {
-  name: string =  "Repeat";
+  name =  "Repeat";
   children: Block[] = [];
   clone(): RepeatBlock {
-    let newObject = new RepeatBlock();
+    const newObject = new RepeatBlock();
     newObject.children = this.children.map(child => child.clone());
     return newObject;
   }

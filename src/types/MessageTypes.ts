@@ -126,7 +126,7 @@ export type FitMessage =
   | Message_SLEEP_DISRUPTION_OVERNIGHT_SEVERITY;
 
 // Message type definitions
-export type Message_FILE_ID = {
+export interface Message_FILE_ID {
   mesgNum: MesgNum.FILE_ID;
   type?: FileType;
   manufacturer?: Manufacturer;
@@ -137,7 +137,7 @@ export type Message_FILE_ID = {
   productName?: string;
 }
 
-export type Message_CAPABILITIES = {
+export interface Message_CAPABILITIES {
   mesgNum: MesgNum.CAPABILITIES;
   languages?: number[];
   sports?: number[];
@@ -145,7 +145,7 @@ export type Message_CAPABILITIES = {
   connectivitySupported?: number;
 }
 
-export type Message_DEVICE_SETTINGS = {
+export interface Message_DEVICE_SETTINGS {
   mesgNum: MesgNum.DEVICE_SETTINGS;
   activeTimeZone?: number;
   utcOffset?: number;
@@ -173,7 +173,7 @@ export type Message_DEVICE_SETTINGS = {
   tapSensitivity?: string;
 }
 
-export type Message_USER_PROFILE = {
+export interface Message_USER_PROFILE {
   mesgNum: MesgNum.USER_PROFILE;
   messageIndex?: number;
   friendlyName?: string;
@@ -206,7 +206,7 @@ export type Message_USER_PROFILE = {
   diveCount?: number;
 }
 
-export type Message_HRM_PROFILE = {
+export interface Message_HRM_PROFILE {
   mesgNum: MesgNum.HRM_PROFILE;
   messageIndex?: number;
   enabled?: boolean;
@@ -215,7 +215,7 @@ export type Message_HRM_PROFILE = {
   hrmAntIdTransType?: number;
 }
 
-export type Message_SDM_PROFILE = {
+export interface Message_SDM_PROFILE {
   mesgNum: MesgNum.SDM_PROFILE;
   messageIndex?: number;
   enabled?: boolean;
@@ -227,7 +227,7 @@ export type Message_SDM_PROFILE = {
   odometerRollover?: number;
 }
 
-export type Message_BIKE_PROFILE = {
+export interface Message_BIKE_PROFILE {
   mesgNum: MesgNum.BIKE_PROFILE;
   messageIndex?: number;
   name?: string;
@@ -263,7 +263,7 @@ export type Message_BIKE_PROFILE = {
   shimanoDi2Enabled?: boolean;
 }
 
-export type Message_ZONES_TARGET = {
+export interface Message_ZONES_TARGET {
   mesgNum: MesgNum.ZONES_TARGET;
   maxHeartRate?: number;
   thresholdHeartRate?: number;
@@ -272,21 +272,21 @@ export type Message_ZONES_TARGET = {
   pwrCalcType?: string;
 }
 
-export type Message_HR_ZONE = {
+export interface Message_HR_ZONE {
   mesgNum: MesgNum.HR_ZONE;
   messageIndex?: number;
   highBpm?: number;
   name?: string;
 }
 
-export type Message_POWER_ZONE = {
+export interface Message_POWER_ZONE {
   mesgNum: MesgNum.POWER_ZONE;
   messageIndex?: number;
   highValue?: number;
   name?: string;
 }
 
-export type Message_MET_ZONE = {
+export interface Message_MET_ZONE {
   mesgNum: MesgNum.MET_ZONE;
   messageIndex?: number;
   highBpm?: number;
@@ -294,20 +294,20 @@ export type Message_MET_ZONE = {
   fatCalories?: number;
 }
 
-export type Message_SPORT = {
+export interface Message_SPORT {
   mesgNum: MesgNum.SPORT;
   sport?: string;
   subSport?: string;
   name?: string;
 }
 
-export type Message_TRAINING_SETTINGS = {
+export interface Message_TRAINING_SETTINGS {
   mesgNum: MesgNum.TRAINING_SETTINGS;
   hrCalcType?: string;
   pwrCalcType?: string;
 }
 
-export type Message_GOAL = {
+export interface Message_GOAL {
   mesgNum: MesgNum.GOAL;
   messageIndex?: number;
   sport?: string;
@@ -324,7 +324,7 @@ export type Message_GOAL = {
   source?: string;
 }
 
-export type Message_SESSION = {
+export interface Message_SESSION {
   mesgNum: MesgNum.SESSION;
   messageIndex?: number;
   timestamp?: Date;
@@ -457,7 +457,7 @@ export type Message_SESSION = {
   maxCoreTemperature?: number;
 }
 
-export type Message_LAP = {
+export interface Message_LAP {
   mesgNum: MesgNum.LAP;
   messageIndex?: number;
   timestamp?: Date;
@@ -570,7 +570,7 @@ export type Message_LAP = {
   maxCoreTemperature?: number;
 }
 
-export type Message_RECORD = {
+export interface Message_RECORD {
   mesgNum: MesgNum.RECORD;
   timestamp?: Date;
   positionLat?: number;
@@ -650,7 +650,7 @@ export type Message_RECORD = {
   coreTemperature?: number;
 }
 
-export type Message_EVENT = {
+export interface Message_EVENT {
   mesgNum: MesgNum.EVENT;
   timestamp?: Date;
   event?: string;
@@ -673,7 +673,7 @@ export type Message_EVENT = {
   radarThreatMaxApproachSpeed?: number;
 }
 
-export type Message_DEVICE_INFO = {
+export interface Message_DEVICE_INFO {
   mesgNum: MesgNum.DEVICE_INFO;
   timestamp?: Date;
   deviceIndex?: number;
@@ -696,7 +696,7 @@ export type Message_DEVICE_INFO = {
   batteryLevel?: number;
 }
 
-export type Message_WORKOUT = {
+export interface Message_WORKOUT {
   mesgNum: MesgNum.WORKOUT;
   sport?: Sport;
   subSport?: SubSport;
@@ -708,7 +708,7 @@ export type Message_WORKOUT = {
   wktDescription?: string;
 }
 
-export type Message_WORKOUT_STEP = {
+export interface Message_WORKOUT_STEP {
   mesgNum: MesgNum.WORKOUT_STEP;
   messageIndex?: number;
   wktStepName?: string;
@@ -731,7 +731,7 @@ export type Message_WORKOUT_STEP = {
   secondaryCustomTargetValueHigh?: number;
 }
 
-export type Message_SCHEDULE = {
+export interface Message_SCHEDULE {
   mesgNum: MesgNum.SCHEDULE;
   manufacturer?: Manufacturer;
   product?: number;
@@ -742,7 +742,7 @@ export type Message_SCHEDULE = {
   scheduledTime?: Date;
 }
 
-export type Message_WEIGHT_SCALE = {
+export interface Message_WEIGHT_SCALE {
   mesgNum: MesgNum.WEIGHT_SCALE;
   timestamp?: Date;
   weight?: number;
@@ -760,7 +760,7 @@ export type Message_WEIGHT_SCALE = {
   bmi?: number;
 }
 
-export type Message_COURSE = {
+export interface Message_COURSE {
   mesgNum: MesgNum.COURSE;
   sport?: string;
   name?: string;
@@ -768,7 +768,7 @@ export type Message_COURSE = {
   subSport?: string;
 }
 
-export type Message_COURSE_POINT = {
+export interface Message_COURSE_POINT {
   mesgNum: MesgNum.COURSE_POINT;
   messageIndex?: number;
   timestamp?: Date;
@@ -780,7 +780,7 @@ export type Message_COURSE_POINT = {
   favorite?: boolean;
 }
 
-export type Message_TOTALS = {
+export interface Message_TOTALS {
   mesgNum: MesgNum.TOTALS;
   messageIndex?: number;
   timestamp?: Date;
@@ -794,7 +794,7 @@ export type Message_TOTALS = {
   sportIndex?: number;
 }
 
-export type Message_ACTIVITY = {
+export interface Message_ACTIVITY {
   mesgNum: MesgNum.ACTIVITY;
   timestamp?: Date;
   totalTimerTime?: number;
@@ -806,14 +806,14 @@ export type Message_ACTIVITY = {
   eventGroup?: number;
 }
 
-export type Message_SOFTWARE = {
+export interface Message_SOFTWARE {
   mesgNum: MesgNum.SOFTWARE;
   messageIndex?: number;
   version?: number;
   partNumber?: string;
 }
 
-export type Message_FILE_CAPABILITIES = {
+export interface Message_FILE_CAPABILITIES {
   mesgNum: MesgNum.FILE_CAPABILITIES;
   messageIndex?: number;
   type?: string;
@@ -841,13 +841,13 @@ export type Message_FILE_CAPABILITIES = {
 //   count?: number;
 // }
 
-export type Message_FILE_CREATOR = {
+export interface Message_FILE_CREATOR {
   mesgNum: MesgNum.FILE_CREATOR;
   softwareVersion?: number;
   hardwareVersion?: number;
 }
 
-export type Message_BLOOD_PRESSURE = {
+export interface Message_BLOOD_PRESSURE {
   mesgNum: MesgNum.BLOOD_PRESSURE;
   timestamp?: Date;
   systolicPressure?: number;
@@ -862,14 +862,14 @@ export type Message_BLOOD_PRESSURE = {
   userProfileIndex?: number;
 }
 
-export type Message_SPEED_ZONE = {
+export interface Message_SPEED_ZONE {
   mesgNum: MesgNum.SPEED_ZONE;
   messageIndex?: number;
   highValue?: number;
   name?: string;
 }
 
-export type Message_MONITORING = {
+export interface Message_MONITORING {
   mesgNum: MesgNum.MONITORING;
   timestamp?: Date;
   deviceIndex?: number;
@@ -902,7 +902,7 @@ export type Message_MONITORING = {
   vigorousActivityMinutes?: number;
 }
 
-export type Message_TRAINING_FILE = {
+export interface Message_TRAINING_FILE {
   mesgNum: MesgNum.TRAINING_FILE;
   timestamp?: Date;
   type?: string;
@@ -912,12 +912,12 @@ export type Message_TRAINING_FILE = {
   timeCreated?: Date;
 }
 
-export type Message_HRV = {
+export interface Message_HRV {
   mesgNum: MesgNum.HRV;
   time?: number[];
 }
 
-export type Message_ANT_RX = {
+export interface Message_ANT_RX {
   mesgNum: MesgNum.ANT_RX;
   timestamp?: Date;
   fractionalTimestamp?: number;
@@ -927,7 +927,7 @@ export type Message_ANT_RX = {
   data?: number[];
 }
 
-export type Message_ANT_TX = {
+export interface Message_ANT_TX {
   mesgNum: MesgNum.ANT_TX;
   timestamp?: Date;
   fractionalTimestamp?: number;
@@ -937,7 +937,7 @@ export type Message_ANT_TX = {
   data?: number[];
 }
 
-export type Message_ANT_CHANNEL_ID = {
+export interface Message_ANT_CHANNEL_ID {
   mesgNum: MesgNum.ANT_CHANNEL_ID;
   channelNumber?: number;
   deviceType?: number;
@@ -946,7 +946,7 @@ export type Message_ANT_CHANNEL_ID = {
   deviceIndex?: number;
 }
 
-export type Message_LENGTH = {
+export interface Message_LENGTH {
   mesgNum: MesgNum.LENGTH;
   messageIndex?: number;
   timestamp?: Date;
@@ -969,7 +969,7 @@ export type Message_LENGTH = {
   enhancedAvgSpeed?: number;
 }
 
-export type Message_MONITORING_INFO = {
+export interface Message_MONITORING_INFO {
   mesgNum: MesgNum.MONITORING_INFO;
   timestamp?: Date;
   localTimestamp?: Date;
@@ -979,17 +979,17 @@ export type Message_MONITORING_INFO = {
   restingMetabolicRate?: number;
 }
 
-export type Message_PAD = {
+export interface Message_PAD {
   mesgNum: MesgNum.PAD;
 }
 
-export type Message_SLAVE_DEVICE = {
+export interface Message_SLAVE_DEVICE {
   mesgNum: MesgNum.SLAVE_DEVICE;
   manufacturer?: Manufacturer;
   product?: number;
 }
 
-export type Message_CONNECTIVITY = {
+export interface Message_CONNECTIVITY {
   mesgNum: MesgNum.CONNECTIVITY;
   bluetoothEnabled?: boolean;
   bluetoothLeEnabled?: boolean;
@@ -1006,7 +1006,7 @@ export type Message_CONNECTIVITY = {
   grouptrackEnabled?: boolean;
 }
 
-export type Message_WEATHER_CONDITIONS = {
+export interface Message_WEATHER_CONDITIONS {
   mesgNum: MesgNum.WEATHER_CONDITIONS;
   timestamp?: Date;
   weatherReport?: string;
@@ -1026,7 +1026,7 @@ export type Message_WEATHER_CONDITIONS = {
   lowTemperature?: number;
 }
 
-export type Message_WEATHER_ALERT = {
+export interface Message_WEATHER_ALERT {
   mesgNum: MesgNum.WEATHER_ALERT;
   timestamp?: Date;
   reportId?: string;
@@ -1036,14 +1036,14 @@ export type Message_WEATHER_ALERT = {
   type?: string;
 }
 
-export type Message_CADENCE_ZONE = {
+export interface Message_CADENCE_ZONE {
   mesgNum: MesgNum.CADENCE_ZONE;
   messageIndex?: number;
   highValue?: number;
   name?: string;
 }
 
-export type Message_HR = {
+export interface Message_HR {
   mesgNum: MesgNum.HR;
   timestamp?: Date;
   fractionalTimestamp?: number;
@@ -1053,7 +1053,7 @@ export type Message_HR = {
   eventTimestamp12?: number[];
 }
 
-export type Message_SEGMENT_LAP = {
+export interface Message_SEGMENT_LAP {
   mesgNum: MesgNum.SEGMENT_LAP;
   messageIndex?: number;
   timestamp?: Date;
@@ -1147,7 +1147,7 @@ export type Message_SEGMENT_LAP = {
   avgFlow?: number;
 }
 
-export type Message_MEMO_GLOB = {
+export interface Message_MEMO_GLOB {
   mesgNum: MesgNum.MEMO_GLOB;
   partIndex?: number;
   memo?: number[];
@@ -1155,7 +1155,7 @@ export type Message_MEMO_GLOB = {
   messageIndex?: number;
 }
 
-export type Message_SEGMENT_ID = {
+export interface Message_SEGMENT_ID {
   mesgNum: MesgNum.SEGMENT_ID;
   name?: string;
   uuid?: string;
@@ -1168,7 +1168,7 @@ export type Message_SEGMENT_ID = {
   selectionType?: string;
 }
 
-export type Message_SEGMENT_LEADERBOARD_ENTRY = {
+export interface Message_SEGMENT_LEADERBOARD_ENTRY {
   mesgNum: MesgNum.SEGMENT_LEADERBOARD_ENTRY;
   messageIndex?: number;
   name?: string;
@@ -1179,7 +1179,7 @@ export type Message_SEGMENT_LEADERBOARD_ENTRY = {
   activityIdString?: string;
 }
 
-export type Message_SEGMENT_POINT = {
+export interface Message_SEGMENT_POINT {
   mesgNum: MesgNum.SEGMENT_POINT;
   messageIndex?: number;
   positionLat?: number;
@@ -1189,7 +1189,7 @@ export type Message_SEGMENT_POINT = {
   leaderTime?: number[];
 }
 
-export type Message_SEGMENT_FILE = {
+export interface Message_SEGMENT_FILE {
   mesgNum: MesgNum.SEGMENT_FILE;
   messageIndex?: number;
   fileUuid?: string;
@@ -1202,7 +1202,7 @@ export type Message_SEGMENT_FILE = {
   defaultRaceLeader?: number;
 }
 
-export type Message_WORKOUT_SESSION = {
+export interface Message_WORKOUT_SESSION {
   mesgNum: MesgNum.WORKOUT_SESSION;
   messageIndex?: number;
   sport?: string;
@@ -1213,14 +1213,14 @@ export type Message_WORKOUT_SESSION = {
   poolLengthUnit?: string;
 }
 
-export type Message_WATCHFACE_SETTINGS = {
+export interface Message_WATCHFACE_SETTINGS {
   mesgNum: MesgNum.WATCHFACE_SETTINGS;
   messageIndex?: number;
   mode?: string;
   layout?: number[];
 }
 
-export type Message_GPS_METADATA = {
+export interface Message_GPS_METADATA {
   mesgNum: MesgNum.GPS_METADATA;
   timestamp?: Date;
   timestampMs?: number;
@@ -1233,7 +1233,7 @@ export type Message_GPS_METADATA = {
   velocity?: number[];
 }
 
-export type Message_CAMERA_EVENT = {
+export interface Message_CAMERA_EVENT {
   mesgNum: MesgNum.CAMERA_EVENT;
   timestamp?: Date;
   timestampMs?: number;
@@ -1242,7 +1242,7 @@ export type Message_CAMERA_EVENT = {
   cameraOrientation?: string;
 }
 
-export type Message_TIMESTAMP_CORRELATION = {
+export interface Message_TIMESTAMP_CORRELATION {
   mesgNum: MesgNum.TIMESTAMP_CORRELATION;
   timestamp?: Date;
   fractionalTimestamp?: number;
@@ -1253,7 +1253,7 @@ export type Message_TIMESTAMP_CORRELATION = {
   systemTimestampMs?: number;
 }
 
-export type Message_GYROSCOPE_DATA = {
+export interface Message_GYROSCOPE_DATA {
   mesgNum: MesgNum.GYROSCOPE_DATA;
   timestamp?: Date;
   timestampMs?: number;
@@ -1266,7 +1266,7 @@ export type Message_GYROSCOPE_DATA = {
   calibratedGyroZ?: number[];
 }
 
-export type Message_ACCELEROMETER_DATA = {
+export interface Message_ACCELEROMETER_DATA {
   mesgNum: MesgNum.ACCELEROMETER_DATA;
   timestamp?: Date;
   timestampMs?: number;
@@ -1282,7 +1282,7 @@ export type Message_ACCELEROMETER_DATA = {
   compressedCalibratedAccelZ?: number[];
 }
 
-export type Message_THREE_D_SENSOR_CALIBRATION = {
+export interface Message_THREE_D_SENSOR_CALIBRATION {
   mesgNum: MesgNum.THREE_D_SENSOR_CALIBRATION;
   timestamp?: Date;
   sensorType?: string;
@@ -1293,14 +1293,14 @@ export type Message_THREE_D_SENSOR_CALIBRATION = {
   orientationMatrix?: number[];
 }
 
-export type Message_VIDEO_FRAME = {
+export interface Message_VIDEO_FRAME {
   mesgNum: MesgNum.VIDEO_FRAME;
   timestamp?: Date;
   timestampMs?: number;
   frameNumber?: number;
 }
 
-export type Message_OBDII_DATA = {
+export interface Message_OBDII_DATA {
   mesgNum: MesgNum.OBDII_DATA;
   timestamp?: Date;
   timestampMs?: number;
@@ -1313,14 +1313,14 @@ export type Message_OBDII_DATA = {
   startTimestampMs?: number;
 }
 
-export type Message_NMEA_SENTENCE = {
+export interface Message_NMEA_SENTENCE {
   mesgNum: MesgNum.NMEA_SENTENCE;
   timestamp?: Date;
   timestampMs?: number;
   sentence?: string;
 }
 
-export type Message_AVIATION_ATTITUDE = {
+export interface Message_AVIATION_ATTITUDE {
   mesgNum: MesgNum.AVIATION_ATTITUDE;
   timestamp?: Date;
   timestampMs?: number;
@@ -1336,28 +1336,28 @@ export type Message_AVIATION_ATTITUDE = {
   validity?: number[];
 }
 
-export type Message_VIDEO = {
+export interface Message_VIDEO {
   mesgNum: MesgNum.VIDEO;
   url?: string;
   hostingProvider?: string;
   duration?: number;
 }
 
-export type Message_VIDEO_TITLE = {
+export interface Message_VIDEO_TITLE {
   mesgNum: MesgNum.VIDEO_TITLE;
   messageIndex?: number;
   messageCount?: number;
   text?: string;
 }
 
-export type Message_VIDEO_DESCRIPTION = {
+export interface Message_VIDEO_DESCRIPTION {
   mesgNum: MesgNum.VIDEO_DESCRIPTION;
   messageIndex?: number;
   messageCount?: number;
   text?: string;
 }
 
-export type Message_VIDEO_CLIP = {
+export interface Message_VIDEO_CLIP {
   mesgNum: MesgNum.VIDEO_CLIP;
   clipNumber?: number;
   startTimestamp?: Date;
@@ -1368,13 +1368,13 @@ export type Message_VIDEO_CLIP = {
   clipEnd?: number;
 }
 
-export type Message_OHR_SETTINGS = {
+export interface Message_OHR_SETTINGS {
   mesgNum: MesgNum.OHR_SETTINGS;
   timestamp?: Date;
   enabled?: string;
 }
 
-export type Message_EXD_SCREEN_CONFIGURATION = {
+export interface Message_EXD_SCREEN_CONFIGURATION {
   mesgNum: MesgNum.EXD_SCREEN_CONFIGURATION;
   screenIndex?: number;
   fieldCount?: number;
@@ -1382,7 +1382,7 @@ export type Message_EXD_SCREEN_CONFIGURATION = {
   screenEnabled?: boolean;
 }
 
-export type Message_EXD_DATA_FIELD_CONFIGURATION = {
+export interface Message_EXD_DATA_FIELD_CONFIGURATION {
   mesgNum: MesgNum.EXD_DATA_FIELD_CONFIGURATION;
   screenIndex?: number;
   conceptField?: number;
@@ -1392,7 +1392,7 @@ export type Message_EXD_DATA_FIELD_CONFIGURATION = {
   title?: string[];
 }
 
-export type Message_EXD_DATA_CONCEPT_CONFIGURATION = {
+export interface Message_EXD_DATA_CONCEPT_CONFIGURATION {
   mesgNum: MesgNum.EXD_DATA_CONCEPT_CONFIGURATION;
   screenIndex?: number;
   conceptField?: number;
@@ -1407,7 +1407,7 @@ export type Message_EXD_DATA_CONCEPT_CONFIGURATION = {
   isSigned?: boolean;
 }
 
-export type Message_FIELD_DESCRIPTION = {
+export interface Message_FIELD_DESCRIPTION {
   mesgNum: MesgNum.FIELD_DESCRIPTION;
   developerDataIndex?: number;
   fieldDefinitionNumber?: number;
@@ -1425,7 +1425,7 @@ export type Message_FIELD_DESCRIPTION = {
   nativeFieldNum?: number;
 }
 
-export type Message_DEVELOPER_DATA_ID = {
+export interface Message_DEVELOPER_DATA_ID {
   mesgNum: MesgNum.DEVELOPER_DATA_ID;
   developerId?: number[];
   applicationId?: number[];
@@ -1434,7 +1434,7 @@ export type Message_DEVELOPER_DATA_ID = {
   applicationVersion?: number;
 }
 
-export type Message_MAGNETOMETER_DATA = {
+export interface Message_MAGNETOMETER_DATA {
   mesgNum: MesgNum.MAGNETOMETER_DATA;
   timestamp?: Date;
   timestampMs?: number;
@@ -1447,7 +1447,7 @@ export type Message_MAGNETOMETER_DATA = {
   calibratedMagZ?: number[];
 }
 
-export type Message_BAROMETER_DATA = {
+export interface Message_BAROMETER_DATA {
   mesgNum: MesgNum.BAROMETER_DATA;
   timestamp?: Date;
   timestampMs?: number;
@@ -1455,7 +1455,7 @@ export type Message_BAROMETER_DATA = {
   baroPres?: number[];
 }
 
-export type Message_ONE_D_SENSOR_CALIBRATION = {
+export interface Message_ONE_D_SENSOR_CALIBRATION {
   mesgNum: MesgNum.ONE_D_SENSOR_CALIBRATION;
   timestamp?: Date;
   sensorType?: string;
@@ -1465,14 +1465,14 @@ export type Message_ONE_D_SENSOR_CALIBRATION = {
   offsetCal?: number;
 }
 
-export type Message_MONITORING_HR_DATA = {
+export interface Message_MONITORING_HR_DATA {
   mesgNum: MesgNum.MONITORING_HR_DATA;
   timestamp?: Date;
   restingHeartRate?: number;
   currentDayRestingHeartRate?: number;
 }
 
-export type Message_TIME_IN_ZONE = {
+export interface Message_TIME_IN_ZONE {
   mesgNum: MesgNum.TIME_IN_ZONE;
   timestamp?: Date;
   referenceMessageIndex?: number;
@@ -1493,7 +1493,7 @@ export type Message_TIME_IN_ZONE = {
   functionalThresholdPower?: number;
 }
 
-export type Message_SET = {
+export interface Message_SET {
   mesgNum: MesgNum.SET;
   timestamp?: Date;
   duration?: number;
@@ -1508,13 +1508,13 @@ export type Message_SET = {
   wktStepIndex?: number;
 }
 
-export type Message_STRESS_LEVEL = {
+export interface Message_STRESS_LEVEL {
   mesgNum: MesgNum.STRESS_LEVEL;
   stressLevelValue?: number;
   stressLevelTime?: Date;
 }
 
-export type Message_MAX_MET_DATA = {
+export interface Message_MAX_MET_DATA {
   mesgNum: MesgNum.MAX_MET_DATA;
   timestamp?: Date;
   updateTime?: Date;
@@ -1527,7 +1527,7 @@ export type Message_MAX_MET_DATA = {
   speedSource?: string;
 }
 
-export type Message_DIVE_SETTINGS = {
+export interface Message_DIVE_SETTINGS {
   mesgNum: MesgNum.DIVE_SETTINGS;
   messageIndex?: number;
   name?: string;
@@ -1553,7 +1553,7 @@ export type Message_DIVE_SETTINGS = {
   heartRateSource?: number;
 }
 
-export type Message_DIVE_GAS = {
+export interface Message_DIVE_GAS {
   mesgNum: MesgNum.DIVE_GAS;
   messageIndex?: number;
   heliumContent?: number;
@@ -1562,7 +1562,7 @@ export type Message_DIVE_GAS = {
   mode?: string;
 }
 
-export type Message_DIVE_ALARM = {
+export interface Message_DIVE_ALARM {
   mesgNum: MesgNum.DIVE_ALARM;
   messageIndex?: number;
   depth?: number;
@@ -1573,7 +1573,7 @@ export type Message_DIVE_ALARM = {
   diveTypes?: string;
 }
 
-export type Message_EXERCISE_TITLE = {
+export interface Message_EXERCISE_TITLE {
   mesgNum: MesgNum.EXERCISE_TITLE;
   messageIndex?: number;
   exerciseCategory?: ExerciseCategory;
@@ -1581,7 +1581,7 @@ export type Message_EXERCISE_TITLE = {
   wktStepName?: string;
 }
 
-export type Message_DIVE_SUMMARY = {
+export interface Message_DIVE_SUMMARY {
   mesgNum: MesgNum.DIVE_SUMMARY;
   timestamp?: Date;
   referenceMesg?: string;
@@ -1603,7 +1603,7 @@ export type Message_DIVE_SUMMARY = {
   hangTime?: number;
 }
 
-export type Message_SPO2_DATA = {
+export interface Message_SPO2_DATA {
   mesgNum: MesgNum.SPO2_DATA;
   timestamp?: Date;
   readingSpo2?: number;
@@ -1611,13 +1611,13 @@ export type Message_SPO2_DATA = {
   mode?: string;
 }
 
-export type Message_SLEEP_LEVEL = {
+export interface Message_SLEEP_LEVEL {
   mesgNum: MesgNum.SLEEP_LEVEL;
   timestamp?: Date;
   sleepLevel?: string;
 }
 
-export type Message_JUMP = {
+export interface Message_JUMP {
   mesgNum: MesgNum.JUMP;
   timestamp?: Date;
   distance?: number;
@@ -1631,7 +1631,7 @@ export type Message_JUMP = {
   enhancedSpeed?: number;
 }
 
-export type Message_AAD_ACCEL_FEATURES = {
+export interface Message_AAD_ACCEL_FEATURES {
   mesgNum: MesgNum.AAD_ACCEL_FEATURES;
   timestamp?: Date;
   aadAccelFeaturesVersion?: number;
@@ -1642,20 +1642,20 @@ export type Message_AAD_ACCEL_FEATURES = {
   autoregressiveCoefficient?: number[];
 }
 
-export type Message_BEAT_INTERVALS = {
+export interface Message_BEAT_INTERVALS {
   mesgNum: MesgNum.BEAT_INTERVALS;
   timestamp?: Date;
   timestampMs?: number;
   time?: number[];
 }
 
-export type Message_RESPIRATION_RATE = {
+export interface Message_RESPIRATION_RATE {
   mesgNum: MesgNum.RESPIRATION_RATE;
   timestamp?: Date;
   respirationRate?: number;
 }
 
-export type Message_HSA_ACCELEROMETER_DATA = {
+export interface Message_HSA_ACCELEROMETER_DATA {
   mesgNum: MesgNum.HSA_ACCELEROMETER_DATA;
   timestamp?: Date;
   timestampMs?: number[];
@@ -1664,7 +1664,7 @@ export type Message_HSA_ACCELEROMETER_DATA = {
   accelZ?: number[];
 }
 
-export type Message_HSA_STEP_DATA = {
+export interface Message_HSA_STEP_DATA {
   mesgNum: MesgNum.HSA_STEP_DATA;
   timestamp?: Date;
   timestampMs?: number[];
@@ -1672,7 +1672,7 @@ export type Message_HSA_STEP_DATA = {
   stepCount?: number[];
 }
 
-export type Message_HSA_SPO2_DATA = {
+export interface Message_HSA_SPO2_DATA {
   mesgNum: MesgNum.HSA_SPO2_DATA;
   timestamp?: Date;
   timestampMs?: number[];
@@ -1682,7 +1682,7 @@ export type Message_HSA_SPO2_DATA = {
   mode?: string[];
 }
 
-export type Message_HSA_STRESS_DATA = {
+export interface Message_HSA_STRESS_DATA {
   mesgNum: MesgNum.HSA_STRESS_DATA;
   timestamp?: Date;
   timestampMs?: number[];
@@ -1690,7 +1690,7 @@ export type Message_HSA_STRESS_DATA = {
   stressLevel?: number[];
 }
 
-export type Message_HSA_RESPIRATION_DATA = {
+export interface Message_HSA_RESPIRATION_DATA {
   mesgNum: MesgNum.HSA_RESPIRATION_DATA;
   timestamp?: Date;
   timestampMs?: number[];
@@ -1698,7 +1698,7 @@ export type Message_HSA_RESPIRATION_DATA = {
   respirationRate?: number[];
 }
 
-export type Message_HSA_HEART_RATE_DATA = {
+export interface Message_HSA_HEART_RATE_DATA {
   mesgNum: MesgNum.HSA_HEART_RATE_DATA;
   timestamp?: Date;
   timestampMs?: number[];
@@ -1707,7 +1707,7 @@ export type Message_HSA_HEART_RATE_DATA = {
   status?: string[];
 }
 
-export type Message_SPLIT = {
+export interface Message_SPLIT {
   mesgNum: MesgNum.SPLIT;
   splitType?: string;
   totalElapsedTime?: number;
@@ -1729,7 +1729,7 @@ export type Message_SPLIT = {
   messageIndex?: number;
 }
 
-export type Message_SPLIT_SUMMARY = {
+export interface Message_SPLIT_SUMMARY {
   mesgNum: MesgNum.SPLIT_SUMMARY;
   splitType?: string;
   numSplits?: number;
@@ -1745,7 +1745,7 @@ export type Message_SPLIT_SUMMARY = {
   totalCalories?: number;
 }
 
-export type Message_HSA_BODY_BATTERY_DATA = {
+export interface Message_HSA_BODY_BATTERY_DATA {
   mesgNum: MesgNum.HSA_BODY_BATTERY_DATA;
   timestamp?: Date;
   timestampMs?: number[];
@@ -1753,7 +1753,7 @@ export type Message_HSA_BODY_BATTERY_DATA = {
   level?: number[];
 }
 
-export type Message_HSA_EVENT = {
+export interface Message_HSA_EVENT {
   mesgNum: MesgNum.HSA_EVENT;
   timestamp?: Date;
   data?: number[];
@@ -1762,7 +1762,7 @@ export type Message_HSA_EVENT = {
   eventSubType?: string;
 }
 
-export type Message_CLIMB_PRO = {
+export interface Message_CLIMB_PRO {
   mesgNum: MesgNum.CLIMB_PRO;
   timestamp?: Date;
   positionLat?: number;
@@ -1773,14 +1773,14 @@ export type Message_CLIMB_PRO = {
   currentDist?: number;
 }
 
-export type Message_TANK_UPDATE = {
+export interface Message_TANK_UPDATE {
   mesgNum: MesgNum.TANK_UPDATE;
   timestamp?: Date;
   sensor?: string;
   pressure?: number;
 }
 
-export type Message_TANK_SUMMARY = {
+export interface Message_TANK_SUMMARY {
   mesgNum: MesgNum.TANK_SUMMARY;
   timestamp?: Date;
   sensor?: string;
@@ -1789,7 +1789,7 @@ export type Message_TANK_SUMMARY = {
   volumeUsed?: number;
 }
 
-export type Message_SLEEP_ASSESSMENT = {
+export interface Message_SLEEP_ASSESSMENT {
   mesgNum: MesgNum.SLEEP_ASSESSMENT;
   combinedAwakeScore?: number;
   awakeTimeScore?: number;
@@ -1807,7 +1807,7 @@ export type Message_SLEEP_ASSESSMENT = {
   averageStressScore?: number;
 }
 
-export type Message_HRV_STATUS_SUMMARY = {
+export interface Message_HRV_STATUS_SUMMARY {
   mesgNum: MesgNum.HRV_STATUS_SUMMARY;
   timestamp?: Date;
   weeklyAverage?: number;
@@ -1819,20 +1819,20 @@ export type Message_HRV_STATUS_SUMMARY = {
   status?: string;
 }
 
-export type Message_HRV_VALUE = {
+export interface Message_HRV_VALUE {
   mesgNum: MesgNum.HRV_VALUE;
   timestamp?: Date;
   value?: number;
 }
 
-export type Message_RAW_BBI = {
+export interface Message_RAW_BBI {
   mesgNum: MesgNum.RAW_BBI;
   timestamp?: Date;
   timestampMs?: number;
   data?: number[];
 }
 
-export type Message_DEVICE_AUX_BATTERY_INFO = {
+export interface Message_DEVICE_AUX_BATTERY_INFO {
   mesgNum: MesgNum.DEVICE_AUX_BATTERY_INFO;
   timestamp?: Date;
   deviceIndex?: number;
@@ -1841,7 +1841,7 @@ export type Message_DEVICE_AUX_BATTERY_INFO = {
   batteryIdentifier?: number;
 }
 
-export type Message_HSA_GYROSCOPE_DATA = {
+export interface Message_HSA_GYROSCOPE_DATA {
   mesgNum: MesgNum.HSA_GYROSCOPE_DATA;
   timestamp?: Date;
   timestampMs?: number[];
@@ -1850,7 +1850,7 @@ export type Message_HSA_GYROSCOPE_DATA = {
   gyroZ?: number[];
 }
 
-export type Message_CHRONO_SHOT_SESSION = {
+export interface Message_CHRONO_SHOT_SESSION {
   mesgNum: MesgNum.CHRONO_SHOT_SESSION;
   timestamp?: Date;
   minSpeed?: number;
@@ -1861,21 +1861,21 @@ export type Message_CHRONO_SHOT_SESSION = {
   grainWeight?: number;
 }
 
-export type Message_CHRONO_SHOT_DATA = {
+export interface Message_CHRONO_SHOT_DATA {
   mesgNum: MesgNum.CHRONO_SHOT_DATA;
   timestamp?: Date;
   shotNum?: number;
   shotSpeed?: number;
 }
 
-export type Message_HSA_CONFIGURATION_DATA = {
+export interface Message_HSA_CONFIGURATION_DATA {
   mesgNum: MesgNum.HSA_CONFIGURATION_DATA;
   timestamp?: Date;
   data?: number[];
   dataSize?: number;
 }
 
-export type Message_DIVE_APNEA_ALARM = {
+export interface Message_DIVE_APNEA_ALARM {
   mesgNum: MesgNum.DIVE_APNEA_ALARM;
   messageIndex?: number;
   depth?: number;
@@ -1886,7 +1886,7 @@ export type Message_DIVE_APNEA_ALARM = {
   diveTypes?: string;
 }
 
-export type Message_SKIN_TEMP_OVERNIGHT = {
+export interface Message_SKIN_TEMP_OVERNIGHT {
   mesgNum: MesgNum.SKIN_TEMP_OVERNIGHT;
   timestamp?: Date;
   localTimestamp?: Date;
@@ -1895,7 +1895,7 @@ export type Message_SKIN_TEMP_OVERNIGHT = {
   nightly?: number[];
 }
 
-export type Message_HSA_WRIST_TEMPERATURE_DATA = {
+export interface Message_HSA_WRIST_TEMPERATURE_DATA {
   mesgNum: MesgNum.HSA_WRIST_TEMPERATURE_DATA;
   timestamp?: Date;
   timestampMs?: number[];
@@ -1903,14 +1903,14 @@ export type Message_HSA_WRIST_TEMPERATURE_DATA = {
   skinTemperature?: number[];
 }
 
-export type Message_SLEEP_DISRUPTION_SEVERITY_PERIOD = {
+export interface Message_SLEEP_DISRUPTION_SEVERITY_PERIOD {
   mesgNum: MesgNum.SLEEP_DISRUPTION_SEVERITY_PERIOD;
   timestamp?: Date;
   durationMultiplier?: number;
   duration?: number[];
 }
 
-export type Message_SLEEP_DISRUPTION_OVERNIGHT_SEVERITY = {
+export interface Message_SLEEP_DISRUPTION_OVERNIGHT_SEVERITY {
   mesgNum: MesgNum.SLEEP_DISRUPTION_OVERNIGHT_SEVERITY;
   timestamp?: Date;
   disruption?: number[];
