@@ -1,22 +1,21 @@
-import {Component, EventEmitter, OnInit, output, Output, signal} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {CommonModule} from '@angular/common';
-import {MatTableModule} from '@angular/material/table';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSortModule, Sort} from '@angular/material/sort';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatSelectModule} from '@angular/material/select';
-import {FormsModule} from '@angular/forms';
-import {MatIcon, MatIconModule} from '@angular/material/icon';
+import { Component, EventEmitter, OnInit, output, Output, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSortModule, Sort } from '@angular/material/sort';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import {
   MatAccordion,
   MatExpansionPanel,
   MatExpansionPanelHeader,
-  MatExpansionPanelTitle
+  MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import {Exercise} from '../Exercise';
-
+import { Exercise } from '../Exercise';
 
 interface FilterOption {
   label: string;
@@ -40,13 +39,13 @@ interface FilterOption {
     MatExpansionPanel,
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
-    MatAccordion
+    MatAccordion,
   ],
   templateUrl: './exercise-selector.html',
-  styleUrls: ['./exercise-selector.scss']
+  styleUrls: ['./exercise-selector.scss'],
 })
 export class ExerciseSelectorComponent implements OnInit {
-  displayedColumns: string[] = ['CATEGORY_GARMIN',  'Name', 'DESCRIPTION', 'IMAGE'];
+  displayedColumns: string[] = ['CATEGORY_GARMIN', 'Name', 'DESCRIPTION', 'IMAGE'];
   allExercises: Exercise[] = [];
   filteredExercises: Exercise[] = [];
 
@@ -62,9 +61,7 @@ export class ExerciseSelectorComponent implements OnInit {
 
   exerciseSelected = output<Exercise>();
 
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadExercises();
@@ -80,7 +77,7 @@ export class ExerciseSelectorComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading exercises:', error);
-      }
+      },
     });
   }
 
@@ -92,12 +89,12 @@ export class ExerciseSelectorComponent implements OnInit {
     const allColumns = Object.keys(firstExercise);
 
     // Filter out static columns and create filters for the rest
-    this.filterableColumns = allColumns.filter(col => !this.staticColumns.includes(col));
+    this.filterableColumns = allColumns.filter((col) => !this.staticColumns.includes(col));
 
-    this.filterableColumns.forEach(column => {
+    this.filterableColumns.forEach((column) => {
       const valuesSet = new Set<string>();
 
-      this.allExercises.forEach(exercise => {
+      this.allExercises.forEach((exercise) => {
         const value = (exercise as any)[column];
 
         // Handle different value types
@@ -121,20 +118,18 @@ export class ExerciseSelectorComponent implements OnInit {
         this.filters[column] = {
           label: this.formatColumnName(column),
           values: uniqueValues,
-          selectedValues: []
+          selectedValues: [],
         };
       }
     });
   }
 
   formatColumnName(columnName: string): string {
-    return columnName
-      .replace(/_/g, ' ')
-      .replace(/\b\w/g, char => char.toUpperCase());
+    return columnName.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
   }
 
   applyFilters(): void {
-    this.filteredExercises = this.allExercises.filter(exercise => {
+    this.filteredExercises = this.allExercises.filter((exercise) => {
       // Check all filters
       for (const column of this.filterableColumns) {
         const filter = this.filters[column];
@@ -161,7 +156,7 @@ export class ExerciseSelectorComponent implements OnInit {
   }
 
   clearFilters(): void {
-    Object.keys(this.filters).forEach(key => {
+    Object.keys(this.filters).forEach((key) => {
       this.filters[key].selectedValues = [];
     });
     this.applyFilters();
@@ -201,24 +196,23 @@ export class ExerciseSelectorComponent implements OnInit {
   }
 
   getMuscleColumns(): string[] {
-    return this.filterableColumns.filter(col => col.startsWith('MUSCLE_'));
+    return this.filterableColumns.filter((col) => col.startsWith('MUSCLE_'));
   }
 
   getEquipmentColumns(): string[] {
-    return this.filterableColumns.filter(col => col.startsWith('EQUIPMENT_'));
+    return this.filterableColumns.filter((col) => col.startsWith('EQUIPMENT_'));
   }
 
   getOtherColumns(): string[] {
-    return this.filterableColumns.filter(col =>
-      col.startsWith('Name')
-      || col.startsWith('CATEGORY_GARMIN')
-      || col.startsWith('DIFFICULTY')
+    return this.filterableColumns.filter(
+      (col) =>
+        col.startsWith('Name') || col.startsWith('CATEGORY_GARMIN') || col.startsWith('DIFFICULTY'),
     );
   }
 
   openExercise(exercise: Exercise) {
     if (exercise.URL === null || exercise.URL === undefined || exercise.URL === '') return;
-    window.open(exercise.URL, "_blank");
+    window.open(exercise.URL, '_blank');
   }
 
   onResizeStart(event: MouseEvent, column: string): void {
@@ -241,7 +235,8 @@ export class ExerciseSelectorComponent implements OnInit {
     const diff = event.pageX - this.startX;
     const newWidth = this.startWidth + diff;
 
-    if (newWidth >= 50) { // Minimum width
+    if (newWidth >= 50) {
+      // Minimum width
       const th = document.querySelector(`th[data-column="${this.resizingColumn}"]`) as HTMLElement;
       if (th) {
         th.style.width = `${newWidth}px`;

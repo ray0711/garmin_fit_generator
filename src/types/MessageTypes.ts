@@ -1,4 +1,12 @@
- import {FileType, Manufacturer, MesgNum, Sport, SubSport, WktStepDuration, WktStepTarget} from './fitsdk_enums';
+import {
+  FileType,
+  Manufacturer,
+  MesgNum,
+  Sport,
+  SubSport,
+  WktStepDuration,
+  WktStepTarget,
+} from './fitsdk_enums';
 
 export type FitMessage =
   | Message_FILE_ID

@@ -1,4 +1,4 @@
-import {intensity} from '../../types/fitsdk_enums';
+import { intensity } from '../../types/fitsdk_enums';
 
 export type Block = RepeatBlock | WorkoutBlock;
 export interface BasicBlock {
@@ -13,15 +13,18 @@ export interface BlockLevel {
 }
 
 export class RepeatBlock implements BasicBlock {
-  name =  "Repeat";
+  name = 'Repeat';
   children: Block[] = [];
   clone(): RepeatBlock {
     const newObject = new RepeatBlock();
-    newObject.children = this.children.map(child => child.clone());
+    newObject.children = this.children.map((child) => child.clone());
     return newObject;
   }
   flat(level: number): BlockLevel[] {
-    return [{block: this, level: level}, ...this.children.flatMap(child => child.flat(level + 1))];
+    return [
+      { block: this, level: level },
+      ...this.children.flatMap((child) => child.flat(level + 1)),
+    ];
   }
 }
 
@@ -31,17 +34,16 @@ export class WorkoutBlock implements BasicBlock {
   categoryGarmin: string;
   intensity: intensity = intensity.active;
 
-
-  constructor(name: string, categoryGarmin: string, nameGarmin: string, intensity? : intensity) {
+  constructor(name: string, categoryGarmin: string, nameGarmin: string, intensity?: intensity) {
     this.name = name;
     this.nameGarmin = nameGarmin;
     this.categoryGarmin = categoryGarmin;
-    if(intensity) this.intensity = intensity;
+    if (intensity) this.intensity = intensity;
   }
   clone(): WorkoutBlock {
     return new WorkoutBlock(this.name, this.categoryGarmin, this.nameGarmin);
   }
   flat(level: number): BlockLevel[] {
-    return [{block: this, level: level}];
+    return [{ block: this, level: level }];
   }
 }

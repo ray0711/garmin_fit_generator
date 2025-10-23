@@ -7,10 +7,11 @@
         [cdkDropListData]="buildingBlocks"
         cdkDropListSortingDisabled
         cdkDropListHasAnchor
-        class="workout-list">
+        class="workout-list"
+      >
         @for (block of buildingBlocks; track block.name) {
           <div class="block-box" cdkDrag [cdkDragData]="block">
-            <app-control [block]="block"/>
+            <app-control [block]="block" />
           </div>
         }
       </div>
@@ -18,23 +19,33 @@
 
     <div class="list-header">
       <h2>Workout Tree</h2>
-      <mat-tree [dataSource]="datasource"  [levelAccessor]="levelAccessor" class="workout-list"
-                cdkDropList
-
-                [cdkDropListEnterPredicate]="dropPredicate"
-
-                (cdkDropListDropped)="drop($event)"
-                #workoutTree
-
+      <mat-tree
+        [dataSource]="flatWorkoutOutput()"
+        [levelAccessor]="levelAccessor"
+        class="workout-list"
+        cdkDropList
+        (cdkDropListDropped)="drop($event)"
+        #workoutTree
       >
-        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding class="block-box" cdkDropList cdkDrag >
-          <button matIconButton disabled></button>
-          <app-control [block]="node.block"/>
+        <mat-tree-node
+          *matTreeNodeDef="let node"
+          matTreeNodePadding
+          class="block-box"
+          cdkDropList
+          cdkDrag
+        >
+          <app-control [block]="node.block" />
         </mat-tree-node>
-        <mat-tree-node *matTreeNodeDef="let node;when isRepeat" matTreeNodePadding matTreeNodeToggle
-                       [cdkTreeNodeTypeaheadLabel]="node.block.name" class="repeat-block-box" cdkDropList cdkDrag [cdkDropListSortPredicate]="sortPredicate">
-          <button matIconButton disabled></button>
-          <app-control [block]="node.block"/>
+        <mat-tree-node
+          *matTreeNodeDef="let node; when: isRepeat"
+          matTreeNodePadding
+          matTreeNodeToggle
+          [cdkTreeNodeTypeaheadLabel]="node.block.name"
+          class="repeat-block-box"
+          cdkDropList
+          cdkDrag
+        >
+          <app-control [block]="node.block" />
         </mat-tree-node>
       </mat-tree>
     </div>

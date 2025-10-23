@@ -19,7 +19,8 @@
               <mat-select
                 [(ngModel)]="filters[column].selectedValues"
                 (ngModelChange)="applyFilters()"
-                multiple>
+                multiple
+              >
                 <mat-option *ngFor="let value of filters[column]?.values" [value]="value">
                   {{ value }}
                 </mat-option>
@@ -44,7 +45,8 @@
               <mat-select
                 [(ngModel)]="filters[column].selectedValues"
                 (ngModelChange)="applyFilters()"
-                multiple>
+                multiple
+              >
                 <mat-option *ngFor="let value of filters[column]?.values" [value]="value">
                   {{ value }}
                 </mat-option>
@@ -53,7 +55,6 @@
           </div>
         </div>
       </mat-expansion-panel>
-
 
       <!-- Equipment Filters -->
       <mat-expansion-panel>
@@ -68,7 +69,8 @@
               <mat-select
                 [(ngModel)]="filters[column].selectedValues"
                 (ngModelChange)="applyFilters()"
-                multiple>
+                multiple
+              >
                 <mat-option *ngFor="let value of filters[column]?.values" [value]="value">
                   {{ value }}
                 </mat-option>
@@ -78,33 +80,51 @@
         </div>
 
         <div class="filter-actions">
-          <button mat-raised-button color="primary" (click)="clearFilters()">Clear All Filters</button>
+          <button mat-raised-button color="primary" (click)="clearFilters()">
+            Clear All Filters
+          </button>
           <span class="results-count">
-        Showing {{ filteredExercises.length }} of {{ allExercises.length }} exercises
-      </span>
+            Showing {{ filteredExercises.length }} of {{ allExercises.length }} exercises
+          </span>
         </div>
       </mat-expansion-panel>
     </mat-accordion>
   </div>
   <!-- Table Section -->
   <div class="table-container">
-    <table mat-table [dataSource]="filteredExercises" matSort (matSortChange)="sortData($event)"
-           class="exercises-table">
-
+    <table
+      mat-table
+      [dataSource]="filteredExercises"
+      matSort
+      (matSortChange)="sortData($event)"
+      class="exercises-table"
+    >
       <!-- Category Column -->
       <ng-container matColumnDef="CATEGORY_GARMIN">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-column]="'CATEGORY_GARMIN'"
-            class="resizable-header">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          [attr.data-column]="'CATEGORY_GARMIN'"
+          class="resizable-header"
+        >
           Category
           <div class="resize-handle" (mousedown)="onResizeStart($event, 'CATEGORY_GARMIN')"></div>
         </th>
-        <td mat-cell *matCellDef="let exercise" (click)="add_exercise(exercise)"><mat-icon>add_circle</mat-icon> {{ exercise.CATEGORY_GARMIN }}</td>
+        <td mat-cell *matCellDef="let exercise" (click)="add_exercise(exercise)">
+          <mat-icon>add_circle</mat-icon> {{ exercise.CATEGORY_GARMIN }}
+        </td>
       </ng-container>
-
 
       <!-- Name Column -->
       <ng-container matColumnDef="Name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-column]="'Name'" class="resizable-header">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          [attr.data-column]="'Name'"
+          class="resizable-header"
+        >
           Exercise Name
           <div class="resize-handle" (mousedown)="onResizeStart($event, 'Name')"></div>
         </th>
@@ -117,12 +137,19 @@
       </ng-container>
 
       <ng-container matColumnDef="DESCRIPTION">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header [attr.data-column]="'DESCRIPTION'"
-            class="resizable-header">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          [attr.data-column]="'DESCRIPTION'"
+          class="resizable-header"
+        >
           Description
           <div class="resize-handle" (mousedown)="onResizeStart($event, 'DESCRIPTION')"></div>
         </th>
-        <td mat-cell *matCellDef="let exercise" class="exercise-description">{{ exercise.DESCRIPTION }}</td>
+        <td mat-cell *matCellDef="let exercise" class="exercise-description">
+          {{ exercise.DESCRIPTION }}
+        </td>
       </ng-container>
 
       <!-- Image Column -->
@@ -134,7 +161,7 @@
               [src]="exercise.IMAGE"
               alt="{{ exercise.Name }}"
               class="exercise-image"
-              (error)="$any($event.target).style.display='none'"
+              (error)="$any($event.target).style.display = 'none'"
             />
           } @else {
             <span>-</span>
@@ -143,7 +170,7 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </div>
-
+</div>

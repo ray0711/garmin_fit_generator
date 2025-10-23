@@ -1,3 +1,33 @@
+// @ts-ignore
+// import {Profile} from '../../node_modules/@garmin/fitsdk/src/profile.js';
+
+//
+// import {Profile} from '../types_generated';
+//
+// const CardioExerciseName = Profile.types.cardioExerciseName;
+//
+// for(const exName in  Profile.types){
+//   exName.endsWith('ExerciseName') && console.log(exName);
+//
+// }
+// Object.keys(Profile.types).filter(key => key.endsWith('ExerciseName')).map(key => {
+//   Profile.types[key];
+// });
+
+
+// function mapObject<K extends string, T, U>(
+//   obj: Record<K, T>,
+//   f: (x: T) => U
+// ): Record<K, U>;
+
+// type Partial<T> = {
+//   [P in keyof T]?: T[P];
+// };
+// type CardioExerciseName = Partial<Profile.types.cardioExerciseName>;
+// class test{
+//   CardioExerciseName.
+// }
+
 // import {Profile} from '../types_generated';
 //
 // const mesgNumSource = {...Profile.types.mesgNum} as const;
@@ -58,5 +88,3 @@ const SubSport = Object.entries(subSportSource).reduce(
 
 
  */
-
-

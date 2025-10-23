@@ -8,9 +8,8 @@ describe('FitControl', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FitControl]
-    })
-    .compileComponents();
+      imports: [FitControl],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FitControl);
     component = fixture.componentInstance;

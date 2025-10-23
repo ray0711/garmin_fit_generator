@@ -2,18 +2,21 @@
   <div class="content">
     <mat-stepper>
       <mat-step label="Select Exercises">
-        <app-exercise-selector (exerciseSelected)="onExerciseSelected($event)"></app-exercise-selector>
+        <app-exercise-selector
+          (exerciseSelected)="onExerciseSelected($event)"
+        ></app-exercise-selector>
       </mat-step>
       <mat-step label="Build Workout">
-        <app-workout-builder [selectedExercise]="selectedExercise()"></app-workout-builder>
+        <app-workout-builder
+          [selectedExercise]="selectedExercise()"
+          (workoutOutput)="workout.set($event)"
+        ></app-workout-builder>
       </mat-step>
       <mat-step label="Generate FIT">
-        <app-fit-control/>
+        <app-fit-control [workout]="workout()" />
       </mat-step>
-
     </mat-stepper>
   </div>
 </main>
 
-
-<router-outlet/>
+<router-outlet />
