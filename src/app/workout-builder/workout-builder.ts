@@ -12,6 +12,7 @@ import {
 
 import { Exercise } from '../Exercise';
 import { intensity } from '../../types/fitsdk_enums';
+import { ExerciseControl } from './exercise/exercise-control.component';
 
 @Component({
   selector: 'app-workout-builder',
@@ -25,6 +26,7 @@ import { intensity } from '../../types/fitsdk_enums';
     MatTreeNodeToggle,
     CdkDropListGroup,
     MatTreeNodePadding,
+    ExerciseControl,
   ],
   templateUrl: './workout-builder.html',
   styleUrl: './workout-builder.scss',
@@ -72,7 +74,7 @@ export class WorkoutBuilder {
   }
 
   drop(event: CdkDragDrop<Block[]>) {
-    let tmpWorkout = this.workout();
+    const tmpWorkout = this.workout();
 
     if (event.previousContainer === event.container) {
       // existing item

@@ -1,3 +1,83 @@
 <div class="control">
-  {{ block()?.name }}
+  @if (isRepeat()) {
+    <form [formGroup]="repeatForm">
+      <label>
+        Sets
+        <input type="number" formControlName="sets" min="1" />
+      </label>
+    </form>
+  }
+
+  @if (isWorkout()) {
+    <form [formGroup]="workoutForm">
+      <label>
+        Name
+        <input type="text" formControlName="name" />
+      </label>
+
+      <label>
+        Intensity
+        <select formControlName="intensity">
+          @for (opt of intensityOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </select>
+      </label>
+
+      <fieldset>
+        <legend>Target</legend>
+        <label>
+          Type
+          <select formControlName="targetType">
+            <option value="time">Time</option>
+            <option value="reps">Reps</option>
+            <option value="calories">Calories</option>
+            <option value="hr">Heart Rate</option>
+            <option value="lap">Lap Button</option>
+          </select>
+        </label>
+
+        @switch (workoutForm.get('targetType')?.value) {
+          @case ('time') {
+            <label>
+              Duration (s)
+              <input type="number" formControlName="durationSeconds" min="1" />
+            </label>
+          }
+          @case ('reps') {
+            <label>
+              Reps
+              <input type="number" formControlName="reps" min="1" />
+            </label>
+            <label>
+              Weight
+              <input type="number" formControlName="weight" min="0" />
+            </label>
+          }
+          @case ('calories') {
+            <label>
+              Calories
+              <input type="number" formControlName="calories" min="1" />
+            </label>
+          }
+          @case ('hr') {
+            <label>
+              Heart rate (bpm)
+              <input type="number" formControlName="heartRate" min="0" />
+            </label>
+            <label>
+              Type
+              <select formControlName="hrType">
+                <option value="above">Above</option>
+                <option value="below">Below</option>
+              </select>
+            </label>
+          }
+          @case ('lap') {
+            <p>Advance by pressing Lap button on device.</p>
+          }
+        }
+      </fieldset>
+    </form>
+  }
 </div>

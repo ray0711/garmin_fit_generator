@@ -11,7 +11,7 @@
       >
         @for (block of buildingBlocks; track block.name) {
           <div class="block-box" cdkDrag [cdkDragData]="block">
-            <app-control [block]="block" />
+            <app-exercise [block]="block" />
           </div>
         }
       </div>

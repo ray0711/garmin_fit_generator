@@ -14,6 +14,7 @@ export interface BlockLevel {
 
 export class RepeatBlock implements BasicBlock {
   name = 'Repeat';
+  sets = 2;
   children: Block[] = [];
   clone(): RepeatBlock {
     const newObject = new RepeatBlock();
@@ -28,17 +29,46 @@ export class RepeatBlock implements BasicBlock {
   }
 }
 
+export type Target = TargetTime | TargetReps | TargetLapButton | TargetCalories | HeartRateTarget;
+
+export interface TargetTime {
+  durationSeconds: number;
+}
+
+export interface TargetReps {
+  reps: number;
+  weight: number;
+}
+
+export interface HeartRateTarget {
+  heartRate: number;
+  type: 'above' | 'below';
+}
+export interface TargetCalories {
+  calories: number;
+}
+
+export type TargetLapButton = object;
+
 export class WorkoutBlock implements BasicBlock {
   name: string;
   nameGarmin: string;
   categoryGarmin: string;
   intensity: intensity = intensity.active;
+  target: Target = { durationSeconds: 60 };
 
-  constructor(name: string, categoryGarmin: string, nameGarmin: string, intensity?: intensity) {
+  constructor(
+    name: string,
+    categoryGarmin: string,
+    nameGarmin: string,
+    intensity?: intensity,
+    target?: Target,
+  ) {
     this.name = name;
     this.nameGarmin = nameGarmin;
     this.categoryGarmin = categoryGarmin;
     if (intensity) this.intensity = intensity;
+    if (target) this.target = target;
   }
   clone(): WorkoutBlock {
     return new WorkoutBlock(this.name, this.categoryGarmin, this.nameGarmin);
