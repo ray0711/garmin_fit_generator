@@ -3,6 +3,11 @@ import { FormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angu
 import { Block, RepeatBlock, WorkoutBlock, Target, TargetTime, TargetReps, TargetCalories, HeartRateTarget, TargetLapButton } from '../block';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { intensity } from '../../../types/fitsdk_enums';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { CdkDragHandle } from '@angular/cdk/drag-drop';
 
 type TargetType = 'time' | 'reps' | 'lap' | 'calories' | 'hr';
 type HrType = 'above' | 'below';
@@ -11,6 +16,7 @@ type FormValue<T> = { [K in keyof T]: T[K] extends FormControl<infer V> ? V : ne
 
 interface RepeatFormShape {
   sets: FormControl<number>;
+  formInitialized: FormControl<boolean>;
 }
 
 interface WorkoutFormShape {
@@ -31,7 +37,15 @@ interface WorkoutFormShape {
 
 @Component({
   selector: 'app-control',
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatSelect,
+    MatOption,
+    CdkDragHandle,
+  ],
   templateUrl: './control.html',
   styleUrl: './control.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,6 +58,7 @@ export class Control {
   // Repeat form
   readonly repeatForm = this.fb.group<RepeatFormShape>({
     sets: this.fb.control(1, { nonNullable: true, validators: [Validators.min(1)] }),
+    formInitialized: this.fb.control<boolean>(false, { nonNullable: true }),
   });
 
   // Workout form
@@ -53,7 +68,10 @@ export class Control {
     intensity: this.fb.control<intensity>(intensity.active, { nonNullable: true }),
     targetType: this.fb.control<TargetType>('time', { nonNullable: true }),
     // time
-    durationSeconds: this.fb.control<number>(60, { nonNullable: true, validators: [Validators.min(1)] }),
+    durationSeconds: this.fb.control<number>(60, {
+      nonNullable: true,
+      validators: [Validators.min(1)],
+    }),
     // reps
     reps: this.fb.control<number>(1, { nonNullable: true, validators: [Validators.min(1)] }),
     weight: this.fb.control<number>(0, { nonNullable: true, validators: [Validators.min(0)] }),
@@ -62,7 +80,7 @@ export class Control {
     hrType: this.fb.control<HrType>('above', { nonNullable: true }),
     // calories
     calories: this.fb.control<number>(100, { nonNullable: true, validators: [Validators.min(1)] }),
-    formInitialized: this.fb.control<boolean>(false, { nonNullable: true}),
+    formInitialized: this.fb.control<boolean>(false, { nonNullable: true }),
   });
 
   // Helpers to switch UI based on block subtype
@@ -81,10 +99,14 @@ export class Control {
   ];
 
   // reflect current block into the forms
-  private readonly blockSignal: Signal<Block | undefined> = computed(() => this.block());
+  protected readonly blockSignal: Signal<Block | undefined> = computed(() => this.block());
 
-  private readonly repeatFormValue = toSignal(this.repeatForm.valueChanges, { initialValue: this.repeatForm.getRawValue() as FormValue<RepeatFormShape> });
-  private readonly workoutFormValue = toSignal(this.workoutForm.valueChanges, { initialValue: this.workoutForm.getRawValue() as FormValue<WorkoutFormShape> });
+  private readonly repeatFormValue = toSignal(this.repeatForm.valueChanges, {
+    initialValue: this.repeatForm.getRawValue() as FormValue<RepeatFormShape>,
+  });
+  private readonly workoutFormValue = toSignal(this.workoutForm.valueChanges, {
+    initialValue: this.workoutForm.getRawValue() as FormValue<WorkoutFormShape>,
+  });
 
   // When the input block changes, patch forms
   private readonly patchOnBlockChange = effect(() => {
@@ -92,12 +114,19 @@ export class Control {
     if (!b) return;
 
     if (b instanceof RepeatBlock) {
-      this.repeatForm.patchValue({ sets: b.sets }, { emitEvent: false });
+      this.repeatForm.patchValue({ sets: b.sets,
+        formInitialized: true, }, { emitEvent: false });
     }
 
     if (b instanceof WorkoutBlock) {
       const targetType = this.getTargetType(b.target);
-      const patch: Partial<FormValue<WorkoutFormShape>> = { name: b.name, nameOverride: b.nameOverride, intensity: b.intensity, targetType, formInitialized: true };
+      const patch: Partial<FormValue<WorkoutFormShape>> = {
+        name: b.name,
+        nameOverride: b.nameOverride,
+        intensity: b.intensity,
+        targetType,
+        formInitialized: true,
+      };
       if (b.target instanceof TargetTime) patch.durationSeconds = b.target.durationSeconds;
       if (b.target instanceof TargetReps) {
         patch.reps = b.target.reps;
@@ -115,8 +144,12 @@ export class Control {
   // When forms change, update the underlying block instance
   private readonly applyRepeatChanges = effect(() => {
     const b = this.blockSignal();
+
     if (!(b instanceof RepeatBlock)) return;
     const v = this.repeatFormValue();
+    if (!v.formInitialized) {
+      return;
+    }
     b.sets = Math.max(1, v.sets ?? 1);
   });
 
@@ -124,7 +157,7 @@ export class Control {
     const b = this.blockSignal();
     if (!(b instanceof WorkoutBlock)) return;
     const v = this.workoutFormValue();
-    if(!v.formInitialized){
+    if (!v.formInitialized) {
       return;
     }
     // map editable fields
@@ -149,7 +182,7 @@ export class Control {
         break;
       }
       case 'hr': {
-        const t = new HeartRateTarget(Math.max(0, v.heartRate ?? 0), (v.hrType ?? 'above'));
+        const t = new HeartRateTarget(Math.max(0, v.heartRate ?? 0), v.hrType ?? 'above');
         b.target = t;
         break;
       }

@@ -10,18 +10,13 @@
         class="workout-list"
       >
         @for (block of buildingBlocks; track block.name) {
-          <div class="block-box" cdkDrag [cdkDragData]="block">
-            <button type="button" class="drag-handle" cdkDragHandle aria-label="Drag to add block">
-              ⋮⋮
-            </button>
-            <app-exercise [block]="block" />
-          </div>
+          <app-exercise [block]="block" class="block-box" />
         }
       </div>
     </div>
 
     <div class="list-header">
-      <h2>Workout Tree</h2>
+      <h2>Workout</h2>
       <mat-tree
         [dataSource]="flatWorkoutOutput()"
         [levelAccessor]="levelAccessor"
@@ -36,21 +31,11 @@
           class="block-box"
           cdkDropList
           cdkDrag
+          matTreeNodePaddingIndent="44"
         >
-          <button type="button" class="drag-handle" cdkDragHandle aria-label="Drag step">⋮⋮</button>
-          <app-control [block]="node.block" />
-        </mat-tree-node>
-        <mat-tree-node
-          *matTreeNodeDef="let node; when: isRepeat"
-          matTreeNodePadding
-          matTreeNodeToggle
-          [cdkTreeNodeTypeaheadLabel]="node.block.name"
-          class="repeat-block-box"
-          cdkDropList
-          cdkDrag
-        >
-          <button type="button" class="drag-handle" cdkDragHandle aria-label="Drag repeat group">⋮⋮</button>
-          <app-control [block]="node.block" />
+          <div>
+            <app-control [block]="node.block" />
+          </div>
         </mat-tree-node>
       </mat-tree>
     </div>

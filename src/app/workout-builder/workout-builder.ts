@@ -1,5 +1,5 @@
 import { Component, effect, input, output, signal, ViewChild } from '@angular/core';
-import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { Block, BlockLevel, RepeatBlock, WorkoutBlock } from './block';
 import { Control } from './control/control';
 import {
@@ -7,7 +7,6 @@ import {
   MatTreeNode,
   MatTreeNodeDef,
   MatTreeNodePadding,
-  MatTreeNodeToggle,
 } from '@angular/material/tree';
 
 import { Exercise } from '../Exercise';
@@ -19,12 +18,10 @@ import { ExerciseControl } from './exercise/exercise-control.component';
   imports: [
     CdkDropList,
     CdkDrag,
-    CdkDragHandle,
     Control,
     MatTree,
     MatTreeNode,
     MatTreeNodeDef,
-    MatTreeNodeToggle,
     CdkDropListGroup,
     MatTreeNodePadding,
     ExerciseControl,
@@ -34,6 +31,22 @@ import { ExerciseControl } from './exercise/exercise-control.component';
 })
 export class WorkoutBuilder {
   selectedExercise = input<Exercise | undefined>();
+
+  // Inline helpers for repeat sets in header
+  getRepeatSets(block: Block): number {
+    return block instanceof RepeatBlock ? Math.max(1, block.sets) : 1;
+  }
+
+  updateRepeatSets(block: Block, value: string | number): void {
+    if (!(block instanceof RepeatBlock)) return;
+    const num = typeof value === 'number' ? value : Number(value);
+    const sets = Number.isFinite(num) ? Math.max(1, Math.floor(num)) : 1;
+    block.sets = sets;
+    // propagate change to consumers
+    const current = this.workout();
+    this.workout.set([...current]);
+    this.workoutOutput.emit(this.workout());
+  }
 
   staticBuildingBlocks: Block[] = [
     new RepeatBlock(),
@@ -78,10 +91,7 @@ export class WorkoutBuilder {
     const tmpWorkout = this.workout();
 
     if (event.previousContainer === event.container) {
-      // existing item
 
-      const currentIndex = event.currentIndex;
-      const previousIndex = event.previousIndex;
       const flatWorkout = this.flatWorkoutOutput();
       const moving = flatWorkout[event.previousIndex];
       const movingParent = this.findParent(flatWorkout, moving);
@@ -124,7 +134,7 @@ export class WorkoutBuilder {
       }
     } else {
       // new item
-      tmpWorkout.splice(event.currentIndex, 0, event.item.data.clone());
+      tmpWorkout.splice(event.currentIndex, 0, event.item.data().clone());
     }
     this.workout.set([...tmpWorkout]);
     this.workoutOutput.emit(tmpWorkout);
@@ -133,15 +143,11 @@ export class WorkoutBuilder {
 
   findParent(list: BlockLevel[], blockLevel: BlockLevel): RepeatBlock | undefined {
     const parent = list.find(
-      (element, index: number) =>
+      (element) =>
         element?.block instanceof RepeatBlock &&
         element?.block.children.includes(blockLevel?.block),
     );
     return parent?.block as RepeatBlock | undefined;
-  }
-
-  isRepeat(index: number, block: Block): boolean {
-    return block instanceof RepeatBlock;
   }
 
   flatWorkout(workout: Block[]): BlockLevel[] {
