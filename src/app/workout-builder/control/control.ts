@@ -26,18 +26,7 @@ interface WorkoutFormShape {
   formInitialized: FormControl<boolean>;
 }
 
-function isTargetTime(t: Target): t is TargetTime {
-  return typeof t === 'object' && t !== null && 'durationSeconds' in t;
-}
-function isTargetReps(t: Target): t is TargetReps {
-  return typeof t === 'object' && t !== null && 'reps' in t;
-}
-function isTargetCalories(t: Target): t is TargetCalories {
-  return typeof t === 'object' && t !== null && 'calories' in t;
-}
-function isHeartRateTarget(t: Target): t is HeartRateTarget {
-  return typeof t === 'object' && t !== null && 'heartRate' in t;
-}
+// Using classes for targets now; rely on instanceof checks
 
 @Component({
   selector: 'app-control',
@@ -107,13 +96,13 @@ export class Control {
     if (b instanceof WorkoutBlock) {
       const targetType = this.getTargetType(b.target);
       const patch: Partial<FormValue<WorkoutFormShape>> = { name: b.name, intensity: b.intensity, targetType, formInitialized: true };
-      if (isTargetTime(b.target)) patch.durationSeconds = b.target.durationSeconds;
-      if (isTargetReps(b.target)) {
+      if (b.target instanceof TargetTime) patch.durationSeconds = b.target.durationSeconds;
+      if (b.target instanceof TargetReps) {
         patch.reps = b.target.reps;
         patch.weight = b.target.weight;
       }
-      if (isTargetCalories(b.target)) patch.calories = b.target.calories;
-      if (isHeartRateTarget(b.target)) {
+      if (b.target instanceof TargetCalories) patch.calories = b.target.calories;
+      if (b.target instanceof HeartRateTarget) {
         patch.heartRate = b.target.heartRate;
         patch.hrType = b.target.type;
       }
@@ -143,27 +132,27 @@ export class Control {
     // target mapping based on selected type
     switch (v.targetType) {
       case 'time': {
-        const t: TargetTime = { durationSeconds: Math.max(1, v.durationSeconds ?? 60) };
+        const t = new TargetTime(Math.max(1, v.durationSeconds ?? 60));
         b.target = t;
         break;
       }
       case 'reps': {
-        const t: TargetReps = { reps: Math.max(1, v.reps ?? 1), weight: Math.max(0, v.weight ?? 0) };
+        const t = new TargetReps(Math.max(1, v.reps ?? 1), Math.max(0, v.weight ?? 0));
         b.target = t;
         break;
       }
       case 'calories': {
-        const t: TargetCalories = { calories: Math.max(1, v.calories ?? 1) };
+        const t = new TargetCalories(Math.max(1, v.calories ?? 1));
         b.target = t;
         break;
       }
       case 'hr': {
-        const t: HeartRateTarget = { heartRate: Math.max(0, v.heartRate ?? 0), type: (v.hrType ?? 'above') };
+        const t = new HeartRateTarget(Math.max(0, v.heartRate ?? 0), (v.hrType ?? 'above'));
         b.target = t;
         break;
       }
       case 'lap': {
-        const t: TargetLapButton = {};
+        const t = new TargetLapButton();
         b.target = t; // lap button marker
         break;
       }
@@ -172,10 +161,10 @@ export class Control {
 
   // Utility to detect current target type
   private getTargetType(target: Target): TargetType {
-    if (isTargetTime(target)) return 'time';
-    if (isTargetReps(target)) return 'reps';
-    if (isTargetCalories(target)) return 'calories';
-    if (isHeartRateTarget(target)) return 'hr';
+    if (target instanceof TargetTime) return 'time';
+    if (target instanceof TargetReps) return 'reps';
+    if (target instanceof TargetCalories) return 'calories';
+    if (target instanceof HeartRateTarget) return 'hr';
     return 'lap';
   }
 }

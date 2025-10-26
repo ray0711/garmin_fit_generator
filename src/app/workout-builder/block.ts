@@ -29,33 +29,32 @@ export class RepeatBlock implements BasicBlock {
   }
 }
 
+export class TargetTime {
+  constructor(public durationSeconds: number) {}
+}
+
+export class TargetReps {
+  constructor(public reps: number, public weight: number) {}
+}
+
+export class HeartRateTarget {
+  constructor(public heartRate: number, public type: 'above' | 'below') {}
+}
+
+export class TargetCalories {
+  constructor(public calories: number) {}
+}
+
+export class TargetLapButton {}
+
 export type Target = TargetTime | TargetReps | TargetLapButton | TargetCalories | HeartRateTarget;
-
-export interface TargetTime {
-  durationSeconds: number;
-}
-
-export interface TargetReps {
-  reps: number;
-  weight: number;
-}
-
-export interface HeartRateTarget {
-  heartRate: number;
-  type: 'above' | 'below';
-}
-export interface TargetCalories {
-  calories: number;
-}
-
-export type TargetLapButton = object;
 
 export class WorkoutBlock implements BasicBlock {
   name: string;
   nameGarmin: string;
   categoryGarmin: string;
   intensity: intensity = intensity.active;
-  target: Target = { durationSeconds: 60 };
+  target: Target = new TargetTime(60);
 
   constructor(
     name: string,

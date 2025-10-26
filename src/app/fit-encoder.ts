@@ -75,22 +75,21 @@ export class FitEncoder {
     return entry[1] as T;
   }
 
-  // Type guards for Target union types. Interfaces cannot be used with instanceof in TypeScript,
-  // so we use property existence checks for safe narrowing.
+  // Target types are classes now; we can use instanceof for narrowing.
   private isTargetTime(target: Target): target is TargetTime {
-    return typeof (target as any)?.durationSeconds === 'number';
+    return target instanceof TargetTime;
   }
 
   private isTargetReps(target: Target): target is TargetReps {
-    return typeof (target as any)?.reps === 'number';
+    return target instanceof TargetReps;
   }
 
   private isTargetCalories(target: Target): target is TargetCalories {
-    return typeof (target as any)?.calories === 'number';
+    return target instanceof TargetCalories;
   }
 
   private isHeartRateTarget(target: Target): target is HeartRateTarget {
-    return typeof (target as any)?.heartRate === 'number' && (target as any)?.type !== undefined;
+    return target instanceof HeartRateTarget;
   }
 
   getWorkoutStepMessage(block: Block, messageIndex: number): WORKOUT_STEP_AND_TITLE[] {
