@@ -1,71 +1,77 @@
 .workout-container {
-  gap: 2em;
-  justify-content: center;
   display: flex;
+  gap: 24px;
+  justify-content: center;
 }
 
 .list-header {
-  padding: 1em;
+  padding: 16px;
   width: 40em;
 }
 
 .workout-list {
-  border: solid 1px #ccc;
-  min-height: 60px;
-  background: white;
-  border-radius: 4px;
-  overflow: hidden;
   display: block;
+  min-height: 80px;
+  background: var(--mat-sys-surface-container, #fff);
+  color: var(--mat-sys-on-surface, #1d1b20);
+  border: 1px solid var(--mat-sys-outline-variant, #cac4d0);
+  border-radius: 12px;
+  box-shadow: var(--mat-sys-level2, 0 1px 2px rgba(0,0,0,.08));
+  overflow: hidden;
 }
 
-.block-box {
-  padding: 10px 5px;
-  border-bottom: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  //justify-content: space-between;
-  box-sizing: border-box;
-  cursor: move;
-  background: white;
-  font-size: 14px;
-  font-family: sans-serif;
-}
-
+.block-box,
 .repeat-block-box {
-  padding: 20px 10px;
-  border-bottom: solid 1px #ccc;
-  color: rgba(100, 0, 0, 0.87);
-  background: rgba(055, 255, 255, 0.5);
   display: flex;
   flex-direction: row;
   align-items: center;
-  //justify-content: space-between;
-  box-sizing: border-box;
-  cursor: move;
-  background: white;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant, #e0e0e0);
+  background: var(--mat-sys-surface, #fff);
+  color: var(--mat-sys-on-surface, #1d1b20);
   font-size: 14px;
-  font-family: sans-serif;
+}
+
+.block-box:hover,
+.repeat-block-box:hover {
+  background: var(--mat-sys-surface-container-high, #fafafa);
+}
+
+.block-box:last-child,
+.repeat-block-box:last-child {
+  border-bottom: none;
+}
+
+.drag-handle {
+  border: none;
+  background: transparent;
+  color: var(--mat-sys-on-surface-variant, #49454f);
+  cursor: grab;
+  padding: 4px 6px;
+  border-radius: 6px;
+  line-height: 1;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+.drag-handle:hover,
+.drag-handle:focus-visible {
+  background: var(--mat-sys-surface-container-highest, #f0f0f0);
+  outline: 2px solid transparent;
 }
 
 .cdk-drag-preview {
   box-sizing: border-box;
-  border-radius: 4px;
-  box-shadow:
-    0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  box-shadow: var(--mat-sys-level3, 0 5px 15px rgba(0,0,0,.2));
 }
 
 .cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: transform 200ms cubic-bezier(0.2, 0, 0, 1);
 }
 
-.block-box:last-child {
-  border: none;
-}
-
-.workout-list.cdk-drop-list-dragging .block-box:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+.workout-list.cdk-drop-list-dragging .block-box:not(.cdk-drag-placeholder),
+.workout-list.cdk-drop-list-dragging .repeat-block-box:not(.cdk-drag-placeholder) {
+  transition: transform 200ms cubic-bezier(0.2, 0, 0, 1);
 }

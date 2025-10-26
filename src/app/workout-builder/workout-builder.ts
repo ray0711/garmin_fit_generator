@@ -1,5 +1,5 @@
 import { Component, effect, input, output, signal, ViewChild } from '@angular/core';
-import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { Block, BlockLevel, RepeatBlock, WorkoutBlock } from './block';
 import { Control } from './control/control';
 import {
@@ -19,6 +19,7 @@ import { ExerciseControl } from './exercise/exercise-control.component';
   imports: [
     CdkDropList,
     CdkDrag,
+    CdkDragHandle,
     Control,
     MatTree,
     MatTreeNode,

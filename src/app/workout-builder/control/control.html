@@ -9,18 +9,18 @@
   }
 
   @if (isWorkout()) {
-    <form [formGroup]="workoutForm">
-      <label>
-        Name (original)
-        <input type="text" formControlName="name" [readOnly]="true" />
+    <form [formGroup]="workoutForm" class="form-grid">
+      <label class="field">
+        <span class="label">Name (original)</span>
+        <span class="value" [title]="workoutForm.get('name')?.value">{{ workoutForm.get('name')?.value }}</span>
       </label>
-      <label>
-        Name override
-        <input type="text" formControlName="nameOverride" />
+      <label class="field">
+        <span class="label">Name override</span>
+        <input type="text" formControlName="nameOverride" placeholder="Custom name" />
       </label>
 
-      <label>
-        Intensity
+      <label class="field">
+        <span class="label">Intensity</span>
         <select formControlName="intensity">
           @for (opt of intensityOptions; track opt.value) {
             <option [value]="opt.value">{{ opt.label }}</option>
@@ -28,10 +28,10 @@
         </select>
       </label>
 
-      <fieldset>
+      <fieldset class="target">
         <legend>Target</legend>
-        <label>
-          Type
+        <label class="field">
+          <span class="label">Type</span>
           <select formControlName="targetType">
             <option value="time">Time</option>
             <option value="reps">Reps</option>
@@ -43,34 +43,34 @@
 
         @switch (workoutForm.get('targetType')?.value) {
           @case ('time') {
-            <label>
-              Duration (s)
+            <label class="field">
+              <span class="label">Duration (s)</span>
               <input type="number" formControlName="durationSeconds" min="1" />
             </label>
           }
           @case ('reps') {
-            <label>
-              Reps
+            <label class="field">
+              <span class="label">Reps</span>
               <input type="number" formControlName="reps" min="1" />
             </label>
-            <label>
-              Weight
+            <label class="field">
+              <span class="label">Weight</span>
               <input type="number" formControlName="weight" min="0" />
             </label>
           }
           @case ('calories') {
-            <label>
-              Calories
+            <label class="field">
+              <span class="label">Calories</span>
               <input type="number" formControlName="calories" min="1" />
             </label>
           }
           @case ('hr') {
-            <label>
-              Heart rate (bpm)
+            <label class="field">
+              <span class="label">Heart rate (bpm)</span>
               <input type="number" formControlName="heartRate" min="0" />
             </label>
-            <label>
-              Type
+            <label class="field">
+              <span class="label">Type</span>
               <select formControlName="hrType">
                 <option value="above">Above</option>
                 <option value="below">Below</option>

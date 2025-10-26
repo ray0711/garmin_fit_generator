@@ -11,6 +11,9 @@
       >
         @for (block of buildingBlocks; track block.name) {
           <div class="block-box" cdkDrag [cdkDragData]="block">
+            <button type="button" class="drag-handle" cdkDragHandle aria-label="Drag to add block">
+              ⋮⋮
+            </button>
             <app-exercise [block]="block" />
           </div>
         }
@@ -34,6 +37,7 @@
           cdkDropList
           cdkDrag
         >
+          <button type="button" class="drag-handle" cdkDragHandle aria-label="Drag step">⋮⋮</button>
           <app-control [block]="node.block" />
         </mat-tree-node>
         <mat-tree-node
@@ -45,6 +49,7 @@
           cdkDropList
           cdkDrag
         >
+          <button type="button" class="drag-handle" cdkDragHandle aria-label="Drag repeat group">⋮⋮</button>
           <app-control [block]="node.block" />
         </mat-tree-node>
       </mat-tree>

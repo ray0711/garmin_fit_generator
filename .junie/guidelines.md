@@ -40,6 +40,20 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
 - Use the async pipe to handle observables
 
+## Theming and UX
+
+- Use Angular Material design tokens/CSS variables for colors, elevation, and surfaces to stay within the app’s palette:
+  - Example variables: `--mat-sys-surface`, `--mat-sys-surface-container`, `--mat-sys-on-surface`, `--mat-sys-on-surface-variant`, `--mat-sys-outline-variant`, and elevation tokens like `--mat-sys-level2`.
+- Prefer card-like surfaces with rounded corners for list items and forms; keep spacing consistent (8/12/16/24 px scale).
+- Use grid or flex layouts for forms; align labels in a left column and inputs on the right for readability.
+- Replace read-only text inputs with labels or static text elements styled like form controls.
+- Ensure accessibility:
+  - Provide `aria-label` or `aria-labelledby` for interactive icons and drag handles.
+  - Keep label elements associated with form controls; do not rely solely on placeholders.
+- Drag and drop:
+  - Use explicit `cdkDragHandle` elements (e.g., a button with an icon) instead of making the whole row draggable.
+  - Maintain keyboard focus styles and ensure draggable elements are reachable via keyboard.
+
 ## Services
 
 - Design services around a single responsibility
