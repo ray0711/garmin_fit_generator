@@ -15,6 +15,7 @@ interface RepeatFormShape {
 
 interface WorkoutFormShape {
   name: FormControl<string>;
+  nameOverride: FormControl<string>;
   intensity: FormControl<intensity>;
   targetType: FormControl<TargetType>;
   durationSeconds: FormControl<number>;
@@ -48,6 +49,7 @@ export class Control {
   // Workout form
   readonly workoutForm = this.fb.group<WorkoutFormShape>({
     name: this.fb.control<string>('', { nonNullable: true }),
+    nameOverride: this.fb.control<string>('', { nonNullable: true }),
     intensity: this.fb.control<intensity>(intensity.active, { nonNullable: true }),
     targetType: this.fb.control<TargetType>('time', { nonNullable: true }),
     // time
@@ -95,7 +97,7 @@ export class Control {
 
     if (b instanceof WorkoutBlock) {
       const targetType = this.getTargetType(b.target);
-      const patch: Partial<FormValue<WorkoutFormShape>> = { name: b.name, intensity: b.intensity, targetType, formInitialized: true };
+      const patch: Partial<FormValue<WorkoutFormShape>> = { name: b.name, nameOverride: b.nameOverride, intensity: b.intensity, targetType, formInitialized: true };
       if (b.target instanceof TargetTime) patch.durationSeconds = b.target.durationSeconds;
       if (b.target instanceof TargetReps) {
         patch.reps = b.target.reps;
@@ -125,8 +127,8 @@ export class Control {
     if(!v.formInitialized){
       return;
     }
-    // name and intensity always mapped
-    if (typeof v.name === 'string') b.name = v.name;
+    // map editable fields
+    if (typeof v.nameOverride === 'string') b.nameOverride = v.nameOverride;
     if (v.intensity !== undefined) b.intensity = v.intensity;
 
     // target mapping based on selected type

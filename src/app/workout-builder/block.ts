@@ -50,7 +50,8 @@ export class TargetLapButton {}
 export type Target = TargetTime | TargetReps | TargetLapButton | TargetCalories | HeartRateTarget;
 
 export class WorkoutBlock implements BasicBlock {
-  name: string;
+  readonly name: string;
+  nameOverride: string;
   nameGarmin: string;
   categoryGarmin: string;
   intensity: intensity = intensity.active;
@@ -64,13 +65,16 @@ export class WorkoutBlock implements BasicBlock {
     target?: Target,
   ) {
     this.name = name;
+    this.nameOverride = name;
     this.nameGarmin = nameGarmin;
     this.categoryGarmin = categoryGarmin;
     if (intensity) this.intensity = intensity;
     if (target) this.target = target;
   }
   clone(): WorkoutBlock {
-    return new WorkoutBlock(this.name, this.categoryGarmin, this.nameGarmin);
+    const cloned = new WorkoutBlock(this.name, this.categoryGarmin, this.nameGarmin, this.intensity, this.target);
+    cloned.nameOverride = this.nameOverride;
+    return cloned;
   }
   flat(level: number): BlockLevel[] {
     return [{ block: this, level: level }];

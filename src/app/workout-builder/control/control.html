@@ -11,8 +11,12 @@
   @if (isWorkout()) {
     <form [formGroup]="workoutForm">
       <label>
-        Name
-        <input type="text" formControlName="name" />
+        Name (original)
+        <input type="text" formControlName="name" [readOnly]="true" />
+      </label>
+      <label>
+        Name override
+        <input type="text" formControlName="nameOverride" />
       </label>
 
       <label>

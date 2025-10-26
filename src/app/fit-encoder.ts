@@ -152,7 +152,7 @@ export class FitEncoder {
       const exerciseTitleMessage: Message_EXERCISE_TITLE = this.getExerciseTitleMessage(
         exerciseName,
         exerciseCategory,
-        w.name,
+        w.nameOverride,
       );
       return [{ workoutStep: workoutStepMessage, exerciseTitle: exerciseTitleMessage }];
     }
