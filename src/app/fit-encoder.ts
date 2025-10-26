@@ -8,7 +8,7 @@ import {
   Message_WORKOUT_STEP,
 } from '../types/MessageTypes';
 import {FileType, Manufacturer, MesgNum, Sport, SubSport, WktStepDuration, WktStepTarget} from '../types/fitsdk_enums';
-import {Block, RepeatBlock} from './workout-builder/block';
+import {Block, RepeatBlock, WorkoutBlock, Target, TargetTime, TargetReps, TargetLapButton, TargetCalories, HeartRateTarget} from './workout-builder/block';
 import {Profile} from '../types_generated';
 
 interface WORKOUT_STEP_AND_TITLE {
@@ -75,43 +75,99 @@ export class FitEncoder {
     return entry[1] as T;
   }
 
+  // Type guards for Target union types. Interfaces cannot be used with instanceof in TypeScript,
+  // so we use property existence checks for safe narrowing.
+  private isTargetTime(target: Target): target is TargetTime {
+    return typeof (target as any)?.durationSeconds === 'number';
+  }
+
+  private isTargetReps(target: Target): target is TargetReps {
+    return typeof (target as any)?.reps === 'number';
+  }
+
+  private isTargetCalories(target: Target): target is TargetCalories {
+    return typeof (target as any)?.calories === 'number';
+  }
+
+  private isHeartRateTarget(target: Target): target is HeartRateTarget {
+    return typeof (target as any)?.heartRate === 'number' && (target as any)?.type !== undefined;
+  }
+
   getWorkoutStepMessage(block: Block, messageIndex: number): WORKOUT_STEP_AND_TITLE[] {
     if (block instanceof RepeatBlock) {
+      // Emit children first, then a repeat marker that repeats the previous N steps "sets" times
+      const childrenMsgs = block.children.flatMap((child) => this.getWorkoutStepMessage(child, messageIndex));
       return [
-        ...block.children.flatMap((child) => this.getWorkoutStepMessage(child, messageIndex)),
-        {workoutStep: this.getRepeatMessage(block), exerciseTitle: undefined}
+        ...childrenMsgs,
+        { workoutStep: this.getRepeatMessage(block), exerciseTitle: undefined },
       ];
     } else {
-      const exerciseCategory = this.findEnumValue(ExerciseCategory, block.categoryGarmin) as ExerciseCategory;
-      const exerciseName = this.findExeriseNumber(exerciseCategory, block.nameGarmin)
+      const w = block as WorkoutBlock;
+      const exerciseCategory = this.findEnumValue(ExerciseCategory, w.categoryGarmin) as ExerciseCategory;
+      const exerciseName = this.findExeriseNumber(exerciseCategory, w.nameGarmin);
+
+      // Base message with exercise metadata
       const workoutStepMessage: Message_WORKOUT_STEP = {
         mesgNum: MesgNum.WORKOUT_STEP,
         messageIndex: messageIndex,
-        exerciseName: exerciseName,
+        wktStepName: w.name,
         exerciseCategory: exerciseCategory,
-        durationValue: 60000,
-        durationType: WktStepDuration.time,
-        targetType: WktStepTarget.open,
-        targetValue: 0,
-        secondaryTargetValue: 0,
-        notes: 'some notes',
-        wktStepName: block.name,
+        exerciseName: exerciseName,
       };
+
+      // Map target/duration
+      const target = w.target as Target;
+      if (this.isTargetTime(target)) {
+        const t = target;
+        workoutStepMessage.durationType = WktStepDuration.time;
+        // FIT expects seconds for duration_value
+        workoutStepMessage.durationValue = Math.max(0, Math.floor(t.durationSeconds));
+        workoutStepMessage.targetType = WktStepTarget.open;
+      } else if (this.isTargetReps(target)) {
+        const t = target;
+        workoutStepMessage.durationType = WktStepDuration.reps;
+        workoutStepMessage.durationValue = Math.max(0, Math.floor(t.reps));
+        workoutStepMessage.exerciseWeight = t.weight;
+        workoutStepMessage.targetType = WktStepTarget.open;
+      } else if (this.isTargetCalories(target)) {
+        const t = target;
+        workoutStepMessage.durationType = WktStepDuration.calories;
+        workoutStepMessage.durationValue = Math.max(0, Math.floor(t.calories));
+        workoutStepMessage.targetType = WktStepTarget.open;
+      } else if (this.isHeartRateTarget(target)) {
+        const t = target;
+        workoutStepMessage.durationType = WktStepDuration.open;
+        workoutStepMessage.targetType = WktStepTarget.heartRate;
+        if (t.type === 'above') {
+          workoutStepMessage.customTargetValueLow = t.heartRate;
+        } else if (t.type === 'below') {
+          workoutStepMessage.customTargetValueHigh = t.heartRate;
+        }
+      } else {
+        // Lap button/manual or unspecified → open step
+        workoutStepMessage.durationType = WktStepDuration.open;
+        workoutStepMessage.targetType = WktStepTarget.open;
+      }
+
+      // Optional notes/intensity can be added here if needed
       const exerciseTitleMessage: Message_EXERCISE_TITLE = this.getExerciseTitleMessage(
         exerciseName,
         exerciseCategory,
-        block.name,
+        w.name,
       );
-      return [{workoutStep: workoutStepMessage, exerciseTitle: exerciseTitleMessage}];
+      return [{ workoutStep: workoutStepMessage, exerciseTitle: exerciseTitleMessage }];
     }
   }
 
 
   getRepeatMessage(block: RepeatBlock): Message_WORKOUT_STEP {
+    // Repeat the last N steps (children count) for the given number of sets
     return {
       mesgNum: MesgNum.WORKOUT_STEP,
       durationType: WktStepDuration.repeatUntilStepsCmplt,
       durationValue: block.children.length,
+      targetType: WktStepTarget.open,
+      targetValue: Math.max(1, Math.floor(block.sets)),
     } as Message_WORKOUT_STEP;
   }
 
