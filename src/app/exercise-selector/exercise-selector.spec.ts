@@ -1,17 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExerciseSelector } from './exercise-selector';
+import { ExerciseSelectorComponent } from './exercise-selector';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('ExerciseSelector', () => {
-  let component: ExerciseSelector;
-  let fixture: ComponentFixture<ExerciseSelector>;
+  let component: ExerciseSelectorComponent;
+  let fixture: ComponentFixture<ExerciseSelectorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ExerciseSelector],
+      imports: [ExerciseSelectorComponent],
+      providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ExerciseSelector);
+    fixture = TestBed.createComponent(ExerciseSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

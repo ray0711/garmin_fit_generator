@@ -8,7 +8,7 @@
     "startPublic": "ng serve --host 0.0.0.0",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test --no-watch",
     "generate": "npx -p typescript tsc ./node_modules/@garmin/fitsdk/src/*.js --declaration --allowJs --outDir src/types_generated && echo 'manually patch decoder.js to replace ../ imports with ./' ",
     "lint": "ng lint",
     "prettier": "prettier  --write \"src/**/*.{ts,html,scss}\" "
