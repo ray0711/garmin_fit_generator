@@ -53,6 +53,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Drag and drop:
   - Use explicit `cdkDragHandle` elements (e.g., a button with an icon) instead of making the whole row draggable.
   - Maintain keyboard focus styles and ensure draggable elements are reachable via keyboard.
+- use angular material components and icons where possible
 
 ## Services
 

@@ -1,6 +1,7 @@
-import { Component, effect, input, output, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, output, signal, ViewChild } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { Block, BlockLevel, RepeatBlock, WorkoutBlock } from './block';
+import FitDecoder from '../fit-decoder';
 import { Control } from './control/control';
 import {
   MatTree,
@@ -8,6 +9,8 @@ import {
   MatTreeNodeDef,
   MatTreeNodePadding,
 } from '@angular/material/tree';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { Exercise } from '../Exercise';
 import { intensity } from '../../types/fitsdk_enums';
@@ -25,9 +28,12 @@ import { ExerciseControl } from './exercise/exercise-control.component';
     CdkDropListGroup,
     MatTreeNodePadding,
     ExerciseControl,
+    MatButton,
+    MatIcon,
   ],
   templateUrl: './workout-builder.html',
   styleUrl: './workout-builder.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkoutBuilder {
   selectedExercise = input<Exercise | undefined>();
@@ -158,5 +164,31 @@ export class WorkoutBuilder {
 
   levelAccessor(block: BlockLevel): number {
     return block.level;
+  }
+
+  async onFileSelected(event: Event): Promise<void> {
+    const inputEl = event.target as HTMLInputElement | null;
+    const file = inputEl?.files && inputEl.files.length > 0 ? inputEl.files[0] : undefined;
+    if (!file) return;
+    try {
+      // Only accept .fit extension
+      const name = file.name.toLowerCase();
+      if (!name.endsWith('.fit')) {
+        console.warn('Unsupported file type:', name);
+        return;
+      }
+      const arrayBuffer = await file.arrayBuffer();
+      const bytes = new Uint8Array(arrayBuffer);
+      const blocks = FitDecoder.decode(bytes);
+      this.workout.set(blocks);
+      this.workoutOutput.emit(blocks);
+      // Give tree time to update before expanding
+      queueMicrotask(() => this.tree?.expandAll());
+    } catch (e) {
+      console.error('Failed to decode FIT file:', e);
+    } finally {
+      // reset input so same file can be re-selected
+      if (inputEl) inputEl.value = '';
+    }
   }
 }
