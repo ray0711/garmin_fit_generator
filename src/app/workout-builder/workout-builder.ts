@@ -13,7 +13,7 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
 import { Exercise } from '../Exercise';
-import { intensity } from '../../types/fitsdk_enums';
+import { intensity } from '../../types_auto/fitsdk_enums';
 import { ExerciseControl } from './exercise/exercise-control.component';
 
 @Component({

@@ -1,7 +1,7 @@
 import { FitEncoder } from './fit-encoder';
 import FitDecoder from './fit-decoder';
 import { Block, RepeatBlock, WorkoutBlock, TargetTime, TargetCalories } from './workout-builder/block';
-import { intensity } from '../types/fitsdk_enums';
+import { intensity } from '../types_auto/fitsdk_enums';
 
 function buildBlocksFromJson(json: string): Block[] {
   const data = JSON.parse(json) as any[];

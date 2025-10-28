@@ -1,7 +1,7 @@
 import { FitEncoder } from './fit-encoder';
 import FitDecoder from './fit-decoder';
 import { Block, WorkoutBlock } from './workout-builder/block';
-import { ExerciseCategory } from '../types/MessageTypes';
+import { ExerciseCategory } from '../types_auto/fitsdk_enums';
 import { Profile } from '../types_generated';
 
 // Matches the Exercise interface used by the app

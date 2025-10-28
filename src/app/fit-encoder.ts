@@ -1,13 +1,12 @@
 import Encoder from '../types/encoder';
 import {
-  ExerciseCategory,
   Message_EXERCISE_TITLE,
   Message_FILE_CREATOR,
   Message_FILE_ID,
   Message_WORKOUT,
   Message_WORKOUT_STEP,
-} from '../types/MessageTypes';
-import {FileType, Manufacturer, MesgNum, Sport, SubSport, WktStepDuration, WktStepTarget} from '../types/fitsdk_enums';
+} from '../types_auto/MessageTypes';
+import { ExerciseCategory, FileType, Manufacturer, MesgNum, Sport, SubSport, WktStepDuration, WktStepTarget } from '../types_auto/fitsdk_enums';
 import {Block, RepeatBlock, WorkoutBlock, Target, TargetTime, TargetReps, TargetLapButton, TargetCalories, HeartRateTarget} from './workout-builder/block';
 import {Profile} from '../types_generated';
 

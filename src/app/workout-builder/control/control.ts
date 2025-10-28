@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, input, Si
 import { FormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { Block, RepeatBlock, WorkoutBlock, Target, TargetTime, TargetReps, TargetCalories, HeartRateTarget, TargetLapButton } from '../block';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { intensity } from '../../../types/fitsdk_enums';
+import { intensity } from '../../../types_auto/fitsdk_enums';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';

@@ -1,8 +1,8 @@
 import Decoder from '../types_generated/decoder.js';
 import Stream from '../types_generated/stream.js';
-import { ExerciseCategory, Message_EXERCISE_TITLE, Message_WORKOUT_STEP } from '../types/MessageTypes';
+import { Message_EXERCISE_TITLE, Message_WORKOUT_STEP } from '../types_auto/MessageTypes';
+import { ExerciseCategory, WktStepDuration, WktStepTarget } from '../types_auto/fitsdk_enums';
 import { Block, RepeatBlock, WorkoutBlock, Target, TargetTime, TargetReps, TargetLapButton, TargetCalories, HeartRateTarget } from './workout-builder/block';
-import { WktStepDuration, WktStepTarget } from '../types/fitsdk_enums';
 import { Profile } from '../types_generated';
 
 function camelToScreamingSnake(input: string): string {

@@ -1,4 +1,4 @@
-import { intensity } from '../../types/fitsdk_enums';
+import { intensity } from '../../types_auto/fitsdk_enums';
 
 export type Block = RepeatBlock | WorkoutBlock;
 export interface BasicBlock {
