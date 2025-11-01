@@ -107,12 +107,10 @@ export class FitEncoder {
     return target instanceof HeartRateTarget;
   }
 
-  getWorkoutStepMessage(block: Block, messageIndex: number): WORKOUT_STEP_AND_TITLE[] {
+  getWorkoutStepMessage(block: Block): WORKOUT_STEP_AND_TITLE[] {
     if (block instanceof RepeatBlock) {
       // Emit children first, then a repeat marker that repeats the previous N steps "sets" times
-      const childrenMsgs = block.children.flatMap((child) =>
-        this.getWorkoutStepMessage(child, messageIndex),
-      );
+      const childrenMsgs = block.children.flatMap((child) => this.getWorkoutStepMessage(child));
       return [
         ...childrenMsgs,
         { workoutStep: this.getRepeatMessage(block), exerciseTitle: undefined },
@@ -128,7 +126,7 @@ export class FitEncoder {
       // Base message with exercise metadata
       const workoutStepMessage: Message_WORKOUT_STEP = {
         mesgNum: MesgNum.WORKOUT_STEP,
-        messageIndex: messageIndex,
+        messageIndex: undefined,
         wktStepName: w.name,
         exerciseCategory: exerciseCategory,
         exerciseName: exerciseName,
@@ -139,8 +137,7 @@ export class FitEncoder {
       if (this.isTargetTime(target)) {
         const t = target;
         workoutStepMessage.durationType = WktStepDuration.time;
-        // FIT expects seconds for duration_value
-        workoutStepMessage.durationValue = Math.max(0, Math.floor(t.durationSeconds));
+        workoutStepMessage.durationValue = Math.max(0, Math.floor(t.durationSeconds * 1000));
         workoutStepMessage.targetType = WktStepTarget.open;
       } else if (this.isTargetReps(target)) {
         const t = target;
@@ -237,12 +234,11 @@ export class FitEncoder {
     encoder.writeMesg(this.getFileMessage());
     encoder.writeMesg(this.getFileCreatorMessage());
 
-    let messageIndex = 0;
     for (const block of workout) {
-      workoutstepandtitles = workoutstepandtitles.concat(
-        this.getWorkoutStepMessage(block, messageIndex),
-      );
-      messageIndex += 1;
+      workoutstepandtitles = workoutstepandtitles.concat(this.getWorkoutStepMessage(block));
+    }
+    for (let i = 0; i < workoutstepandtitles.length; i++) {
+      workoutstepandtitles[i].workoutStep.messageIndex = i;
     }
 
     encoder.writeMesg(
