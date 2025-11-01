@@ -1,20 +1,21 @@
-import { ChangeDetectionStrategy, Component, effect, input, output, signal, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  input,
+  output,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { Block, BlockLevel, RepeatBlock, WorkoutBlock } from './block';
-import FitDecoder from '../fit-decoder';
 import { Control } from './control/control';
-import {
-  MatTree,
-  MatTreeNode,
-  MatTreeNodeDef,
-  MatTreeNodePadding,
-} from '@angular/material/tree';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { MatTree, MatTreeNode, MatTreeNodeDef, MatTreeNodePadding } from '@angular/material/tree';
 
 import { Exercise } from '../Exercise';
 import { intensity } from '../../types_auto/fitsdk_enums';
 import { ExerciseControl } from './exercise/exercise-control.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-workout-builder',
@@ -28,8 +29,7 @@ import { ExerciseControl } from './exercise/exercise-control.component';
     CdkDropListGroup,
     MatTreeNodePadding,
     ExerciseControl,
-    MatButton,
-    MatIcon,
+    ReactiveFormsModule,
   ],
   templateUrl: './workout-builder.html',
   styleUrl: './workout-builder.scss',
@@ -37,22 +37,7 @@ import { ExerciseControl } from './exercise/exercise-control.component';
 })
 export class WorkoutBuilder {
   selectedExercise = input<Exercise | undefined>();
-
-  // Inline helpers for repeat sets in header
-  getRepeatSets(block: Block): number {
-    return block instanceof RepeatBlock ? Math.max(1, block.sets) : 1;
-  }
-
-  updateRepeatSets(block: Block, value: string | number): void {
-    if (!(block instanceof RepeatBlock)) return;
-    const num = typeof value === 'number' ? value : Number(value);
-    const sets = Number.isFinite(num) ? Math.max(1, Math.floor(num)) : 1;
-    block.sets = sets;
-    // propagate change to consumers
-    const current = this.workout();
-    this.workout.set([...current]);
-    this.workoutOutput.emit(this.workout());
-  }
+  importWorkout = input<Block[] | undefined>();
 
   staticBuildingBlocks: Block[] = [
     new RepeatBlock(),
@@ -73,6 +58,12 @@ export class WorkoutBuilder {
       const newW = this.workout();
       if (newW) {
         this.flatWorkoutOutput.set(this.flatWorkout(newW));
+      }
+    });
+    effect(() => {
+      const newW = this.importWorkout();
+      if (newW) {
+        this.workout.set([...newW]);
       }
     });
     effect(() => {
@@ -97,7 +88,6 @@ export class WorkoutBuilder {
     const tmpWorkout = this.workout();
 
     if (event.previousContainer === event.container) {
-
       const flatWorkout = this.flatWorkoutOutput();
       const moving = flatWorkout[event.previousIndex];
       const movingParent = this.findParent(flatWorkout, moving);
@@ -164,31 +154,5 @@ export class WorkoutBuilder {
 
   levelAccessor(block: BlockLevel): number {
     return block.level;
-  }
-
-  async onFileSelected(event: Event): Promise<void> {
-    const inputEl = event.target as HTMLInputElement | null;
-    const file = inputEl?.files && inputEl.files.length > 0 ? inputEl.files[0] : undefined;
-    if (!file) return;
-    try {
-      // Only accept .fit extension
-      const name = file.name.toLowerCase();
-      if (!name.endsWith('.fit')) {
-        console.warn('Unsupported file type:', name);
-        return;
-      }
-      const arrayBuffer = await file.arrayBuffer();
-      const bytes = new Uint8Array(arrayBuffer);
-      const blocks = FitDecoder.decode(bytes);
-      this.workout.set(blocks);
-      this.workoutOutput.emit(blocks);
-      // Give tree time to update before expanding
-      queueMicrotask(() => this.tree?.expandAll());
-    } catch (e) {
-      console.error('Failed to decode FIT file:', e);
-    } finally {
-      // reset input so same file can be re-selected
-      if (inputEl) inputEl.value = '';
-    }
   }
 }

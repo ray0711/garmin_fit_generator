@@ -1,6 +1,8 @@
 <div class="exercise" cdkDrag [cdkDragData]="block">
   <div>
-    <button type="button" class="drag-handle" cdkDragHandle aria-label="Drag to add block">⋮⋮</button>
+    <button type="button" class="drag-handle" cdkDragHandle aria-label="Drag to add block">
+      ⋮⋮
+    </button>
   </div>
   <div class="card-title" [title]="block()?.name">{{ block()?.name }}</div>
 </div>

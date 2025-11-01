@@ -11,10 +11,7 @@ describe('ExerciseSelector', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ExerciseSelectorComponent],
-      providers: [
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ExerciseSelectorComponent);

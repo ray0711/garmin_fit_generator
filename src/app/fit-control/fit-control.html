@@ -1,3 +1,26 @@
 <div>
-  <button matButton (click)="download()">Generate .fit</button>
+  <input
+    type="file"
+    id="fitUpload"
+    accept=".fit"
+    (change)="onFileSelected($event)"
+    aria-label="Upload FIT workout file"
+    #fileInput
+    hidden
+  />
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="fileInput.click()"
+    aria-label="Upload FIT workout file"
+  >
+    <mat-icon aria-hidden="true">upload</mat-icon>
+    Import FIT
+  </button>
+
+  <button mat-raised-button color="primary" type="button" (click)="download()">
+    <mat-icon aria-hidden="true">download</mat-icon>
+    Generate .fit
+  </button>
 </div>

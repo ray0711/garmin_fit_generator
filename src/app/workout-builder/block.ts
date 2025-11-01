@@ -34,11 +34,17 @@ export class TargetTime {
 }
 
 export class TargetReps {
-  constructor(public reps: number, public weight: number) {}
+  constructor(
+    public reps: number,
+    public weight: number,
+  ) {}
 }
 
 export class HeartRateTarget {
-  constructor(public heartRate: number, public type: 'above' | 'below') {}
+  constructor(
+    public heartRate: number,
+    public type: 'above' | 'below',
+  ) {}
 }
 
 export class TargetCalories {
@@ -72,7 +78,13 @@ export class WorkoutBlock implements BasicBlock {
     if (target) this.target = target;
   }
   clone(): WorkoutBlock {
-    const cloned = new WorkoutBlock(this.name, this.categoryGarmin, this.nameGarmin, this.intensity, this.target);
+    const cloned = new WorkoutBlock(
+      this.name,
+      this.categoryGarmin,
+      this.nameGarmin,
+      this.intensity,
+      this.target,
+    );
     cloned.nameOverride = this.nameOverride;
     return cloned;
   }

@@ -1,4 +1,3 @@
-import Encoder from '../types/encoder';
 import {
   Message_EXERCISE_TITLE,
   Message_FILE_CREATOR,
@@ -6,13 +5,31 @@ import {
   Message_WORKOUT,
   Message_WORKOUT_STEP,
 } from '../types_auto/MessageTypes';
-import { ExerciseCategory, FileType, Manufacturer, MesgNum, Sport, SubSport, WktStepDuration, WktStepTarget } from '../types_auto/fitsdk_enums';
-import {Block, RepeatBlock, WorkoutBlock, Target, TargetTime, TargetReps, TargetLapButton, TargetCalories, HeartRateTarget} from './workout-builder/block';
-import {Profile} from '../types_generated';
+import {
+  ExerciseCategory,
+  FileType,
+  Manufacturer,
+  MesgNum,
+  Sport,
+  SubSport,
+  WktStepDuration,
+  WktStepTarget,
+} from '../types_auto/fitsdk_enums';
+import {
+  Block,
+  RepeatBlock,
+  WorkoutBlock,
+  Target,
+  TargetTime,
+  TargetReps,
+  TargetCalories,
+  HeartRateTarget,
+} from './workout-builder/block';
+import { Encoder, Profile } from '../types_generated';
 
 interface WORKOUT_STEP_AND_TITLE {
-  workoutStep: Message_WORKOUT_STEP,
-  exerciseTitle: Message_EXERCISE_TITLE | undefined,
+  workoutStep: Message_WORKOUT_STEP;
+  exerciseTitle: Message_EXERCISE_TITLE | undefined;
 }
 
 export class FitEncoder {
@@ -26,7 +43,6 @@ export class FitEncoder {
       type: FileType.workout,
     };
   }
-
 
   findExeriseNumber(exerciseCategory: ExerciseCategory, exerciseName: string): number {
     // Convert exerciseCategory enum to its string key (e.g., benchPress, calfRaise, etc.)
@@ -94,14 +110,19 @@ export class FitEncoder {
   getWorkoutStepMessage(block: Block, messageIndex: number): WORKOUT_STEP_AND_TITLE[] {
     if (block instanceof RepeatBlock) {
       // Emit children first, then a repeat marker that repeats the previous N steps "sets" times
-      const childrenMsgs = block.children.flatMap((child) => this.getWorkoutStepMessage(child, messageIndex));
+      const childrenMsgs = block.children.flatMap((child) =>
+        this.getWorkoutStepMessage(child, messageIndex),
+      );
       return [
         ...childrenMsgs,
         { workoutStep: this.getRepeatMessage(block), exerciseTitle: undefined },
       ];
     } else {
       const w = block as WorkoutBlock;
-      const exerciseCategory = this.findEnumValue(ExerciseCategory, w.categoryGarmin) as ExerciseCategory;
+      const exerciseCategory = this.findEnumValue(
+        ExerciseCategory,
+        w.categoryGarmin,
+      ) as ExerciseCategory;
       const exerciseName = this.findExeriseNumber(exerciseCategory, w.nameGarmin);
 
       // Base message with exercise metadata
@@ -157,7 +178,6 @@ export class FitEncoder {
     }
   }
 
-
   getRepeatMessage(block: RepeatBlock): Message_WORKOUT_STEP {
     // Repeat the last N steps (children count) for the given number of sets
     return {
@@ -184,7 +204,7 @@ export class FitEncoder {
       wktName: wktName,
       numValidSteps: validSteps,
       wktDescription: wktDescription,
-      capabilities: 32
+      capabilities: 32,
     } as Message_WORKOUT;
   }
 
@@ -196,7 +216,11 @@ export class FitEncoder {
     } as Message_FILE_CREATOR;
   }
 
-  getExerciseTitleMessage(exerciseName: number, exerciseCategory: ExerciseCategory, exerciseTitle: string): Message_EXERCISE_TITLE {
+  getExerciseTitleMessage(
+    exerciseName: number,
+    exerciseCategory: ExerciseCategory,
+    exerciseTitle: string,
+  ): Message_EXERCISE_TITLE {
     return {
       mesgNum: MesgNum.EXERCISE_TITLE,
       exerciseName: exerciseName,
@@ -215,17 +239,21 @@ export class FitEncoder {
 
     let messageIndex = 0;
     for (const block of workout) {
-      workoutstepandtitles = workoutstepandtitles.concat(this.getWorkoutStepMessage(block, messageIndex));
+      workoutstepandtitles = workoutstepandtitles.concat(
+        this.getWorkoutStepMessage(block, messageIndex),
+      );
       messageIndex += 1;
     }
 
-    encoder.writeMesg(this.getWorkoutMessage(
-      workoutstepandtitles.length,
-      Sport.training,
-      SubSport.strengthTraining,
-      'test ' + new Date().toISOString(),
-      'description: ' + new Date().toISOString(),
-    ));
+    encoder.writeMesg(
+      this.getWorkoutMessage(
+        workoutstepandtitles.length,
+        Sport.training,
+        SubSport.strengthTraining,
+        'test ' + new Date().toISOString(),
+        'description: ' + new Date().toISOString(),
+      ),
+    );
 
     for (const workoutstepandtitle of workoutstepandtitles) {
       encoder.writeMesg(workoutstepandtitle.workoutStep);

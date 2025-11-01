@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, output, Output, signal } from '@angular/core';
+import { Component, inject, OnInit, output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
@@ -8,7 +8,7 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIcon } from '@angular/material/icon';
 import {
   MatAccordion,
   MatExpansionPanel,
@@ -45,6 +45,7 @@ interface FilterOption {
   styleUrls: ['./exercise-selector.scss'],
 })
 export class ExerciseSelectorComponent implements OnInit {
+  http = inject(HttpClient);
   displayedColumns: string[] = ['CATEGORY_GARMIN', 'Name', 'DESCRIPTION', 'IMAGE'];
   allExercises: Exercise[] = [];
   filteredExercises: Exercise[] = [];
@@ -60,8 +61,6 @@ export class ExerciseSelectorComponent implements OnInit {
   private startWidth = 0;
 
   exerciseSelected = output<Exercise>();
-
-  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadExercises();
@@ -160,10 +159,6 @@ export class ExerciseSelectorComponent implements OnInit {
       this.filters[key].selectedValues = [];
     });
     this.applyFilters();
-  }
-
-  getFilterKeys(): string[] {
-    return Object.keys(this.filters);
   }
 
   sortData(sort: Sort): void {

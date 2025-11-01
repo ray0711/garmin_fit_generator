@@ -1,23 +1,27 @@
-<h1>Hello, {{ title() }}</h1>
 <main class="main">
-  <div class="content">
-    <mat-stepper>
-      <mat-step label="Select Exercises">
-        <app-exercise-selector
-          (exerciseSelected)="onExerciseSelected($event)"
-        ></app-exercise-selector>
-      </mat-step>
-      <mat-step label="Build Workout">
-        <app-workout-builder
-          [selectedExercise]="selectedExercise()"
-          (workoutOutput)="workout.set($event)"
-        ></app-workout-builder>
-      </mat-step>
-      <mat-step label="Generate FIT">
-        <app-fit-control [workout]="workout()" />
-      </mat-step>
-    </mat-stepper>
-  </div>
+  <button mat-raised-button color="primary" (click)="drawer.toggle()">
+    <mat-icon aria-hidden="true">add_circle</mat-icon>
+    Exercise
+  </button>
+  <mat-drawer-container class="drawer-container" hasBackdrop="true">
+    <mat-drawer #drawer class="drawer" mode="over" hasBackdrop="true">
+      <app-exercise-selector
+        (exerciseSelected)="onExerciseSelected($event)"
+      ></app-exercise-selector>
+    </mat-drawer>
+    <mat-drawer-content>
+      <app-fit-control
+        [currentWorkout]="currentWorkout()"
+        (importWorkout)="onWorkoutSelected($event)"
+      />
+
+      <app-workout-builder
+        [selectedExercise]="selectedExercise()"
+        [importWorkout]="importWorkout()"
+        (workoutOutput)="currentWorkout.set($event)"
+      ></app-workout-builder>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </main>
 
 <router-outlet />

@@ -29,8 +29,8 @@ function isExerciseSupportedByProfile(ex: Exercise): boolean {
   if (!exerciseMap) return false;
   const normalizedName = ex.NAME_GARMIN.toUpperCase().replace(/_/g, '');
   // check values of exerciseMap for a match
-  const hasName = Object.values(exerciseMap).some((v) =>
-    String(v).toUpperCase().replace(/_/g, '') === normalizedName,
+  const hasName = Object.values(exerciseMap).some(
+    (v) => String(v).toUpperCase().replace(/_/g, '') === normalizedName,
   );
   return hasName;
 }
@@ -60,7 +60,9 @@ describe('FIT round-trip for full Exercise Library', () => {
     // Preserve the library order used by the app (Object.values order)
     const allExercises = Object.values(data);
     // Safety: ensure we have a meaningful dataset
-    expect(allExercises.length).withContext('No exercises found in Exercises.json').toBeGreaterThan(0);
+    expect(allExercises.length)
+      .withContext('No exercises found in Exercises.json')
+      .toBeGreaterThan(0);
 
     const originalBlocks = buildBlocksFromExercises(allExercises);
 
@@ -80,9 +82,7 @@ describe('FIT round-trip for full Exercise Library', () => {
       expect(dec[i].categoryGarmin)
         .withContext(`Category mismatch at index ${i}`)
         .toBe(orig[i].categoryGarmin);
-      expect(dec[i].name)
-        .withContext(`Name mismatch at index ${i}`)
-        .toBe(orig[i].name);
+      expect(dec[i].name).withContext(`Name mismatch at index ${i}`).toBe(orig[i].name);
     }
   });
 });

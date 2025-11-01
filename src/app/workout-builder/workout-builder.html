@@ -17,11 +17,6 @@
 
     <div class="list-header">
       <h2>Workout</h2>
-      <input type="file" id="fitUpload" accept=".fit" (change)="onFileSelected($event)" aria-label="Upload FIT workout file" #fileInput hidden />
-      <button mat-raised-button color="primary" type="button" (click)="fileInput.click()" aria-label="Upload FIT workout file">
-        <mat-icon aria-hidden="true">upload</mat-icon>
-        Import FIT
-      </button>
       <mat-tree
         [dataSource]="flatWorkoutOutput()"
         [levelAccessor]="levelAccessor"

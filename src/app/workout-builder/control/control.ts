@@ -1,6 +1,24 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, Signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  Signal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
-import { Block, RepeatBlock, WorkoutBlock, Target, TargetTime, TargetReps, TargetCalories, HeartRateTarget, TargetLapButton } from '../block';
+import {
+  Block,
+  RepeatBlock,
+  WorkoutBlock,
+  Target,
+  TargetTime,
+  TargetReps,
+  TargetCalories,
+  HeartRateTarget,
+  TargetLapButton,
+} from '../block';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { intensity } from '../../../types_auto/fitsdk_enums';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -9,8 +27,8 @@ import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { CdkDragHandle } from '@angular/cdk/drag-drop';
 
-type TargetType = 'time' | 'reps' | 'lap' | 'calories' | 'hr';
-type HrType = 'above' | 'below';
+export type TargetType = 'time' | 'reps' | 'lap' | 'calories' | 'hr';
+export type HrType = 'above' | 'below';
 
 type FormValue<T> = { [K in keyof T]: T[K] extends FormControl<infer V> ? V : never };
 
@@ -33,8 +51,6 @@ interface WorkoutFormShape {
   formInitialized: FormControl<boolean>;
 }
 
-// Using classes for targets now; rely on instanceof checks
-
 @Component({
   selector: 'app-control',
   imports: [
@@ -51,6 +67,7 @@ interface WorkoutFormShape {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Control {
+  selected = false;
   block = input<Block>();
 
   private fb = inject(FormBuilder);
@@ -114,8 +131,7 @@ export class Control {
     if (!b) return;
 
     if (b instanceof RepeatBlock) {
-      this.repeatForm.patchValue({ sets: b.sets,
-        formInitialized: true, }, { emitEvent: false });
+      this.repeatForm.patchValue({ sets: b.sets, formInitialized: true }, { emitEvent: false });
     }
 
     if (b instanceof WorkoutBlock) {
@@ -201,5 +217,9 @@ export class Control {
     if (target instanceof TargetCalories) return 'calories';
     if (target instanceof HeartRateTarget) return 'hr';
     return 'lap';
+  }
+
+  toggleSelected() {
+    this.selected = !this.selected;
   }
 }

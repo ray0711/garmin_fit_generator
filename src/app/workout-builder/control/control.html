@@ -1,10 +1,10 @@
-<div class="control">
+<div class="control" (click)="this.toggleSelected()" [class.selected]="this.selected">
   <button type="button" cdkDragHandle aria-label="Drag step" class="drag-handle">⋮⋮</button>
   <div class="card-title" [title]="blockSignal()?.name">{{ blockSignal()?.name }}</div>
 
   @if (isRepeat()) {
     <form [formGroup]="repeatForm" class="form-grid">
-      <mat-form-field  class="form-field form-title" >
+      <mat-form-field class="form-field form-title">
         <mat-label>Sets</mat-label>
         <input matInput type="number" formControlName="sets" min="1" />
       </mat-form-field>
@@ -12,13 +12,13 @@
   }
 
   @if (isWorkout()) {
-    <form [formGroup]="workoutForm" class="form-grid">
-      <mat-form-field  class="form-field form-title">
+    <form [formGroup]="workoutForm" class="form-grid" (click)="$event.stopPropagation()">
+      <mat-form-field class="form-field form-title">
         <mat-label>Name override</mat-label>
         <input matInput type="text" formControlName="nameOverride" placeholder="Custom name" />
       </mat-form-field>
 
-      <mat-form-field class="form-field" >
+      <mat-form-field class="form-field">
         <mat-label>Intensity</mat-label>
         <mat-select formControlName="intensity">
           @for (opt of intensityOptions; track opt.value) {
@@ -26,60 +26,57 @@
           }
         </mat-select>
       </mat-form-field>
+      <mat-form-field class="form-field">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="targetType">
+          <mat-option value="time">Time</mat-option>
+          <mat-option value="reps">Reps</mat-option>
+          <mat-option value="calories">Calories</mat-option>
+          <mat-option value="hr">Heart Rate</mat-option>
+          <mat-option value="lap">Lap Button</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-
-        <!--<legend>Target</legend>-->
-        <mat-form-field  class="form-field">
-          <mat-label>Type</mat-label>
-          <mat-select formControlName="targetType">
-            <mat-option value="time">Time</mat-option>
-            <mat-option value="reps">Reps</mat-option>
-            <mat-option value="calories">Calories</mat-option>
-            <mat-option value="hr">Heart Rate</mat-option>
-            <mat-option value="lap">Lap Button</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        @switch (workoutForm.get('targetType')?.value) {
-          @case ('time') {
-            <mat-form-field  class="form-field">
-              <mat-label>Duration (s)</mat-label>
-              <input matInput type="number" formControlName="durationSeconds" min="1" />
-            </mat-form-field>
-          }
-          @case ('reps') {
-            <mat-form-field  class="form-field">
-              <mat-label>Reps</mat-label>
-              <input matInput type="number" formControlName="reps" min="1" />
-            </mat-form-field>
-            <mat-form-field  class="form-field">
-              <mat-label>Weight</mat-label>
-              <input matInput type="number" formControlName="weight" min="0" />
-            </mat-form-field>
-          }
-          @case ('calories') {
-            <mat-form-field  class="form-field">
-              <mat-label>Calories</mat-label>
-              <input matInput type="number" formControlName="calories" min="1" />
-            </mat-form-field>
-          }
-          @case ('hr') {
-            <mat-form-field  class="form-field">
-              <mat-label>Heart rate (bpm)</mat-label>
-              <input matInput type="number" formControlName="heartRate" min="0" />
-            </mat-form-field>
-            <mat-form-field  class="form-field">
-              <mat-label>Type</mat-label>
-              <mat-select formControlName="hrType">
-                <mat-option value="above">Above</mat-option>
-                <mat-option value="below">Below</mat-option>
-              </mat-select>
-            </mat-form-field>
-          }
-          @case ('lap') {
-            <p>Advance by pressing Lap button on device.</p>
-          }
+      @switch (workoutForm.get('targetType')?.value) {
+        @case ('time') {
+          <mat-form-field class="form-field">
+            <mat-label>Duration (s)</mat-label>
+            <input matInput type="number" formControlName="durationSeconds" min="1" />
+          </mat-form-field>
         }
+        @case ('reps') {
+          <mat-form-field class="form-field">
+            <mat-label>Reps</mat-label>
+            <input matInput type="number" formControlName="reps" min="1" />
+          </mat-form-field>
+          <mat-form-field class="form-field">
+            <mat-label>Weight</mat-label>
+            <input matInput type="number" formControlName="weight" min="0" />
+          </mat-form-field>
+        }
+        @case ('calories') {
+          <mat-form-field class="form-field">
+            <mat-label>Calories</mat-label>
+            <input matInput type="number" formControlName="calories" min="1" />
+          </mat-form-field>
+        }
+        @case ('hr') {
+          <mat-form-field class="form-field">
+            <mat-label>Heart rate (bpm)</mat-label>
+            <input matInput type="number" formControlName="heartRate" min="0" />
+          </mat-form-field>
+          <mat-form-field class="form-field">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="hrType">
+              <mat-option value="above">Above</mat-option>
+              <mat-option value="below">Below</mat-option>
+            </mat-select>
+          </mat-form-field>
+        }
+        @case ('lap') {
+          <p>Advance by pressing Lap button on device.</p>
+        }
+      }
     </form>
   }
 </div>

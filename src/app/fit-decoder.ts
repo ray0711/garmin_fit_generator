@@ -2,7 +2,17 @@ import Decoder from '../types_generated/decoder.js';
 import Stream from '../types_generated/stream.js';
 import { Message_EXERCISE_TITLE, Message_WORKOUT_STEP } from '../types_auto/MessageTypes';
 import { ExerciseCategory, WktStepDuration, WktStepTarget } from '../types_auto/fitsdk_enums';
-import { Block, RepeatBlock, WorkoutBlock, Target, TargetTime, TargetReps, TargetLapButton, TargetCalories, HeartRateTarget } from './workout-builder/block';
+import {
+  Block,
+  RepeatBlock,
+  WorkoutBlock,
+  Target,
+  TargetTime,
+  TargetReps,
+  TargetLapButton,
+  TargetCalories,
+  HeartRateTarget,
+} from './workout-builder/block';
 import { Profile } from '../types_generated';
 
 function camelToScreamingSnake(input: string): string {
@@ -22,13 +32,19 @@ function resolveExerciseName(categoryKey: string, exerciseNumber: number | undef
 
 export class FitDecoder {
   public static decode(data: Uint8Array | number[]): Block[] {
-    const byteArr: number[] = Array.isArray(data) ? data as number[] : Array.from(data as Uint8Array);
+    const byteArr: number[] = Array.isArray(data)
+      ? (data as number[])
+      : Array.from(data as Uint8Array);
     const stream = Stream.fromByteArray(byteArr);
     const decoder = new Decoder(stream);
     const { messages } = decoder.read({ convertTypesToStrings: false });
 
-    const stepMessages: Message_WORKOUT_STEP[] = (messages["workoutStepMesgs"] ?? messages["workout_step"] ?? []) as Message_WORKOUT_STEP[];
-    const titleMessages: Message_EXERCISE_TITLE[] = (messages["exerciseTitleMesgs"] ?? messages["exercise_title"] ?? []) as Message_EXERCISE_TITLE[];
+    const stepMessages: Message_WORKOUT_STEP[] = (messages['workoutStepMesgs'] ??
+      messages['workout_step'] ??
+      []) as Message_WORKOUT_STEP[];
+    const titleMessages: Message_EXERCISE_TITLE[] = (messages['exerciseTitleMesgs'] ??
+      messages['exercise_title'] ??
+      []) as Message_EXERCISE_TITLE[];
 
     // Some decoders return camelCase arrays, some snake_case; normalize above.
     const titlesQueue = [...titleMessages];
@@ -49,8 +65,11 @@ export class FitDecoder {
       }
 
       // Normal workout step
-      const categoryField = step.exerciseCategory as unknown as ExerciseCategory | string | undefined;
-      let categoryKey: string = '';
+      const categoryField = step.exerciseCategory as unknown as
+        | ExerciseCategory
+        | string
+        | undefined;
+      let categoryKey = '';
       if (typeof categoryField === 'string') {
         categoryKey = categoryField; // already like 'benchPress'
       } else if (typeof categoryField === 'number') {

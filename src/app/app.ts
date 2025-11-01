@@ -3,10 +3,12 @@ import { RouterOutlet } from '@angular/router';
 import { FitControl } from './fit-control/fit-control';
 import { ExerciseSelectorComponent } from './exercise-selector/exercise-selector';
 import { WorkoutBuilder } from './workout-builder/workout-builder';
-import { MatStep, MatStepper } from '@angular/material/stepper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Exercise } from './Exercise';
-import { Block, BlockLevel, RepeatBlock, WorkoutBlock } from './workout-builder/block';
+import { Block } from './workout-builder/block';
+import { MatDrawer, MatDrawerContainer, MatDrawerContent } from '@angular/material/sidenav';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +16,13 @@ import { Block, BlockLevel, RepeatBlock, WorkoutBlock } from './workout-builder/
     RouterOutlet,
     FitControl,
     ExerciseSelectorComponent,
-    MatStepper,
-    MatStep,
+
     WorkoutBuilder,
+    MatDrawerContainer,
+    MatDrawer,
+    MatDrawerContent,
+    MatButton,
+    MatIcon,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -25,7 +31,13 @@ export class App {
   protected readonly title = signal('garmin_workout_generator');
   private _snackBar = inject(MatSnackBar);
   selectedExercise = signal<Exercise | undefined>(undefined);
-  workout = signal<Block[]>([]);
+  currentWorkout = signal<Block[]>([]);
+  importWorkout = signal<Block[]>([]);
+
+  onWorkoutSelected(workout: Block[]): void {
+    this.importWorkout.set(workout);
+    this._snackBar.open('Workout loaded');
+  }
 
   onExerciseSelected(exercise: Exercise): void {
     this.selectedExercise.set(exercise);

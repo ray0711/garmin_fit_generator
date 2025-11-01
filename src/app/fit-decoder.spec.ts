@@ -1,6 +1,12 @@
 import { FitEncoder } from './fit-encoder';
 import FitDecoder from './fit-decoder';
-import { Block, RepeatBlock, WorkoutBlock, TargetTime, TargetCalories } from './workout-builder/block';
+import {
+  Block,
+  RepeatBlock,
+  WorkoutBlock,
+  TargetTime,
+  TargetCalories,
+} from './workout-builder/block';
 import { intensity } from '../types_auto/fitsdk_enums';
 
 function buildBlocksFromJson(json: string): Block[] {
@@ -40,8 +46,8 @@ function normalize(blocks: Block[]): any {
       w.target instanceof TargetTime
         ? { durationSeconds: w.target.durationSeconds }
         : w.target instanceof TargetCalories
-        ? { calories: w.target.calories }
-        : 'lap';
+          ? { calories: w.target.calories }
+          : 'lap';
     return {
       name: 'Workout',
       nameOverride: w.nameOverride,
@@ -55,7 +61,8 @@ function normalize(blocks: Block[]): any {
 
 describe('FitDecoder', () => {
   it('encodes then decodes the provided workout JSON and matches', () => {
-    const json = '[{"name":"Repeat","sets":4,"children":[{"name":"Alternating Dumbbell Chest Press on Swiss Ball","nameOverride":"Alternating Dumbbell Chest Press on Swiss Ball","nameGarmin":"ALTERNATING_DUMBBELL_CHEST_PRESS_ON_SWISS_BALL","categoryGarmin":"BENCH_PRESS","intensity":0,"target":{"durationSeconds":60}}]},{"name":"Repeat","sets":2,"children":[{"name":"Alternating Dumbbell Chest Press on Swiss Ball","nameOverride":"Alternating Dumbbell Chest Press on Swiss Ball","nameGarmin":"ALTERNATING_DUMBBELL_CHEST_PRESS_ON_SWISS_BALL","categoryGarmin":"BENCH_PRESS","intensity":0,"target":{"durationSeconds":60}},{"name":"Banded Ab Twist","nameOverride":"Banded Ab Twist","nameGarmin":"AB_TWIST","categoryGarmin":"BANDED_EXERCISES","intensity":0,"target":{"durationSeconds":80}}]}]';
+    const json =
+      '[{"name":"Repeat","sets":4,"children":[{"name":"Alternating Dumbbell Chest Press on Swiss Ball","nameOverride":"Alternating Dumbbell Chest Press on Swiss Ball","nameGarmin":"ALTERNATING_DUMBBELL_CHEST_PRESS_ON_SWISS_BALL","categoryGarmin":"BENCH_PRESS","intensity":0,"target":{"durationSeconds":60}}]},{"name":"Repeat","sets":2,"children":[{"name":"Alternating Dumbbell Chest Press on Swiss Ball","nameOverride":"Alternating Dumbbell Chest Press on Swiss Ball","nameGarmin":"ALTERNATING_DUMBBELL_CHEST_PRESS_ON_SWISS_BALL","categoryGarmin":"BENCH_PRESS","intensity":0,"target":{"durationSeconds":60}},{"name":"Banded Ab Twist","nameOverride":"Banded Ab Twist","nameGarmin":"AB_TWIST","categoryGarmin":"BANDED_EXERCISES","intensity":0,"target":{"durationSeconds":80}}]}]';
 
     const original = buildBlocksFromJson(json);
 
