@@ -4,8 +4,7 @@ import {
   computed,
   effect,
   inject,
-  input,
-  Signal,
+  model,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import {
@@ -68,7 +67,7 @@ interface WorkoutFormShape {
 })
 export class Control {
   selected = false;
-  block = input<Block>();
+  block = model<Block>();
 
   private fb = inject(FormBuilder);
 
@@ -115,9 +114,6 @@ export class Control {
     { label: 'Other', value: intensity.other },
   ];
 
-  // reflect current block into the forms
-  protected readonly blockSignal: Signal<Block | undefined> = computed(() => this.block());
-
   private readonly repeatFormValue = toSignal(this.repeatForm.valueChanges, {
     initialValue: this.repeatForm.getRawValue() as FormValue<RepeatFormShape>,
   });
@@ -127,7 +123,7 @@ export class Control {
 
   // When the input block changes, patch forms
   private readonly patchOnBlockChange = effect(() => {
-    const b = this.blockSignal();
+    const b = this.block();
     if (!b) return;
 
     if (b instanceof RepeatBlock) {
@@ -159,7 +155,7 @@ export class Control {
 
   // When forms change, update the underlying block instance
   private readonly applyRepeatChanges = effect(() => {
-    const b = this.blockSignal();
+    const b = this.block();
 
     if (!(b instanceof RepeatBlock)) return;
     const v = this.repeatFormValue();
@@ -170,7 +166,7 @@ export class Control {
   });
 
   private readonly applyWorkoutChanges = effect(() => {
-    const b = this.blockSignal();
+    const b = this.block();
     if (!(b instanceof WorkoutBlock)) return;
     const v = this.workoutFormValue();
     if (!v.formInitialized) {

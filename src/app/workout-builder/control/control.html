@@ -1,6 +1,6 @@
 <div class="control" (click)="this.toggleSelected()" [class.selected]="this.selected">
   <button type="button" cdkDragHandle aria-label="Drag step" class="drag-handle">⋮⋮</button>
-  <div class="card-title" [title]="blockSignal()?.name">{{ blockSignal()?.name }}</div>
+  <div class="card-title" [title]="block()?.name">{{ block()?.name }}</div>
 
   @if (isRepeat()) {
     <form [formGroup]="repeatForm" class="form-grid">

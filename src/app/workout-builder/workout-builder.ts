@@ -1,14 +1,16 @@
 import {
   ChangeDetectionStrategy,
-  Component,
+  Component, computed,
   effect,
+  inject,
   input,
+  model,
   output,
   signal,
   ViewChild,
 } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
-import { Block, BlockLevel, RepeatBlock, WorkoutBlock } from './block';
+import { Block, BlockLevel, RepeatBlock, TargetTime, WorkoutBlock } from './block';
 import { Control } from './control/control';
 import { MatTree, MatTreeNode, MatTreeNodeDef, MatTreeNodePadding } from '@angular/material/tree';
 
@@ -16,6 +18,16 @@ import { Exercise } from '../Exercise';
 import { intensity } from '../../types_auto/fitsdk_enums';
 import { ExerciseControl } from './exercise/exercise-control.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardTitle,
+} from '@angular/material/card';
+import { StepTarget } from './step-target/step-target';
+import { MatIcon } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-workout-builder',
@@ -30,14 +42,25 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatTreeNodePadding,
     ExerciseControl,
     ReactiveFormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    StepTarget,
+    MatCardActions,
+    MatIcon,
   ],
   templateUrl: './workout-builder.html',
   styleUrl: './workout-builder.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkoutBuilder {
+  private _snackBar = inject(MatSnackBar);
   selectedExercise = input<Exercise | undefined>();
   importWorkout = input<Block[] | undefined>();
+  templateTarget = model<WorkoutBlock>(
+    new WorkoutBlock('', ':', '', intensity.rest, new TargetTime(60)),
+  );
 
   staticBuildingBlocks: Block[] = [
     new RepeatBlock(),
@@ -48,18 +71,19 @@ export class WorkoutBuilder {
   buildingBlocks: Block[] = this.staticBuildingBlocks.concat(this.dynamicBuildingBlocks);
 
   workout = signal<Block[]>([]);
-  flatWorkoutOutput = signal<BlockLevel[]>([]);
+  // flatWorkoutOutput = signal<BlockLevel[]>([]);
   workoutOutput = output<Block[]>();
+  flatWorkoutOutput = computed(() => this.flatWorkout(this.workout()));
 
   @ViewChild('workoutTree') tree!: MatTree<BlockLevel>;
 
   constructor() {
-    effect(() => {
-      const newW = this.workout();
-      if (newW) {
-        this.flatWorkoutOutput.set(this.flatWorkout(newW));
-      }
-    });
+    // effect(() => {
+    //   const newW = this.workout();
+    //   if (newW) {
+    //     this.flatWorkoutOutput.set(this.flatWorkout(newW));
+    //   }
+    // });
     effect(() => {
       const newW = this.importWorkout();
       if (newW) {
@@ -154,5 +178,15 @@ export class WorkoutBuilder {
 
   levelAccessor(block: BlockLevel): number {
     return block.level;
+  }
+
+  protected applyDefaultTarget() {
+    this._snackBar.open('Applying default target: '+ JSON.stringify( this.templateTarget().target), 'Close' )
+    for (const block of this.workout()) {
+      if (block instanceof WorkoutBlock) {
+        block.target = this.templateTarget().target;
+      }
+    }
+    this.workout.set([...this.workout()]);
   }
 }

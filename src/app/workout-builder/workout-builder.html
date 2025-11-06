@@ -13,6 +13,21 @@
           <app-exercise [block]="block" class="block-box" />
         }
       </div>
+
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>Default Step Target</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <app-step-target [(workoutBlock)]="templateTarget" />
+          <mat-card-actions>
+            <button matButton (click)="applyDefaultTarget()">
+              <mat-icon aria-hidden="true">app_registration</mat-icon>
+              Apply to selected
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
     </div>
 
     <div class="list-header">
