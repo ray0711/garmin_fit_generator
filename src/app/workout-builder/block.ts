@@ -3,6 +3,7 @@ import { intensity } from '../../types_auto/fitsdk_enums';
 export type Block = RepeatBlock | WorkoutBlock;
 export interface BasicBlock {
   name: string;
+  selected: boolean;
   clone(): Block;
   flat(level: number): BlockLevel[];
 }
@@ -14,6 +15,7 @@ export interface BlockLevel {
 
 export class RepeatBlock implements BasicBlock {
   name = 'Repeat';
+  selected = false;
   sets = 2;
   children: Block[] = [];
   clone(): RepeatBlock {
@@ -57,6 +59,7 @@ export type Target = TargetTime | TargetReps | TargetLapButton | TargetCalories 
 
 export class WorkoutBlock implements BasicBlock {
   readonly name: string;
+  selected = false;
   nameOverride: string;
   nameGarmin: string;
   categoryGarmin: string;
@@ -65,6 +68,7 @@ export class WorkoutBlock implements BasicBlock {
 
   constructor(
     name: string,
+    selected: boolean,
     categoryGarmin: string,
     nameGarmin: string,
     intensity?: intensity,
@@ -80,6 +84,7 @@ export class WorkoutBlock implements BasicBlock {
   clone(): WorkoutBlock {
     const cloned = new WorkoutBlock(
       this.name,
+      this.selected,
       this.categoryGarmin,
       this.nameGarmin,
       this.intensity,

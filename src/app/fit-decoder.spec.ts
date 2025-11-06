@@ -20,6 +20,7 @@ function buildBlocksFromJson(json: string): Block[] {
     }
     const w = new WorkoutBlock(
       node.name,
+      node.selected,
       node.categoryGarmin,
       node.nameGarmin,
       node.intensity ?? intensity.active,

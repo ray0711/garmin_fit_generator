@@ -39,7 +39,7 @@ function buildBlocksFromExercises(exercises: Exercise[]): Block[] {
   // Create a simple WorkoutBlock per exercise; default TargetTime(60) is already set in ctor
   return exercises
     .filter(isExerciseSupportedByProfile)
-    .map((ex) => new WorkoutBlock(ex.Name, ex.CATEGORY_GARMIN, ex.NAME_GARMIN));
+    .map((ex) => new WorkoutBlock(ex.Name, ex.seleced, ex.CATEGORY_GARMIN, ex.NAME_GARMIN));
 }
 
 function normalizeForCompare(blocks: Block[]): { name: string; categoryGarmin: string }[] {

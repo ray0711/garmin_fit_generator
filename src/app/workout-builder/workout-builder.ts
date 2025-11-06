@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
-  Component, computed,
+  Component,
+  computed,
   effect,
   inject,
   input,
@@ -59,12 +60,12 @@ export class WorkoutBuilder {
   selectedExercise = input<Exercise | undefined>();
   importWorkout = input<Block[] | undefined>();
   templateTarget = model<WorkoutBlock>(
-    new WorkoutBlock('', ':', '', intensity.rest, new TargetTime(60)),
+    new WorkoutBlock('', false, ':', '', intensity.rest, new TargetTime(60)),
   );
 
   staticBuildingBlocks: Block[] = [
     new RepeatBlock(),
-    new WorkoutBlock('Pause', 'FIXME:', 'FIXME', intensity.rest),
+    new WorkoutBlock('Pause', false, 'FIXME:', 'FIXME', intensity.rest),
   ];
   dynamicBuildingBlocks: Block[] = [];
 
@@ -95,6 +96,7 @@ export class WorkoutBuilder {
       if (exercise) {
         const newBlock = new WorkoutBlock(
           exercise.Name,
+          false,
           exercise.CATEGORY_GARMIN,
           exercise.NAME_GARMIN,
         );
@@ -154,7 +156,9 @@ export class WorkoutBuilder {
       }
     } else {
       // new item
-      tmpWorkout.splice(event.currentIndex, 0, event.item.data().clone());
+      const newBlock = event.item.data().clone();
+      newBlock.target = this.templateTarget().target;
+      tmpWorkout.splice(event.currentIndex, 0, newBlock);
     }
     this.workout.set([...tmpWorkout]);
     this.workoutOutput.emit(tmpWorkout);
@@ -181,9 +185,12 @@ export class WorkoutBuilder {
   }
 
   protected applyDefaultTarget() {
-    this._snackBar.open('Applying default target: '+ JSON.stringify( this.templateTarget().target), 'Close' )
+    this._snackBar.open(
+      'Applying default target: ' + JSON.stringify(this.templateTarget().target),
+      'Close',
+    );
     for (const block of this.workout()) {
-      if (block instanceof WorkoutBlock) {
+      if (block instanceof WorkoutBlock && block.selected) {
         block.target = this.templateTarget().target;
       }
     }

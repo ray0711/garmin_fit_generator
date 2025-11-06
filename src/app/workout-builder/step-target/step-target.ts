@@ -1,15 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  model,
-  ModelSignal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, model } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { HrType, TargetType } from '../control/control';
 import {
-  Block,
   HeartRateTarget,
   Target,
   TargetCalories,
@@ -70,7 +62,7 @@ export class StepTarget {
 
   private readonly patchOnTargetChange = effect(() => {
     const t = this.workoutBlock()?.target;
-    if(!t) return;
+    if (!t) return;
 
     const targetType = this.getTargetType(t);
     const patch: Partial<FormValue<StepTargetFormShape>> = {
@@ -95,7 +87,7 @@ export class StepTarget {
     if (!v.formInitialized) {
       return;
     }
-    let block = this?.workoutBlock();
+    const block = this?.workoutBlock();
     if (!block) {
       return;
     }

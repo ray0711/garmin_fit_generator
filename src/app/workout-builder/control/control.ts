@@ -5,6 +5,7 @@ import {
   effect,
   inject,
   model,
+  ModelSignal,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import {
@@ -16,7 +17,6 @@ import {
   TargetReps,
   TargetCalories,
   HeartRateTarget,
-  TargetLapButton,
 } from '../block';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { intensity } from '../../../types_auto/fitsdk_enums';
@@ -25,6 +25,7 @@ import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { CdkDragHandle } from '@angular/cdk/drag-drop';
+import { StepTarget } from '../step-target/step-target';
 
 export type TargetType = 'time' | 'reps' | 'lap' | 'calories' | 'hr';
 export type HrType = 'above' | 'below';
@@ -60,6 +61,7 @@ interface WorkoutFormShape {
     MatSelect,
     MatOption,
     CdkDragHandle,
+    StepTarget,
   ],
   templateUrl: './control.html',
   styleUrl: './control.scss',
@@ -102,6 +104,7 @@ export class Control {
   // Helpers to switch UI based on block subtype
   readonly isRepeat = computed(() => this.block() instanceof RepeatBlock);
   readonly isWorkout = computed(() => this.block() instanceof WorkoutBlock);
+  workoutOrUndefined = this.block as ModelSignal<WorkoutBlock | undefined>;
 
   // Intensity options for select
   readonly intensityOptions: readonly { label: string; value: intensity }[] = [
@@ -172,38 +175,8 @@ export class Control {
     if (!v.formInitialized) {
       return;
     }
-    // map editable fields
     if (typeof v.nameOverride === 'string') b.nameOverride = v.nameOverride;
     if (v.intensity !== undefined) b.intensity = v.intensity;
-
-    // target mapping based on selected type
-    switch (v.targetType) {
-      case 'time': {
-        const t = new TargetTime(Math.max(1, v.durationSeconds ?? 60));
-        b.target = t;
-        break;
-      }
-      case 'reps': {
-        const t = new TargetReps(Math.max(1, v.reps ?? 1), Math.max(0, v.weight ?? 0));
-        b.target = t;
-        break;
-      }
-      case 'calories': {
-        const t = new TargetCalories(Math.max(1, v.calories ?? 1));
-        b.target = t;
-        break;
-      }
-      case 'hr': {
-        const t = new HeartRateTarget(Math.max(0, v.heartRate ?? 0), v.hrType ?? 'above');
-        b.target = t;
-        break;
-      }
-      case 'lap': {
-        const t = new TargetLapButton();
-        b.target = t; // lap button marker
-        break;
-      }
-    }
   });
 
   // Utility to detect current target type
@@ -216,6 +189,9 @@ export class Control {
   }
 
   toggleSelected() {
-    this.selected = !this.selected;
+    const b = this.block();
+    if (b) {
+      b.selected = !b.selected;
+    }
   }
 }
