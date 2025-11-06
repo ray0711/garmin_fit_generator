@@ -72,24 +72,21 @@ export class WorkoutBuilder {
   buildingBlocks: Block[] = this.staticBuildingBlocks.concat(this.dynamicBuildingBlocks);
 
   workout = signal<Block[]>([]);
-  // flatWorkoutOutput = signal<BlockLevel[]>([]);
   workoutOutput = output<Block[]>();
   flatWorkoutOutput = computed(() => this.flatWorkout(this.workout()));
 
   @ViewChild('workoutTree') tree!: MatTree<BlockLevel>;
 
   constructor() {
-    // effect(() => {
-    //   const newW = this.workout();
-    //   if (newW) {
-    //     this.flatWorkoutOutput.set(this.flatWorkout(newW));
-    //   }
-    // });
     effect(() => {
       const newW = this.importWorkout();
       if (newW) {
         this.workout.set([...newW]);
       }
+    });
+    effect(() => {
+      const b = this.workout();
+      this.workoutOutput.emit(b);
     });
     effect(() => {
       const exercise = this.selectedExercise();
@@ -161,7 +158,6 @@ export class WorkoutBuilder {
       tmpWorkout.splice(event.currentIndex, 0, newBlock);
     }
     this.workout.set([...tmpWorkout]);
-    this.workoutOutput.emit(tmpWorkout);
     this.tree.expandAll();
   }
 
@@ -189,9 +185,9 @@ export class WorkoutBuilder {
       'Applying default target: ' + JSON.stringify(this.templateTarget().target),
       'Close',
     );
-    for (const block of this.workout()) {
-      if (block instanceof WorkoutBlock && block.selected) {
-        block.target = this.templateTarget().target;
+    for (const blockLevel of this.flatWorkoutOutput()) {
+      if (blockLevel.block instanceof WorkoutBlock && blockLevel.block.selected) {
+        blockLevel.block.target = this.templateTarget().target;
       }
     }
     this.workout.set([...this.workout()]);
