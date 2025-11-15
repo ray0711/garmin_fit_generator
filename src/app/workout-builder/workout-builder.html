@@ -49,7 +49,7 @@
           matTreeNodePaddingIndent="44"
         >
           <div>
-            <app-control [block]="node.block" />
+            <app-control [block]="node.block" (deleteMe)="deleteBlock(node)" />
           </div>
         </mat-tree-node>
       </mat-tree>

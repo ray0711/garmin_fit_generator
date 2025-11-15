@@ -15,7 +15,6 @@ export interface BlockLevel {
 
 export class RepeatBlock implements BasicBlock {
   name = 'Repeat';
-  selected = false;
   sets = 2;
   children: Block[] = [];
   clone(): RepeatBlock {
@@ -28,6 +27,13 @@ export class RepeatBlock implements BasicBlock {
       { block: this, level: level },
       ...this.children.flatMap((child) => child.flat(level + 1)),
     ];
+  }
+
+  public set selected(value: boolean) {
+    /* empty */
+  }
+  public get selected(): boolean {
+    return false;
   }
 }
 

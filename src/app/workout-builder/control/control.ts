@@ -6,6 +6,7 @@ import {
   inject,
   model,
   ModelSignal,
+  output,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import {
@@ -26,6 +27,8 @@ import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import { StepTarget } from '../step-target/step-target';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 export type TargetType = 'time' | 'reps' | 'lap' | 'calories' | 'hr';
 export type HrType = 'above' | 'below';
@@ -62,6 +65,8 @@ interface WorkoutFormShape {
     MatOption,
     CdkDragHandle,
     StepTarget,
+    MatIcon,
+    MatMiniFabButton,
   ],
   templateUrl: './control.html',
   styleUrl: './control.scss',
@@ -70,6 +75,7 @@ interface WorkoutFormShape {
 export class Control {
   selected = false;
   block = model<Block>();
+  deleteMe = output<boolean>();
 
   private fb = inject(FormBuilder);
 
@@ -193,5 +199,9 @@ export class Control {
     if (b) {
       b.selected = !b.selected;
     }
+  }
+
+  protected delete() {
+    this.deleteMe.emit(true);
   }
 }

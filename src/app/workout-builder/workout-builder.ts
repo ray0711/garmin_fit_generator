@@ -11,7 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
-import { Block, BlockLevel, RepeatBlock, TargetTime, WorkoutBlock } from './block';
+import { Block, BlockLevel, RepeatBlock, WorkoutBlock } from './block';
 import { Control } from './control/control';
 import { MatTree, MatTreeNode, MatTreeNodeDef, MatTreeNodePadding } from '@angular/material/tree';
 
@@ -59,9 +59,7 @@ export class WorkoutBuilder {
   private _snackBar = inject(MatSnackBar);
   selectedExercise = input<Exercise | undefined>();
   importWorkout = input<Block[] | undefined>();
-  templateTarget = model<WorkoutBlock>(
-    new WorkoutBlock('', false, ':', '', intensity.rest),
-  );
+  templateTarget = model<WorkoutBlock>(new WorkoutBlock('', false, ':', '', intensity.rest));
 
   staticBuildingBlocks: Block[] = [
     new RepeatBlock(),
@@ -191,5 +189,17 @@ export class WorkoutBuilder {
       }
     }
     this.workout.set([...this.workout()]);
+  }
+
+  protected deleteBlock(blockLevel: BlockLevel) {
+    if (blockLevel.level === 0) {
+      this.workout.update((value) => value.filter((value1) => value1 != blockLevel.block));
+    } else {
+      const movingParent = this.findParent(this.flatWorkoutOutput(), blockLevel);
+      if (movingParent) {
+        movingParent.children.splice(movingParent.children.indexOf(blockLevel.block), 1);
+        this.workout.set([...this.workout()]);
+      }
+    }
   }
 }

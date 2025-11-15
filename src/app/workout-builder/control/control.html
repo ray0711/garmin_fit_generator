@@ -1,6 +1,11 @@
 <div class="control" (click)="this.toggleSelected()" [class.selected]="this.block()?.selected">
-  <button type="button" cdkDragHandle aria-label="Drag step" class="drag-handle">⋮⋮</button>
+  <button matMiniFab cdkDragHandle aria-label="Drag step" class="drag-handle">
+    <mat-icon aria-hidden="true">drag_indicator</mat-icon>
+  </button>
   <div class="card-title" [title]="block()?.name">{{ block()?.name }}</div>
+  <button matMiniFab aria-label="delete step" (click)="this.delete()">
+    <mat-icon aria-hidden="true">delete</mat-icon>
+  </button>
 
   @if (isRepeat()) {
     <form [formGroup]="repeatForm" class="form-grid">

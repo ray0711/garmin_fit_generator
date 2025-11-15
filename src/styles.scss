@@ -5,6 +5,19 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
+$theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$magenta-palette,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
 html {
   @include mat.theme(
     (
@@ -33,6 +46,23 @@ body {
 
   // Reset the user agent margin.
   margin: 0;
+  @include mat.all-component-themes($theme);
+
+  .primary {
+    @include mat.button-color($theme: $theme, $color-variant: 'primary');
+  }
+
+  .secondary {
+    @include mat.button-theme($theme: $theme, $color-variant: 'secondary');
+  }
+
+  .tertiary {
+    @include mat.button-theme($theme: $theme, $color-variant: 'tertiary');
+  }
+
+  .error {
+    @include mat.button-theme($theme: $theme, $color-variant: 'error');
+  }
 }
 /* You can add global styles to this file, and also import other style files */
 
@@ -43,4 +73,14 @@ body {
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+:root {
+  @include mat.fab-overrides(
+    (
+      container-color: orange,
+      foreground-color: orange,
+      container-elevation-shadow: -4px -4px 5px 0px rgba(0, 0, 0, 0.5),
+    )
+  );
 }
