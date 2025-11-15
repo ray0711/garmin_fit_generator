@@ -1,0 +1,64 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency: pages
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Determine base href
+        id: vars
+        shell: bash
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          if [[ "$REPO_NAME" == *.github.io ]]; then
+            echo "BASE_HREF=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "BASE_HREF=/$REPO_NAME/" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build Angular app
+        run: npm run build -- --base-href="${{ steps.vars.outputs.BASE_HREF }}"
+
+      - name: Add SPA fallback (404.html)
+        run: |
+          mkdir -p dist/garmin_workout_generator/browser
+          cp dist/garmin_workout_generator/browser/index.html dist/garmin_workout_generator/browser/404.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/garmin_workout_generator/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
