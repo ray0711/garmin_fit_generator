@@ -61,16 +61,16 @@ export class WorkoutBlock implements BasicBlock {
   readonly name: string;
   selected = false;
   nameOverride: string;
-  nameGarmin: string;
-  categoryGarmin: string;
+  nameGarmin?: string;
+  categoryGarmin?: string;
   intensity: intensity = intensity.active;
   target: Target = new TargetTime(60);
 
   constructor(
     name: string,
     selected: boolean,
-    categoryGarmin: string,
-    nameGarmin: string,
+    categoryGarmin?: string,
+    nameGarmin?: string,
     intensity?: intensity,
     target?: Target,
   ) {

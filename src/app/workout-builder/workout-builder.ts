@@ -60,12 +60,12 @@ export class WorkoutBuilder {
   selectedExercise = input<Exercise | undefined>();
   importWorkout = input<Block[] | undefined>();
   templateTarget = model<WorkoutBlock>(
-    new WorkoutBlock('', false, ':', '', intensity.rest, new TargetTime(60)),
+    new WorkoutBlock('', false, ':', '', intensity.rest),
   );
 
   staticBuildingBlocks: Block[] = [
     new RepeatBlock(),
-    new WorkoutBlock('Pause', false, 'FIXME:', 'FIXME', intensity.rest),
+    new WorkoutBlock('Rest', false, undefined, undefined, intensity.rest),
   ];
   dynamicBuildingBlocks: Block[] = [];
 

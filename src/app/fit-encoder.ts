@@ -44,7 +44,10 @@ export class FitEncoder {
     };
   }
 
-  findExeriseNumber(exerciseCategory: ExerciseCategory, exerciseName: string): number {
+  findExeriseNumber(exerciseCategory: ExerciseCategory| undefined, exerciseName: string | undefined): number | undefined {
+    if (!exerciseName || !exerciseCategory) {
+      return undefined;
+    }
     // Convert exerciseCategory enum to its string key (e.g., benchPress, calfRaise, etc.)
     const categoryKey = ExerciseCategory[exerciseCategory];
 
@@ -75,7 +78,10 @@ export class FitEncoder {
     return entry[0] as unknown as number;
   }
 
-  findEnumValue<T>(enumObj: Record<string, T>, searchString: string): T {
+  findEnumValue<T>(enumObj: Record<string, T>, searchString: string | undefined): T | undefined {
+    if (!searchString) {
+      return undefined;
+    }
     const normalizedInput = searchString.toUpperCase().replace(/_/g, '');
 
     const entry = Object.entries(enumObj).find(([key, value]) => {
@@ -117,10 +123,10 @@ export class FitEncoder {
       ];
     } else {
       const w = block as WorkoutBlock;
-      const exerciseCategory = this.findEnumValue(
+      const exerciseCategory =  this.findEnumValue(
         ExerciseCategory,
         w.categoryGarmin,
-      ) as ExerciseCategory;
+      ) as ExerciseCategory | undefined;
       const exerciseName = this.findExeriseNumber(exerciseCategory, w.nameGarmin);
 
       // Base message with exercise metadata
@@ -165,7 +171,8 @@ export class FitEncoder {
         workoutStepMessage.targetType = WktStepTarget.open;
       }
 
-      // Optional notes/intensity can be added here if needed
+      workoutStepMessage.intensity = w.intensity;
+
       const exerciseTitleMessage: Message_EXERCISE_TITLE = this.getExerciseTitleMessage(
         exerciseName,
         exerciseCategory,
@@ -214,8 +221,8 @@ export class FitEncoder {
   }
 
   getExerciseTitleMessage(
-    exerciseName: number,
-    exerciseCategory: ExerciseCategory,
+    exerciseName: number | undefined,
+    exerciseCategory: ExerciseCategory | undefined,
     exerciseTitle: string,
   ): Message_EXERCISE_TITLE {
     return {
