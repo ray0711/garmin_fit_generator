@@ -44,7 +44,10 @@ export class FitEncoder {
     };
   }
 
-  findExeriseNumber(exerciseCategory: ExerciseCategory| undefined, exerciseName: string | undefined): number | undefined {
+  findExeriseNumber(
+    exerciseCategory: ExerciseCategory | undefined,
+    exerciseName: string | undefined,
+  ): number | undefined {
     if (!exerciseName || !exerciseCategory) {
       return undefined;
     }
@@ -123,10 +126,9 @@ export class FitEncoder {
       ];
     } else {
       const w = block as WorkoutBlock;
-      const exerciseCategory =  this.findEnumValue(
-        ExerciseCategory,
-        w.categoryGarmin,
-      ) as ExerciseCategory | undefined;
+      const exerciseCategory = this.findEnumValue(ExerciseCategory, w.categoryGarmin) as
+        | ExerciseCategory
+        | undefined;
       const exerciseName = this.findExeriseNumber(exerciseCategory, w.nameGarmin);
 
       // Base message with exercise metadata
