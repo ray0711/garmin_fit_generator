@@ -31,6 +31,16 @@
           }
         </mat-select>
       </mat-form-field>
+      <mat-form-field class="form-field form-notes">
+        <mat-label>Notes</mat-label>
+        <textarea
+          matInput
+          formControlName="notes"
+          rows="1"
+          aria-label="Workout step notes"
+          placeholder="Add notes or cues"
+        ></textarea>
+      </mat-form-field>
       <app-step-target [(workoutBlock)]="this.workoutOrUndefined" class="step-target" />
     </form>
   }

@@ -138,6 +138,7 @@ export class FitEncoder {
         wktStepName: w.name,
         exerciseCategory: exerciseCategory,
         exerciseName: exerciseName,
+        notes: w.notes,
       };
 
       // Map target/duration

@@ -83,6 +83,7 @@ export class FitDecoder {
 
       const name = (step.wktStepName ?? nameGarmin) || 'Step';
       const wb = new WorkoutBlock(name, false, categoryGarmin, nameGarmin);
+      wb.notes = step.notes;
 
       // target reconstruction
       const durationType = step.durationType;

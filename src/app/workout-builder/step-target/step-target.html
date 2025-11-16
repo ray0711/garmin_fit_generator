@@ -1,53 +1,55 @@
-<form [formGroup]="stepTargetForm" class="form-grid" (click)="$event.stopPropagation()">
-  <mat-form-field class="form-field">
-    <mat-label>Type</mat-label>
-    <mat-select formControlName="targetType">
-      <mat-option value="time">Time</mat-option>
-      <mat-option value="reps">Reps</mat-option>
-      <mat-option value="calories">Calories</mat-option>
-      <mat-option value="hr">Heart Rate</mat-option>
-      <mat-option value="lap">Lap Button</mat-option>
-    </mat-select>
-  </mat-form-field>
+<form [formGroup]="stepTargetForm" (click)="$event.stopPropagation()">
+  <div class="step-target-header">
+    <mat-form-field class="form-field">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="targetType">
+        <mat-option value="time">Time</mat-option>
+        <mat-option value="reps">Reps</mat-option>
+        <mat-option value="calories">Calories</mat-option>
+        <mat-option value="hr">Heart Rate</mat-option>
+        <mat-option value="lap">Lap Button</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  @switch (stepTargetForm.get('targetType')?.value) {
-    @case ('time') {
-      <mat-form-field class="form-field">
-        <mat-label>Duration (s)</mat-label>
-        <input matInput type="number" formControlName="durationSeconds" min="1" />
-      </mat-form-field>
+    @switch (stepTargetForm.get('targetType')?.value) {
+      @case ('time') {
+        <mat-form-field class="form-field">
+          <mat-label>Duration (s)</mat-label>
+          <input matInput type="number" formControlName="durationSeconds" min="1" />
+        </mat-form-field>
+      }
+      @case ('reps') {
+        <mat-form-field class="form-field">
+          <mat-label>Reps</mat-label>
+          <input matInput type="number" formControlName="reps" min="1" />
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Weight</mat-label>
+          <input matInput type="number" formControlName="weight" min="0" />
+        </mat-form-field>
+      }
+      @case ('calories') {
+        <mat-form-field class="form-field">
+          <mat-label>Calories</mat-label>
+          <input matInput type="number" formControlName="calories" min="1" />
+        </mat-form-field>
+      }
+      @case ('hr') {
+        <mat-form-field class="form-field">
+          <mat-label>Heart rate (bpm)</mat-label>
+          <input matInput type="number" formControlName="heartRate" min="0" />
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Type</mat-label>
+          <mat-select formControlName="hrType">
+            <mat-option value="above">Above</mat-option>
+            <mat-option value="below">Below</mat-option>
+          </mat-select>
+        </mat-form-field>
+      }
+      @case ('lap') {
+        Advance by pressing Lap button on device.
+      }
     }
-    @case ('reps') {
-      <mat-form-field class="form-field">
-        <mat-label>Reps</mat-label>
-        <input matInput type="number" formControlName="reps" min="1" />
-      </mat-form-field>
-      <mat-form-field class="form-field">
-        <mat-label>Weight</mat-label>
-        <input matInput type="number" formControlName="weight" min="0" />
-      </mat-form-field>
-    }
-    @case ('calories') {
-      <mat-form-field class="form-field">
-        <mat-label>Calories</mat-label>
-        <input matInput type="number" formControlName="calories" min="1" />
-      </mat-form-field>
-    }
-    @case ('hr') {
-      <mat-form-field class="form-field">
-        <mat-label>Heart rate (bpm)</mat-label>
-        <input matInput type="number" formControlName="heartRate" min="0" />
-      </mat-form-field>
-      <mat-form-field class="form-field">
-        <mat-label>Type</mat-label>
-        <mat-select formControlName="hrType">
-          <mat-option value="above">Above</mat-option>
-          <mat-option value="below">Below</mat-option>
-        </mat-select>
-      </mat-form-field>
-    }
-    @case ('lap') {
-      Advance by pressing Lap button on device.
-    }
-  }
+  </div>
 </form>

@@ -1,8 +1,11 @@
 <div class="exercise" cdkDrag [cdkDragData]="block">
   <div>
-    <button type="button" class="drag-handle" cdkDragHandle aria-label="Drag to add block">
-      ⋮⋮
+    <button matMiniFab cdkDragHandle aria-label="Drag step" class="drag-handle">
+      <mat-icon aria-hidden="true">drag_indicator</mat-icon>
     </button>
   </div>
+  <button matMiniFab aria-label="add exercise" (click)="addExercise()">
+    <mat-icon aria-hidden="true">add_row_below</mat-icon>
+  </button>
   <div class="card-title" [title]="block()?.name">{{ block()?.name }}</div>
 </div>

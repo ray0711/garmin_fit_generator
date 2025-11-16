@@ -71,6 +71,7 @@ export class WorkoutBlock implements BasicBlock {
   categoryGarmin?: string;
   intensity: intensity = intensity.active;
   target: Target = new TargetTime(60);
+  notes?: string;
 
   constructor(
     name: string,
@@ -79,6 +80,7 @@ export class WorkoutBlock implements BasicBlock {
     nameGarmin?: string,
     intensity?: intensity,
     target?: Target,
+    notes?: string,
   ) {
     this.name = name;
     this.nameOverride = name;
@@ -86,6 +88,7 @@ export class WorkoutBlock implements BasicBlock {
     this.categoryGarmin = categoryGarmin;
     if (intensity) this.intensity = intensity;
     if (target) this.target = target;
+    if (notes !== undefined) this.notes = notes;
   }
   clone(): WorkoutBlock {
     const cloned = new WorkoutBlock(
@@ -95,6 +98,7 @@ export class WorkoutBlock implements BasicBlock {
       this.nameGarmin,
       this.intensity,
       this.target,
+      this.notes,
     );
     cloned.nameOverride = this.nameOverride;
     return cloned;

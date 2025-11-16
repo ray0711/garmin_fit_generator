@@ -13,7 +13,7 @@ $theme: mat.define-theme(
       tertiary: mat.$magenta-palette,
     ),
     density: (
-      scale: 0,
+      scale: -1,
     ),
   )
 );

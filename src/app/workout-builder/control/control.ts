@@ -43,6 +43,7 @@ interface RepeatFormShape {
 interface WorkoutFormShape {
   name: FormControl<string>;
   nameOverride: FormControl<string>;
+  notes: FormControl<string>;
   intensity: FormControl<intensity>;
   targetType: FormControl<TargetType>;
   durationSeconds: FormControl<number>;
@@ -89,6 +90,7 @@ export class Control {
   readonly workoutForm = this.fb.group<WorkoutFormShape>({
     name: this.fb.control<string>('', { nonNullable: true }),
     nameOverride: this.fb.control<string>('', { nonNullable: true }),
+    notes: this.fb.control<string>('', { nonNullable: true }),
     intensity: this.fb.control<intensity>(intensity.active, { nonNullable: true }),
     targetType: this.fb.control<TargetType>('time', { nonNullable: true }),
     // time
@@ -144,6 +146,7 @@ export class Control {
       const patch: Partial<FormValue<WorkoutFormShape>> = {
         name: b.name,
         nameOverride: b.nameOverride,
+        notes: b.notes,
         intensity: b.intensity,
         targetType,
         formInitialized: true,
@@ -182,6 +185,7 @@ export class Control {
       return;
     }
     if (typeof v.nameOverride === 'string') b.nameOverride = v.nameOverride;
+    if (typeof v.notes === 'string') b.notes = v.notes;
     if (v.intensity !== undefined) b.intensity = v.intensity;
   });
 
