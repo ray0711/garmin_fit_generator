@@ -31,6 +31,7 @@
           }
         </mat-select>
       </mat-form-field>
+      <app-step-target [(workoutBlock)]="this.workoutOrUndefined" class="step-target" />
       <mat-form-field class="form-field form-notes">
         <mat-label>Notes</mat-label>
         <textarea
@@ -41,7 +42,6 @@
           placeholder="Add notes or cues"
         ></textarea>
       </mat-form-field>
-      <app-step-target [(workoutBlock)]="this.workoutOrUndefined" class="step-target" />
     </form>
   }
 </div>

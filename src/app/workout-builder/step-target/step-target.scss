@@ -1,9 +1,18 @@
 .form-field {
-  width: 30%;
+  width: 100%;
+  min-width: 80px; /* keep controls usable on narrow screens */
 }
 
+
 .step-target-header {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 12px; /* consistent with control spacing */
   width: 100%;
-  justify-content: space-between;
-  display: flex;
+}
+@media (max-width: 400px) {
+  .step-target-header {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
 }
