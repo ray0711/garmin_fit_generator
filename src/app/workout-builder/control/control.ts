@@ -214,9 +214,10 @@ export class Control {
   }
 
   toggleSelected() {
-    const b = this.block();
+    const b = this.block()?.clone();
     if (b) {
       b.selected = !b.selected;
+      this.block.set(b);
     }
   }
 

@@ -9,13 +9,10 @@
         cdkDropListHasAnchor
         class="workout-list"
       >
-        <mat-accordion>
           @for (block of buildingBlocks; track block.name) {
             <app-exercise [block]="block" class="block-box" (add)="addBlock($event)" />
           }
-        </mat-accordion>
       </div>
-
       <mat-card appearance="outlined">
         <mat-card-header>
           <mat-card-title>Default Step Target</mat-card-title>

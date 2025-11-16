@@ -25,8 +25,6 @@ export class FitControl {
     a.download = 'file.fit';
     a.click();
     URL.revokeObjectURL(objectUrl);
-    console.log('Download button clicked');
-    // Add your download logic here
   }
 
   async onFileSelected(event: Event): Promise<void> {

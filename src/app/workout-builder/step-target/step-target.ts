@@ -87,7 +87,7 @@ export class StepTarget {
     if (!v.formInitialized) {
       return;
     }
-    const block = this?.workoutBlock();
+    const block = this?.workoutBlock()?.clone();
     if (!block) {
       return;
     }
@@ -118,6 +118,9 @@ export class StepTarget {
         block.target = t; // lap button marker
         break;
       }
+    }
+    if(!block.equals(this.workoutBlock())) {
+      this.workoutBlock.set(block);
     }
   });
 

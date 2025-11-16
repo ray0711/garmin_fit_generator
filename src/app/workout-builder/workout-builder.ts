@@ -43,7 +43,6 @@ import { map } from 'rxjs';
     MatTreeNode,
     MatTreeNodeDef,
     CdkDropListGroup,
-    MatTreeNodePadding,
     ExerciseControl,
     ReactiveFormsModule,
     MatCard,
@@ -54,7 +53,6 @@ import { map } from 'rxjs';
     MatCardActions,
     MatIcon,
     MatFabButton,
-    MatAccordion,
   ],
   templateUrl: './workout-builder.html',
   styleUrl: './workout-builder.scss',
@@ -124,12 +122,8 @@ export class WorkoutBuilder {
 
       // delete
       if (movingParent) {
-        console.log(
-          'deleting from parent at index: ' + movingParent.children.indexOf(moving.block),
-        );
         movingParent.children.splice(movingParent.children.indexOf(moving.block), 1);
       } else {
-        console.log('deleting from root');
         tmpWorkout.splice(tmpWorkout.indexOf(moving.block), 1);
       }
 
@@ -149,10 +143,8 @@ export class WorkoutBuilder {
         );
       } else {
         if (itemBefore) {
-          console.log('inserting into root at pos ' + tmpWorkout.indexOf(itemBefore?.block) + 1);
           tmpWorkout.splice(tmpWorkout.indexOf(itemBefore.block) + 1, 0, moving.block);
         } else {
-          console.log('inserting into root at pos 0');
           tmpWorkout.splice(0, 0, moving.block);
         }
       }
@@ -170,7 +162,7 @@ export class WorkoutBuilder {
     const parent = list.find(
       (element) =>
         element?.block instanceof RepeatBlock &&
-        element?.block.children.includes(blockLevel?.block),
+        element?.block.children.find(value => value.uuid == blockLevel?.block.uuid),
     );
     return parent?.block as RepeatBlock | undefined;
   }
@@ -196,23 +188,32 @@ export class WorkoutBuilder {
     );
     for (const blockLevel of this.flatWorkoutOutput()) {
       if (blockLevel.block instanceof WorkoutBlock && blockLevel.block.selected) {
-        blockLevel.block.target = this.templateTarget().target;
+        const clone = blockLevel.block.clone();
+        clone.target = this.templateTarget().target;
+        this.updateBlockInWorkout(clone);
       }
     }
-    this.workout.set([...this.workout()]);
   }
 
   updateBlockInWorkout(block: Block | undefined) {
     if (block == undefined) return;
-    const find = this.workout().find((b) => b.uuid == block.uuid);
-    if (find == undefined) return;
-
-    if (!find?.equals(block)) {
-      this.workout.update((w) =>
-        w.map((value) =>
-          value.uuid == block.uuid && !value.equals(block) ? block.clone() : value,
-        ),
-      );
+    const blockLevel = this.flatWorkoutOutput().find((b) => b.block.uuid == block.uuid);
+    if (blockLevel == undefined) return;
+    if (blockLevel.level == 0) {
+      if (!blockLevel.block.equals(block)) {
+        this.workout.update((w) =>
+          w.map((value) =>
+            value.uuid == block.uuid && !value.equals(block) ? block.clone() : value,
+          ),
+        );
+      }
+    } else {
+      const parent = this.findParent(this.flatWorkoutOutput(), blockLevel);
+      if (parent) {
+        const clone = parent.clone();
+        clone.children = parent.children.map((value) => (value.uuid == block.uuid ? block : value));
+        this.updateBlockInWorkout(clone);
+      }
     }
   }
 

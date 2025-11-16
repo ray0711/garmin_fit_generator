@@ -6,7 +6,7 @@
 >
   <mat-expansion-panel-header>
     <mat-panel-title>
-      <mat-icon aria-hidden="true" (click)="this.delete()" cdkDragHandle>drag_indicator</mat-icon>
+      <mat-icon aria-hidden="true" cdkDragHandle>drag_indicator</mat-icon>
       @if (isWorkout()) {
         {{ this.workoutForm.get('nameOverride')?.value }}
       }

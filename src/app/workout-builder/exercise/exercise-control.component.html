@@ -1,11 +1,12 @@
-<div class="exercise" cdkDrag [cdkDragData]="block">
-  <div>
-    <button matMiniFab cdkDragHandle aria-label="Drag step" class="drag-handle">
-      <mat-icon aria-hidden="true">drag_indicator</mat-icon>
-    </button>
-  </div>
-  <button matMiniFab aria-label="add exercise" (click)="addExercise()">
-    <mat-icon aria-hidden="true">add_row_below</mat-icon>
-  </button>
-  <div class="card-title" [title]="block()?.name">{{ block()?.name }}</div>
-</div>
+<mat-expansion-panel
+  hideToggle expanded="false"
+  cdkDrag [cdkDragData]="block"
+>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon aria-hidden="true" cdkDragHandle>drag_indicator</mat-icon>
+      <mat-icon aria-label="add row below" (click)="addExercise($event)">add_row_below</mat-icon>
+      {{ block()?.name }}
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+</mat-expansion-panel>

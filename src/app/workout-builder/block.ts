@@ -25,7 +25,14 @@ export class RepeatBlock implements BasicBlock {
   children: Block[] = [];
   opened = false;
   equals(other: Block): boolean {
-    return other instanceof RepeatBlock && other.uuid == this.uuid;
+    return (
+      other instanceof RepeatBlock &&
+      other.uuid == this.uuid &&
+      other.sets == this.sets &&
+      other.children.length == this.children.length &&
+      other.children.every((child, index) => child.equals(this.children[index])) &&
+      this.opened == other.opened
+    );
   }
   constructor(name?: string, sets?: number, children?: Block[], opened?: boolean, uuid?: string) {
     if (name) this.name = name;
@@ -63,29 +70,65 @@ export class RepeatBlock implements BasicBlock {
   }
 }
 
-export class TargetTime {
-  constructor(public durationSeconds: number) {}
+interface BaseTarget {
+  equals(other: Target | undefined): boolean;
 }
 
-export class TargetReps {
+export class TargetTime implements BaseTarget {
+  constructor(public durationSeconds: number) {}
+  equals(other: Target | undefined): boolean {
+    if (other == undefined) return false;
+    if (other instanceof TargetTime) {
+      return other.durationSeconds == this.durationSeconds;
+    }
+    return false;
+  }
+}
+
+export class TargetReps implements BaseTarget {
   constructor(
     public reps: number,
     public weight: number,
   ) {}
+  equals(other: Target | undefined): boolean {
+    if (other == undefined) return false;
+    if (other instanceof TargetReps) {
+      return other.reps == this.reps && other.weight == this.weight;
+    }
+    return false;
+  }
 }
 
-export class HeartRateTarget {
+export class HeartRateTarget implements BaseTarget {
   constructor(
     public heartRate: number,
     public type: 'above' | 'below',
   ) {}
+  equals(other: Target | undefined): boolean {
+    if (other == undefined) return false;
+    if (other instanceof HeartRateTarget) {
+      return other.heartRate == this.heartRate && other.type == this.type;
+    }
+    return false;
+  }
 }
 
-export class TargetCalories {
+export class TargetCalories implements BaseTarget {
   constructor(public calories: number) {}
+  equals(other: Target | undefined): boolean {
+    if (other == undefined) return false;
+    if (other instanceof TargetCalories) {
+      return other.calories == this.calories;
+    }
+    return false;
+  }
 }
 
-export class TargetLapButton {}
+export class TargetLapButton implements BaseTarget {
+  equals(other: Target | undefined): boolean {
+    return other instanceof TargetLapButton;
+  }
+}
 
 export type Target = TargetTime | TargetReps | TargetLapButton | TargetCalories | HeartRateTarget;
 
@@ -125,9 +168,6 @@ export class WorkoutBlock implements BasicBlock {
   }
   equals(other: Block | undefined): boolean {
     if (other == undefined) return false;
-    console.log(
-      'comparing ' + this.uuid + ' with ' + other.uuid + ' ' + (other instanceof WorkoutBlock),
-    );
     return (
       other instanceof WorkoutBlock &&
       other.uuid == this.uuid &&
@@ -138,8 +178,8 @@ export class WorkoutBlock implements BasicBlock {
       other.nameGarmin == this.nameGarmin &&
       other.categoryGarmin == this.categoryGarmin &&
       other.intensity == this.intensity &&
-      other.target == this.target &&
-      other.notes == this.notes
+      other.notes == this.notes &&
+      other.target.equals(this.target)
     );
   }
   cloneWithNewUuid() {
