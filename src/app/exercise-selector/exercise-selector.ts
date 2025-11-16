@@ -51,6 +51,7 @@ export class ExerciseSelectorComponent implements OnInit {
   filteredExercises: Exercise[] = [];
 
   // Dynamic filters
+  filterName = '';
   filters: Record<string, FilterOption> = {};
   filterableColumns: string[] = [];
 
@@ -150,7 +151,7 @@ export class ExerciseSelectorComponent implements OnInit {
         }
       }
 
-      return true;
+      return exercise.Name.includes(this.filterName);
     });
   }
 
@@ -201,7 +202,7 @@ export class ExerciseSelectorComponent implements OnInit {
   getOtherColumns(): string[] {
     return this.filterableColumns.filter(
       (col) =>
-        col.startsWith('Name') || col.startsWith('CATEGORY_GARMIN') || col.startsWith('DIFFICULTY'),
+        col.startsWith('CATEGORY_GARMIN') || col.startsWith('DIFFICULTY'),
     );
   }
 

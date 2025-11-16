@@ -4,7 +4,7 @@
   <!-- Filter Section -->
   <div class="filters-container">
     <h3>Filters</h3>
-    <mat-accordion>
+    <mat-accordion multi>
       <mat-expansion-panel expanded="true">
         <mat-expansion-panel-header>
           <mat-panel-title>General Filters</mat-panel-title>
@@ -12,9 +12,13 @@
         </mat-expansion-panel-header>
         <!-- General Filters -->
         <div class="filter-section">
-          <h4>General</h4>
           <div class="filter-row">
-            <mat-form-field *ngFor="let column of getOtherColumns()">
+            <mat-form-field class="filter-input">
+              <mat-label>Name</mat-label>
+              <input matInput placeholder="Name" [(ngModel)]="filterName"
+                     (ngModelChange)="applyFilters()">
+            </mat-form-field>
+            <mat-form-field *ngFor="let column of getOtherColumns()" class="filter-input">
               <mat-label>{{ filters[column]?.label }}</mat-label>
               <mat-select
                 [(ngModel)]="filters[column].selectedValues"
@@ -38,7 +42,6 @@
         <!-- Muscle Filters -->
 
         <div class="filter-section" *ngIf="getMuscleColumns().length > 0">
-          <h4>Muscles</h4>
           <div class="filter-row">
             <mat-form-field *ngFor="let column of getMuscleColumns()">
               <mat-label>{{ filters[column]?.label }}</mat-label>
@@ -62,7 +65,6 @@
           <mat-panel-title>Equipment Filters</mat-panel-title>
         </mat-expansion-panel-header>
         <div class="filter-section" *ngIf="getEquipmentColumns().length > 0">
-          <h4>Equipment</h4>
           <div class="filter-row">
             <mat-form-field *ngFor="let column of getEquipmentColumns()">
               <mat-label>{{ filters[column]?.label }}</mat-label>
