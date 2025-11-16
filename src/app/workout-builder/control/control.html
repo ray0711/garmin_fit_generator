@@ -16,12 +16,20 @@
     </mat-panel-title>
     <mat-panel-description>
       {{ this.headerDescription() }}
-      <mat-icon aria-hidden="true">check_box</mat-icon>
-      <mat-icon aria-hidden="true" (click)="this.delete()">delete</mat-icon>
+      <div>
+        <mat-icon aria-hidden="true" (click)="this.delete()">delete</mat-icon>
+        @if (isWorkout()) {
+          @if (this.block()?.selected) {
+            <mat-icon aria-hidden="true" (click)="this.toggleSelected($event)">check_box</mat-icon>
+          } @else {
+            <mat-icon aria-hidden="true" (click)="this.toggleSelected($event)">check_box_outline_blank</mat-icon>
+          }
+        }
+      </div>
     </mat-panel-description>
   </mat-expansion-panel-header>
 
-  <div class="control" (click)="this.toggleSelected()" [class.selected]="this.block()?.selected">
+  <div class="control" [class.selected]="this.block()?.selected">
     <div class="card-title" [title]="block()?.name">{{ block()?.name }}</div>
     @if (isRepeat()) {
       <form [formGroup]="repeatForm" class="form-grid">
