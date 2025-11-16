@@ -30,6 +30,8 @@ import { StepTarget } from './step-target/step-target';
 import { MatIcon } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatFabButton } from '@angular/material/button';
+import { MatAccordion } from '@angular/material/expansion';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-workout-builder',
@@ -52,6 +54,7 @@ import { MatFabButton } from '@angular/material/button';
     MatCardActions,
     MatIcon,
     MatFabButton,
+    MatAccordion,
   ],
   templateUrl: './workout-builder.html',
   styleUrl: './workout-builder.scss',
@@ -61,11 +64,11 @@ export class WorkoutBuilder {
   private _snackBar = inject(MatSnackBar);
   selectedExercise = input<Exercise | undefined>();
   importWorkout = input<Block[] | undefined>();
-  templateTarget = model<WorkoutBlock>(new WorkoutBlock('', false, ':', '', intensity.rest));
+  templateTarget = model<WorkoutBlock>(new WorkoutBlock('', false, false, ':', '', intensity.rest));
 
   staticBuildingBlocks: Block[] = [
     new RepeatBlock(),
-    new WorkoutBlock('Rest', false, undefined, undefined, intensity.rest),
+    new WorkoutBlock('Rest', false, false, undefined, undefined, intensity.rest),
   ];
   dynamicBuildingBlocks: Block[] = [];
 
@@ -76,6 +79,7 @@ export class WorkoutBuilder {
   flatWorkoutOutput = computed(() => this.flatWorkout(this.workout()));
 
   @ViewChild('workoutTree') tree!: MatTree<BlockLevel>;
+  treeTracker = (index: number, node: BlockLevel) => node.block.uuid;
 
   constructor() {
     effect(() => {
@@ -93,6 +97,7 @@ export class WorkoutBuilder {
       if (exercise) {
         const newBlock = new WorkoutBlock(
           exercise.Name,
+          false,
           false,
           exercise.CATEGORY_GARMIN,
           exercise.NAME_GARMIN,
@@ -180,6 +185,10 @@ export class WorkoutBuilder {
     return block.level;
   }
 
+  levelStyle(block: BlockLevel): string {
+    return 'level-' + block.level;
+  }
+
   protected applyDefaultTarget() {
     this._snackBar.open(
       'Applying default target: ' + JSON.stringify(this.templateTarget().target),
@@ -191,6 +200,20 @@ export class WorkoutBuilder {
       }
     }
     this.workout.set([...this.workout()]);
+  }
+
+  updateBlockInWorkout(block: Block | undefined) {
+    if (block == undefined) return;
+    const find = this.workout().find((b) => b.uuid == block.uuid);
+    if (find == undefined) return;
+
+    if (!find?.equals(block)) {
+      this.workout.update((w) =>
+        w.map((value) =>
+          value.uuid == block.uuid && !value.equals(block) ? block.clone() : value,
+        ),
+      );
+    }
   }
 
   protected deleteBlock(blockLevel: BlockLevel) {
@@ -209,6 +232,6 @@ export class WorkoutBuilder {
     if (block instanceof WorkoutBlock) {
       block.target = this.templateTarget().target;
     }
-    this.workout.set(this.workout().concat(block));
+    this.workout.set(this.workout().concat(block.cloneWithNewUuid()));
   }
 }

@@ -19,6 +19,8 @@ export default tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
+      "@angular-eslint/template/interactive-supports-focus": "off",
+      "@angular-eslint/template/click-events-have-key-events": "off",
       "@angular-eslint/directive-selector": [
         "error",
         {

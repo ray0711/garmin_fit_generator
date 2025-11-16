@@ -27,8 +27,13 @@ import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import { StepTarget } from '../step-target/step-target';
-import { MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+ import {
+  MatExpansionPanel,
+  MatExpansionPanelDescription,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
 
 export type TargetType = 'time' | 'reps' | 'lap' | 'calories' | 'hr';
 export type HrType = 'above' | 'below';
@@ -67,7 +72,10 @@ interface WorkoutFormShape {
     CdkDragHandle,
     StepTarget,
     MatIcon,
-    MatMiniFabButton,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatExpansionPanelDescription,
   ],
   templateUrl: './control.html',
   styleUrl: './control.scss',
@@ -125,6 +133,10 @@ export class Control {
     { label: 'Other', value: intensity.other },
   ];
 
+  intensityLabel(value: intensity | undefined): string {
+    return this.intensityOptions.find((o) => o.value === value)?.label ?? 'Unknown';
+  }
+
   private readonly repeatFormValue = toSignal(this.repeatForm.valueChanges, {
     initialValue: this.repeatForm.getRawValue() as FormValue<RepeatFormShape>,
   });
@@ -178,7 +190,7 @@ export class Control {
   });
 
   private readonly applyWorkoutChanges = effect(() => {
-    const b = this.block();
+    const b = this.block()?.clone();
     if (!(b instanceof WorkoutBlock)) return;
     const v = this.workoutFormValue();
     if (!v.formInitialized) {
@@ -187,6 +199,9 @@ export class Control {
     if (typeof v.nameOverride === 'string') b.nameOverride = v.nameOverride;
     if (typeof v.notes === 'string') b.notes = v.notes;
     if (v.intensity !== undefined) b.intensity = v.intensity;
+    if (!b.equals(this.block())) {
+      this.block.set(b);
+    }
   });
 
   // Utility to detect current target type
@@ -207,5 +222,40 @@ export class Control {
 
   protected delete() {
     this.deleteMe.emit(true);
+  }
+
+  protected openPanel() {
+    const clone = this.block()?.clone();
+    if (clone != undefined) {
+      clone.opened = true;
+      this.block.set(clone);
+    }
+  }
+
+  protected closePanel() {
+    const clone = this.block()?.clone();
+    if (clone != undefined) {
+      clone.opened = false;
+      this.block.set(clone);
+    }
+  }
+
+  protected headerDescription(): string {
+    const b = this.block();
+
+    if (b instanceof RepeatBlock) return `Sets: ${b.sets}`;
+    if (b instanceof WorkoutBlock)
+      return `${this.intensityLabel(b.intensity)} ${this.targetDescription(b)}`;
+    return '';
+  }
+
+  protected targetDescription(block: WorkoutBlock): string {
+    if (block.target instanceof TargetTime) return `${block.target.durationSeconds}s`;
+    if (block.target instanceof TargetCalories) return `${block.target.calories}C`;
+    if (block.target instanceof TargetReps)
+      return `${block.target.reps}x @ ${block.target.weight}kg`;
+    if (block.target instanceof HeartRateTarget)
+      return `${block.target.type} ${block.target.heartRate}bpm`;
+    return `Lap button`;
   }
 }

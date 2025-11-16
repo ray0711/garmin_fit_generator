@@ -82,7 +82,7 @@ export class FitDecoder {
       const categoryGarmin = camelToScreamingSnake(categoryKey || 'unknown');
 
       const name = (step.wktStepName ?? nameGarmin) || 'Step';
-      const wb = new WorkoutBlock(name, false, categoryGarmin, nameGarmin);
+      const wb = new WorkoutBlock(name, false, false, categoryGarmin, nameGarmin);
       wb.notes = step.notes;
 
       // target reconstruction
