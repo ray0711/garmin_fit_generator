@@ -119,7 +119,7 @@ export class StepTarget {
         break;
       }
     }
-    if(!block.equals(this.workoutBlock())) {
+    if (!block.equals(this.workoutBlock())) {
       this.workoutBlock.set(block);
     }
   });

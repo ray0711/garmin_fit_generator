@@ -15,8 +15,12 @@
           <div class="filter-row">
             <mat-form-field class="filter-input">
               <mat-label>Name</mat-label>
-              <input matInput placeholder="Name" [(ngModel)]="filterName"
-                     (ngModelChange)="applyFilters()">
+              <input
+                matInput
+                placeholder="Name"
+                [(ngModel)]="filterName"
+                (ngModelChange)="applyFilters()"
+              />
             </mat-form-field>
             <mat-form-field *ngFor="let column of getOtherColumns()" class="filter-input">
               <mat-label>{{ filters[column]?.label }}</mat-label>

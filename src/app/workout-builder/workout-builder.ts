@@ -13,7 +13,7 @@ import {
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { Block, BlockLevel, RepeatBlock, WorkoutBlock } from './block';
 import { Control } from './control/control';
-import { MatTree, MatTreeNode, MatTreeNodeDef, MatTreeNodePadding } from '@angular/material/tree';
+import { MatTree, MatTreeNode, MatTreeNodeDef } from '@angular/material/tree';
 
 import { Exercise } from '../Exercise';
 import { intensity } from '../../types_auto/fitsdk_enums';
@@ -30,8 +30,7 @@ import { StepTarget } from './step-target/step-target';
 import { MatIcon } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatFabButton } from '@angular/material/button';
-import { MatAccordion } from '@angular/material/expansion';
-import { map } from 'rxjs';
+
 
 @Component({
   selector: 'app-workout-builder',
@@ -162,7 +161,7 @@ export class WorkoutBuilder {
     const parent = list.find(
       (element) =>
         element?.block instanceof RepeatBlock &&
-        element?.block.children.find(value => value.uuid == blockLevel?.block.uuid),
+        element?.block.children.find((value) => value.uuid == blockLevel?.block.uuid),
     );
     return parent?.block as RepeatBlock | undefined;
   }

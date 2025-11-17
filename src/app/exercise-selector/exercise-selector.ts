@@ -16,6 +16,7 @@ import {
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
 import { Exercise } from '../Exercise';
+import { MatButton } from '@angular/material/button';
 
 interface FilterOption {
   label: string;
@@ -40,6 +41,7 @@ interface FilterOption {
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
     MatAccordion,
+    MatButton,
   ],
   templateUrl: './exercise-selector.html',
   styleUrls: ['./exercise-selector.scss'],
@@ -201,8 +203,7 @@ export class ExerciseSelectorComponent implements OnInit {
 
   getOtherColumns(): string[] {
     return this.filterableColumns.filter(
-      (col) =>
-        col.startsWith('CATEGORY_GARMIN') || col.startsWith('DIFFICULTY'),
+      (col) => col.startsWith('CATEGORY_GARMIN') || col.startsWith('DIFFICULTY'),
     );
   }
 

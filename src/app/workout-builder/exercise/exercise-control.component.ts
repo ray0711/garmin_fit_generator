@@ -2,8 +2,11 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 import { Block } from '../block';
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { MatIcon } from '@angular/material/icon';
-import { MatMiniFabButton } from '@angular/material/button';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-exercise',
@@ -11,7 +14,6 @@ import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } fr
     CdkDrag,
     CdkDragHandle,
     MatIcon,
-    MatMiniFabButton,
     MatExpansionPanel,
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
@@ -32,7 +34,7 @@ export class ExerciseControl {
     $event.stopPropagation();
   }
 
-  clickExercise($event:any){
+  clickExercise($event: any) {
     $event.stopPropagation();
     $event.preventDefault();
   }

@@ -28,7 +28,7 @@ import { MatOption } from '@angular/material/core';
 import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import { StepTarget } from '../step-target/step-target';
 import { MatIcon } from '@angular/material/icon';
- import {
+import {
   MatExpansionPanel,
   MatExpansionPanelDescription,
   MatExpansionPanelHeader,

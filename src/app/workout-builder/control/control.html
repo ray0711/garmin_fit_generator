@@ -22,7 +22,9 @@
           @if (this.block()?.selected) {
             <mat-icon aria-hidden="true" (click)="this.toggleSelected($event)">check_box</mat-icon>
           } @else {
-            <mat-icon aria-hidden="true" (click)="this.toggleSelected($event)">check_box_outline_blank</mat-icon>
+            <mat-icon aria-hidden="true" (click)="this.toggleSelected($event)"
+              >check_box_outline_blank</mat-icon
+            >
           }
         }
       </div>

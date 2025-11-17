@@ -9,9 +9,9 @@
         cdkDropListHasAnchor
         class="workout-list"
       >
-          @for (block of buildingBlocks; track block.name) {
-            <app-exercise [block]="block" class="block-box" (add)="addBlock($event)" />
-          }
+        @for (block of buildingBlocks; track block.name) {
+          <app-exercise [block]="block" class="block-box" (add)="addBlock($event)" />
+        }
       </div>
       <mat-card appearance="outlined">
         <mat-card-header>
