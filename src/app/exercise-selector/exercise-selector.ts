@@ -32,7 +32,7 @@ interface FilterOption {
   min?: number;
   max?: number;
   start?: number; // current range start
-  end?: number;   // current range end
+  end?: number; // current range end
   // Binary shortcut (0/1) — used primarily for equipment toggles
   isBinary?: boolean;
   binaryState?: 'any' | 'yes' | 'no';
@@ -63,7 +63,6 @@ interface FilterOption {
   ],
   templateUrl: './exercise-selector.html',
   styleUrls: ['./exercise-selector.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExerciseSelectorComponent implements OnInit {
   http = inject(HttpClient);
@@ -187,7 +186,8 @@ export class ExerciseSelectorComponent implements OnInit {
         const exerciseValue = (exercise as any)[column];
 
         if (filter.isNumeric) {
-          const valueNum = typeof exerciseValue === 'number' ? exerciseValue : Number(exerciseValue);
+          const valueNum =
+            typeof exerciseValue === 'number' ? exerciseValue : Number(exerciseValue);
 
           // Binary 0/1 shortcut via tri-state toggles
           if (filter.isBinary) {

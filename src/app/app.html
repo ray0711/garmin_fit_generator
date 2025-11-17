@@ -1,19 +1,38 @@
 <main class="main">
   <mat-stepper [linear]="false" #stepper>
-    <mat-step label="Select Exercises from Garmin Library">
+    <!-- Custom stepper icons -->
+    <!--    <ng-template matStepperIcon="edit">-->
+    <!--      <mat-icon aria-label="Edit step">add</mat-icon>-->
+    <!--    </ng-template>-->
+    <ng-template matStepperIcon="edit">
+      <mat-icon aria-label="Completed step">check_circle</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="number" let-index="index">
+      @if (index === 0) {
+        <mat-icon aria-label="Completed step">add</mat-icon>
+      }
+      @if (index === 1) {
+        <mat-icon aria-label="Completed step">fitness_center</mat-icon>
+      }
+      @if (index === 2) {
+        <mat-icon aria-label="Completed step">download</mat-icon>
+      }
+    </ng-template>
+
+    <mat-step label="Select Exercises from Garmin Library" completed="false">
       <app-exercise-selector
         (exerciseSelected)="onExerciseSelected($event)"
       ></app-exercise-selector>
     </mat-step>
 
-    <mat-step label="Build Workout">
+    <mat-step label="Build Workout" completed="false">
       <app-workout-builder
         [selectedExercise]="selectedExercise()"
         [importWorkout]="importWorkout()"
         (workoutOutput)="currentWorkout.set($event)"
       ></app-workout-builder>
     </mat-step>
-    <mat-step label="Import/Export Workout">
+    <mat-step label="Import/Export Workout" completed="false">
       <app-fit-control
         [currentWorkout]="currentWorkout()"
         (importWorkout)="onWorkoutSelected($event)"
