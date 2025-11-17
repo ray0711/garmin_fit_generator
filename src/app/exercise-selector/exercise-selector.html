@@ -8,8 +8,8 @@
           <!--<mat-panel-description> This is a summary of the content </mat-panel-description>-->
         </mat-expansion-panel-header>
         <!-- General Filters -->
-<!--        <div class="filter-section">-->
-<!--          <div class="filter-row">-->
+        <div class="filter-section">
+          <div class="filter-row">
             <mat-form-field class="filter-input">
               <mat-label>Name</mat-label>
               <input
@@ -24,7 +24,7 @@
               @if (isNumericColumn(column)) {
                 <label class="filter-label">{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{ filters[column]?.end }}</label>
                 <div class="slider-row">
-                  <mat-slider
+                  <mat-slider discrete showTickMarks
                     [min]="$any(filters[column]?.min) ?? 0"
                     [max]="$any(filters[column]?.max) ?? 100"
                     [step]="1"
@@ -59,8 +59,8 @@
                 </mat-form-field>
               }
             </div>
-<!--          </div>
-        </div>-->
+          </div>
+        </div>
       </mat-expansion-panel>
 
       <mat-expansion-panel>
@@ -76,7 +76,7 @@
               @if (isNumericColumn(column)) {
                 <label class="filter-label">{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{ filters[column]?.end }}</label>
                 <div class="slider-row">
-                  <mat-slider
+                  <mat-slider discrete showTickMarks
                     [min]="$any(filters[column]?.min) ?? 0"
                     [max]="$any(filters[column]?.max) ?? 100"
                     [step]="1"
@@ -139,7 +139,7 @@
                 } @else {
                   <label class="filter-label">{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{ filters[column]?.end }}</label>
                   <div class="slider-row">
-                    <mat-slider
+                    <mat-slider discrete showTickMarks
                       [min]="$any(filters[column]?.min) ?? 0"
                       [max]="$any(filters[column]?.max) ?? 100"
                       [step]="1"

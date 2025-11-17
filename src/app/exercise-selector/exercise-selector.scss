@@ -79,12 +79,63 @@
 //  }
 //}
 
+.exercise-selector-container {
+  display: flex;
+  flex-direction: column;
+  width: 95vw;
+  box-sizing: border-box;
+  gap: 16px;
+}
+
+.filters-container {
+  width: 100%;
+}
+
+.filter-section {
+  width: 100%;
+}
+
+.filter-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px 16px;
+  align-items: center;
+}
+
+.filter-label {
+  display: block;
+  font-size: 12px;
+  color: var(--mat-sys-on-surface-variant);
+  margin: 4px 0 4px 0;
+}
+
+.filter-input {
+  padding: 0;
+}
+
+.filter-input,
+.filter-input mat-form-field,
+.filter-input .slider-row,
+.filter-input mat-button-toggle-group {
+  width: 100%;
+}
+
+.slider-row mat-slider {
+  width: 100%;
+}
+
+.table-container {
+  width: 100%;
+  overflow: auto;
+}
+
+.exercises-table {
+  width: 100%;
+  table-layout: auto;
+}
+
 .exercise-image {
   max-width: 150px;
   max-height: 150px;
   object-fit: contain;
-}
-
-.filter-input {
-  padding: 6px;
 }

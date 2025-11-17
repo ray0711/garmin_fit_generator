@@ -172,7 +172,9 @@ export class ExerciseSelectorComponent implements OnInit {
   }
 
   formatColumnName(columnName: string): string {
-    return columnName.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+    // Strip common prefixes for display only
+    const stripped = columnName.replace(/^(MUSCLE_|EQUIPMENT_)/, '');
+    return stripped.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
   }
 
   applyFilters(): void {
