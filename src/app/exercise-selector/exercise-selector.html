@@ -1,6 +1,4 @@
 <div class="exercise-selector-container">
-  <h2>Exercise Library</h2>
-
   <!-- Filter Section -->
   <div class="filters-container">
     <mat-accordion multi>
@@ -15,6 +13,7 @@
             <mat-form-field class="filter-input">
               <mat-label>Name</mat-label>
               <input
+                cdkTrapFocus [cdkTrapFocusAutoCapture]="true"
                 matInput
                 placeholder="Name"
                 [(ngModel)]="filterName"

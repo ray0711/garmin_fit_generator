@@ -6,9 +6,8 @@ import { WorkoutBuilder } from './workout-builder/workout-builder';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Exercise } from './Exercise';
 import { Block } from './workout-builder/block';
-import { MatDrawer, MatDrawerContainer, MatDrawerContent } from '@angular/material/sidenav';
-import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MatStep, MatStepper, MatStepperIcon } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-root',
@@ -16,13 +15,11 @@ import { MatIcon } from '@angular/material/icon';
     RouterOutlet,
     FitControl,
     ExerciseSelectorComponent,
-
     WorkoutBuilder,
-    MatDrawerContainer,
-    MatDrawer,
-    MatDrawerContent,
-    MatButton,
     MatIcon,
+    MatStep,
+    MatStepper,
+    MatStepperIcon,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',

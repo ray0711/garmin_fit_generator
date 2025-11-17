@@ -18,6 +18,7 @@ import {
 } from '@angular/material/expansion';
 import { Exercise } from '../Exercise';
 import { MatButton } from '@angular/material/button';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 
 interface FilterOption {
   label: string;
@@ -44,10 +45,10 @@ interface FilterOption {
     MatExpansionPanelTitle,
     MatAccordion,
     MatButton,
+    CdkTrapFocus,
   ],
   templateUrl: './exercise-selector.html',
   styleUrls: ['./exercise-selector.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExerciseSelectorComponent implements OnInit {
   http = inject(HttpClient);
@@ -166,7 +167,11 @@ export class ExerciseSelectorComponent implements OnInit {
         }
       }
 
-      return exercise.Name.toLowerCase().includes(this.filterName.toLowerCase());
+      const nameFilter = this.filterName.trim().toLowerCase();
+      if (nameFilter == '') {
+        return true;
+      }
+      return exercise.Name.toLowerCase().includes(nameFilter);
     });
     this.pageIndex = 0;
   }

@@ -1,27 +1,30 @@
 <main class="main">
-  <button mat-raised-button color="primary" (click)="drawer.toggle()">
-    <mat-icon aria-hidden="true">add_circle</mat-icon>
-    Exercises
-  </button>
-  <mat-drawer-container class="drawer-container" hasBackdrop="true">
-    <mat-drawer #drawer class="drawer" mode="over" hasBackdrop="true">
+<!--  <button mat-raised-button color="primary" >-->
+<!--    <mat-icon aria-hidden="true">add_circle</mat-icon>-->
+<!--    Exercises-->
+<!--  </button>-->
+
+  <mat-stepper [linear]="false" #stepper>
+    <mat-step label="Select Exercises from Garmin Library">
       <app-exercise-selector
         (exerciseSelected)="onExerciseSelected($event)"
       ></app-exercise-selector>
-    </mat-drawer>
-    <mat-drawer-content>
-      <app-fit-control
-        [currentWorkout]="currentWorkout()"
-        (importWorkout)="onWorkoutSelected($event)"
-      />
+    </mat-step>
 
+    <mat-step label="Build Workout">
       <app-workout-builder
         [selectedExercise]="selectedExercise()"
         [importWorkout]="importWorkout()"
         (workoutOutput)="currentWorkout.set($event)"
       ></app-workout-builder>
-    </mat-drawer-content>
-  </mat-drawer-container>
+    </mat-step>
+    <mat-step label="Import/Export Workout">
+      <app-fit-control
+        [currentWorkout]="currentWorkout()"
+        (importWorkout)="onWorkoutSelected($event)"
+      />
+    </mat-step>
+  </mat-stepper>
 </main>
 
 <router-outlet />
