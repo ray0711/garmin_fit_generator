@@ -31,7 +31,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatFabButton } from '@angular/material/button';
 
-
 @Component({
   selector: 'app-workout-builder',
   imports: [

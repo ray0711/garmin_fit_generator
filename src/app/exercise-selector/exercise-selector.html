@@ -13,7 +13,8 @@
             <mat-form-field class="filter-input">
               <mat-label>Name</mat-label>
               <input
-                cdkTrapFocus [cdkTrapFocusAutoCapture]="true"
+                cdkTrapFocus
+                [cdkTrapFocusAutoCapture]="true"
                 matInput
                 placeholder="Name"
                 [(ngModel)]="filterName"
@@ -22,9 +23,15 @@
             </mat-form-field>
             <div *ngFor="let column of getOtherColumns()" class="filter-input">
               @if (isNumericColumn(column)) {
-                <label class="filter-label">{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{ filters[column]?.end }}</label>
+                <label class="filter-label"
+                  >{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{
+                    filters[column]?.end
+                  }}</label
+                >
                 <div class="slider-row">
-                  <mat-slider discrete showTickMarks
+                  <mat-slider
+                    discrete
+                    showTickMarks
                     [min]="$any(filters[column]?.min) ?? 0"
                     [max]="$any(filters[column]?.max) ?? 100"
                     [step]="1"
@@ -74,9 +81,15 @@
           <div class="filter-row">
             <div *ngFor="let column of getMuscleColumns()" class="filter-input">
               @if (isNumericColumn(column)) {
-                <label class="filter-label">{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{ filters[column]?.end }}</label>
+                <label class="filter-label"
+                  >{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{
+                    filters[column]?.end
+                  }}</label
+                >
                 <div class="slider-row">
-                  <mat-slider discrete showTickMarks
+                  <mat-slider
+                    discrete
+                    showTickMarks
                     [min]="$any(filters[column]?.min) ?? 0"
                     [max]="$any(filters[column]?.max) ?? 100"
                     [step]="1"
@@ -137,9 +150,15 @@
                     <mat-button-toggle value="no" aria-label="No">No</mat-button-toggle>
                   </mat-button-toggle-group>
                 } @else {
-                  <label class="filter-label">{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{ filters[column]?.end }}</label>
+                  <label class="filter-label"
+                    >{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{
+                      filters[column]?.end
+                    }}</label
+                  >
                   <div class="slider-row">
-                    <mat-slider discrete showTickMarks
+                    <mat-slider
+                      discrete
+                      showTickMarks
                       [min]="$any(filters[column]?.min) ?? 0"
                       [max]="$any(filters[column]?.max) ?? 100"
                       [step]="1"
