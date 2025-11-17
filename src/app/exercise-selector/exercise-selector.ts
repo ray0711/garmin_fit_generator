@@ -8,6 +8,8 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import {
@@ -22,8 +24,18 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
 
 interface FilterOption {
   label: string;
-  values: string[];
-  selectedValues: string[];
+  // Non-numeric (categorical) filter values
+  values?: string[];
+  selectedValues?: string[];
+  // Numeric filter metadata
+  isNumeric?: boolean;
+  min?: number;
+  max?: number;
+  start?: number; // current range start
+  end?: number;   // current range end
+  // Binary shortcut (0/1) — used primarily for equipment toggles
+  isBinary?: boolean;
+  binaryState?: 'any' | 'yes' | 'no';
 }
 
 @Component({
@@ -38,6 +50,8 @@ interface FilterOption {
     MatCheckboxModule,
     MatPaginatorModule,
     MatSelectModule,
+    MatSliderModule,
+    MatButtonToggleModule,
     FormsModule,
     MatIcon,
     MatExpansionPanel,
@@ -49,6 +63,7 @@ interface FilterOption {
   ],
   templateUrl: './exercise-selector.html',
   styleUrls: ['./exercise-selector.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExerciseSelectorComponent implements OnInit {
   http = inject(HttpClient);
@@ -108,34 +123,50 @@ export class ExerciseSelectorComponent implements OnInit {
     this.filterableColumns = allColumns.filter((col) => !this.staticColumns.includes(col));
 
     this.filterableColumns.forEach((column) => {
+      let isNumeric = true;
+      let min = Number.POSITIVE_INFINITY;
+      let max = Number.NEGATIVE_INFINITY;
       const valuesSet = new Set<string>();
 
       this.allExercises.forEach((exercise) => {
         const value = (exercise as any)[column];
+        if (value === null || value === undefined || value === '') return;
 
-        // Handle different value types
-        if (value !== null && value !== undefined && value !== '') {
+        if (typeof value === 'number') {
+          if (value < min) min = value;
+          if (value > max) max = value;
+        } else {
+          isNumeric = false;
           if (typeof value === 'boolean') {
-            valuesSet.add(value.toString());
-          } else if (typeof value === 'number') {
             valuesSet.add(value.toString());
           } else if (typeof value === 'string') {
             valuesSet.add(value);
           } else if (typeof value === 'object') {
-            // Handle objects (like IMAGE which might be {valueType: "IMAGE"})
             valuesSet.add(JSON.stringify(value));
           }
         }
       });
 
-      // Only create filter if there are multiple unique values
-      const uniqueValues = Array.from(valuesSet).sort();
-      if (uniqueValues.length > 0) {
+      if (isNumeric && isFinite(min) && isFinite(max)) {
+        const isBinary = min === 0 && max === 1;
         this.filters[column] = {
           label: this.formatColumnName(column),
-          values: uniqueValues,
-          selectedValues: [],
+          isNumeric: true,
+          min,
+          max,
+          start: min,
+          end: max,
+          ...(isBinary ? { isBinary: true, binaryState: 'any' } : {}),
         };
+      } else {
+        const uniqueValues = Array.from(valuesSet).sort();
+        if (uniqueValues.length > 0) {
+          this.filters[column] = {
+            label: this.formatColumnName(column),
+            values: uniqueValues,
+            selectedValues: [],
+          };
+        }
       }
     });
   }
@@ -149,21 +180,38 @@ export class ExerciseSelectorComponent implements OnInit {
       // Check all filters
       for (const column of this.filterableColumns) {
         const filter = this.filters[column];
-        if (!filter || filter.selectedValues.length === 0) continue;
+        if (!filter) continue;
 
         const exerciseValue = (exercise as any)[column];
-        let valueStr: string;
 
-        // Convert value to string for comparison
-        if (typeof exerciseValue === 'object' && exerciseValue !== null) {
-          valueStr = JSON.stringify(exerciseValue);
-        } else {
-          valueStr = String(exerciseValue);
-        }
+        if (filter.isNumeric) {
+          const valueNum = typeof exerciseValue === 'number' ? exerciseValue : Number(exerciseValue);
 
-        // Check if the exercise value matches any selected filter value
-        if (!filter.selectedValues.includes(valueStr)) {
-          return false;
+          // Binary 0/1 shortcut via tri-state toggles
+          if (filter.isBinary) {
+            const state = filter.binaryState ?? 'any';
+            if (state === 'yes' && valueNum !== 1) return false;
+            if (state === 'no' && valueNum !== 0) return false;
+            // 'any' imposes no constraint
+          } else {
+            // Generic numeric range
+            const start = filter.start ?? filter.min ?? Number.NEGATIVE_INFINITY;
+            const end = filter.end ?? filter.max ?? Number.POSITIVE_INFINITY;
+            if (Number.isFinite(valueNum)) {
+              if (valueNum < start || valueNum > end) return false;
+            }
+            // if not finite, ignore numeric filter for this value
+          }
+        } else if (filter.selectedValues && filter.selectedValues.length > 0) {
+          let valueStr: string;
+          if (typeof exerciseValue === 'object' && exerciseValue !== null) {
+            valueStr = JSON.stringify(exerciseValue);
+          } else {
+            valueStr = String(exerciseValue);
+          }
+          if (!filter.selectedValues.includes(valueStr)) {
+            return false;
+          }
         }
       }
 
@@ -178,8 +226,43 @@ export class ExerciseSelectorComponent implements OnInit {
 
   clearFilters(): void {
     Object.keys(this.filters).forEach((key) => {
-      this.filters[key].selectedValues = [];
+      const f = this.filters[key];
+      if (f.isNumeric) {
+        if (f.isBinary) {
+          f.binaryState = 'any';
+        }
+        f.start = f.min;
+        f.end = f.max;
+      } else if (f.selectedValues) {
+        f.selectedValues = [];
+      }
     });
+    this.applyFilters();
+  }
+
+  isNumericColumn(column: string): boolean {
+    const f = this.filters[column];
+    return !!f && !!f.isNumeric;
+  }
+
+  setNumericRange(column: string, which: 'start' | 'end', value: number): void {
+    const f = this.filters[column];
+    if (!f || !f.isNumeric) return;
+    const min = f.min ?? Number.NEGATIVE_INFINITY;
+    const max = f.max ?? Number.POSITIVE_INFINITY;
+    const v = Math.min(Math.max(value, min), max);
+
+    if (which === 'start') {
+      f.start = v;
+      if ((f.end ?? max) < v) {
+        f.end = v;
+      }
+    } else {
+      f.end = v;
+      if ((f.start ?? min) > v) {
+        f.start = v;
+      }
+    }
     this.applyFilters();
   }
 

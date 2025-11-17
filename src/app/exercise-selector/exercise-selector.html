@@ -20,18 +20,45 @@
                 (ngModelChange)="applyFilters()"
               />
             </mat-form-field>
-            <mat-form-field *ngFor="let column of getOtherColumns()" class="filter-input">
-              <mat-label>{{ filters[column]?.label }}</mat-label>
-              <mat-select
-                [(ngModel)]="filters[column].selectedValues"
-                (ngModelChange)="applyFilters()"
-                multiple
-              >
-                <mat-option *ngFor="let value of filters[column]?.values" [value]="value">
-                  {{ value }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div *ngFor="let column of getOtherColumns()" class="filter-input">
+              @if (isNumericColumn(column)) {
+                <label class="filter-label">{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{ filters[column]?.end }}</label>
+                <div class="slider-row">
+                  <mat-slider
+                    [min]="$any(filters[column]?.min) ?? 0"
+                    [max]="$any(filters[column]?.max) ?? 100"
+                    [step]="1"
+                    aria-label="{{ filters[column]?.label }} range"
+                  >
+                    <input
+                      matSliderStartThumb
+                      [ngModel]="$any(filters[column]?.start ?? filters[column]?.min)"
+                      (ngModelChange)="setNumericRange(column, 'start', $any($event))"
+                      aria-label="Minimum {{ filters[column]?.label }}"
+                    />
+                    <input
+                      matSliderEndThumb
+                      [ngModel]="$any(filters[column]?.end ?? filters[column]?.max)"
+                      (ngModelChange)="setNumericRange(column, 'end', $any($event))"
+                      aria-label="Maximum {{ filters[column]?.label }}"
+                    />
+                  </mat-slider>
+                </div>
+              } @else {
+                <mat-form-field class="filter-input">
+                  <mat-label>{{ filters[column]?.label }}</mat-label>
+                  <mat-select
+                    [(ngModel)]="filters[column].selectedValues"
+                    (ngModelChange)="applyFilters()"
+                    multiple
+                  >
+                    <mat-option *ngFor="let value of filters[column]?.values" [value]="value">
+                      {{ value }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              }
+            </div>
 <!--          </div>
         </div>-->
       </mat-expansion-panel>
@@ -45,18 +72,45 @@
 
         <div class="filter-section" *ngIf="getMuscleColumns().length > 0">
           <div class="filter-row">
-            <mat-form-field *ngFor="let column of getMuscleColumns()" class="filter-input">
-              <mat-label>{{ filters[column]?.label }}</mat-label>
-              <mat-select
-                [(ngModel)]="filters[column].selectedValues"
-                (ngModelChange)="applyFilters()"
-                multiple
-              >
-                <mat-option *ngFor="let value of filters[column]?.values" [value]="value">
-                  {{ value }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div *ngFor="let column of getMuscleColumns()" class="filter-input">
+              @if (isNumericColumn(column)) {
+                <label class="filter-label">{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{ filters[column]?.end }}</label>
+                <div class="slider-row">
+                  <mat-slider
+                    [min]="$any(filters[column]?.min) ?? 0"
+                    [max]="$any(filters[column]?.max) ?? 100"
+                    [step]="1"
+                    aria-label="{{ filters[column]?.label }} range"
+                  >
+                    <input
+                      matSliderStartThumb
+                      [ngModel]="$any(filters[column]?.start ?? filters[column]?.min)"
+                      (ngModelChange)="setNumericRange(column, 'start', $any($event))"
+                      aria-label="Minimum {{ filters[column]?.label }}"
+                    />
+                    <input
+                      matSliderEndThumb
+                      [ngModel]="$any(filters[column]?.end ?? filters[column]?.max)"
+                      (ngModelChange)="setNumericRange(column, 'end', $any($event))"
+                      aria-label="Maximum {{ filters[column]?.label }}"
+                    />
+                  </mat-slider>
+                </div>
+              } @else {
+                <mat-form-field class="filter-input">
+                  <mat-label>{{ filters[column]?.label }}</mat-label>
+                  <mat-select
+                    [(ngModel)]="filters[column].selectedValues"
+                    (ngModelChange)="applyFilters()"
+                    multiple
+                  >
+                    <mat-option *ngFor="let value of filters[column]?.values" [value]="value">
+                      {{ value }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              }
+            </div>
           </div>
         </div>
       </mat-expansion-panel>
@@ -68,18 +122,59 @@
         </mat-expansion-panel-header>
         <div class="filter-section" *ngIf="getEquipmentColumns().length > 0">
           <div class="filter-row">
-            <mat-form-field *ngFor="let column of getEquipmentColumns()" class="filter-input">
-              <mat-label>{{ filters[column]?.label }}</mat-label>
-              <mat-select
-                [(ngModel)]="filters[column].selectedValues"
-                (ngModelChange)="applyFilters()"
-                multiple
-              >
-                <mat-option *ngFor="let value of filters[column]?.values" [value]="value">
-                  {{ value }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div *ngFor="let column of getEquipmentColumns()" class="filter-input">
+              @if (isNumericColumn(column)) {
+                @if (filters[column]?.isBinary) {
+                  <label class="filter-label">{{ filters[column]?.label }}</label>
+                  <mat-button-toggle-group
+                    [value]="$any(filters[column]?.binaryState ?? 'any')"
+                    (change)="filters[column].binaryState = $any($event.value); applyFilters()"
+                    aria-label="{{ filters[column]?.label }} toggle"
+                    name="{{ column }}-toggle"
+                  >
+                    <mat-button-toggle value="any" aria-label="Any">Any</mat-button-toggle>
+                    <mat-button-toggle value="yes" aria-label="Yes">Yes</mat-button-toggle>
+                    <mat-button-toggle value="no" aria-label="No">No</mat-button-toggle>
+                  </mat-button-toggle-group>
+                } @else {
+                  <label class="filter-label">{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{ filters[column]?.end }}</label>
+                  <div class="slider-row">
+                    <mat-slider
+                      [min]="$any(filters[column]?.min) ?? 0"
+                      [max]="$any(filters[column]?.max) ?? 100"
+                      [step]="1"
+                      aria-label="{{ filters[column]?.label }} range"
+                    >
+                      <input
+                        matSliderStartThumb
+                        [ngModel]="$any(filters[column]?.start ?? filters[column]?.min)"
+                        (ngModelChange)="setNumericRange(column, 'start', $any($event))"
+                        aria-label="Minimum {{ filters[column]?.label }}"
+                      />
+                      <input
+                        matSliderEndThumb
+                        [ngModel]="$any(filters[column]?.end ?? filters[column]?.max)"
+                        (ngModelChange)="setNumericRange(column, 'end', $any($event))"
+                        aria-label="Maximum {{ filters[column]?.label }}"
+                      />
+                    </mat-slider>
+                  </div>
+                }
+              } @else {
+                <mat-form-field class="filter-input">
+                  <mat-label>{{ filters[column]?.label }}</mat-label>
+                  <mat-select
+                    [(ngModel)]="filters[column].selectedValues"
+                    (ngModelChange)="applyFilters()"
+                    multiple
+                  >
+                    <mat-option *ngFor="let value of filters[column]?.values" [value]="value">
+                      {{ value }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              }
+            </div>
           </div>
         </div>
 
