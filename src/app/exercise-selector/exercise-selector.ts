@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
@@ -34,6 +35,7 @@ interface FilterOption {
     MatFormFieldModule,
     MatSortModule,
     MatCheckboxModule,
+    MatPaginatorModule,
     MatSelectModule,
     FormsModule,
     MatIcon,
@@ -45,12 +47,22 @@ interface FilterOption {
   ],
   templateUrl: './exercise-selector.html',
   styleUrls: ['./exercise-selector.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExerciseSelectorComponent implements OnInit {
   http = inject(HttpClient);
   displayedColumns: string[] = ['CATEGORY_GARMIN', 'Name', 'DESCRIPTION', 'IMAGE'];
   allExercises: Exercise[] = [];
   filteredExercises: Exercise[] = [];
+
+  // Pagination
+  pageIndex = 0;
+  pageSize = 10;
+  pageSizeOptions: number[] = [5, 10, 25, 50, 100];
+  get pagedExercises(): Exercise[] {
+    const start = this.pageIndex * this.pageSize;
+    return this.filteredExercises.slice(start, start + this.pageSize);
+  }
 
   // Dynamic filters
   filterName = '';
@@ -75,6 +87,7 @@ export class ExerciseSelectorComponent implements OnInit {
         // Convert object to array
         this.allExercises = Object.values(data);
         this.filteredExercises = [...this.allExercises];
+        this.pageIndex = 0;
         this.extractFilterOptions();
       },
       error: (error) => {
@@ -153,8 +166,9 @@ export class ExerciseSelectorComponent implements OnInit {
         }
       }
 
-      return exercise.Name.includes(this.filterName);
+      return exercise.Name.toLowerCase().includes(this.filterName.toLowerCase());
     });
+    this.pageIndex = 0;
   }
 
   clearFilters(): void {
@@ -169,6 +183,7 @@ export class ExerciseSelectorComponent implements OnInit {
 
     if (!sort.active || sort.direction === '') {
       this.filteredExercises = data;
+      this.pageIndex = 0;
       return;
     }
 
@@ -179,6 +194,7 @@ export class ExerciseSelectorComponent implements OnInit {
 
       return this.compare(aValue, bValue, isAsc);
     });
+    this.pageIndex = 0;
   }
 
   compare(a: any, b: any, isAsc: boolean): number {
@@ -251,5 +267,10 @@ export class ExerciseSelectorComponent implements OnInit {
 
   add_exercise(exercise: Exercise) {
     this.exerciseSelected.emit(exercise);
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 }

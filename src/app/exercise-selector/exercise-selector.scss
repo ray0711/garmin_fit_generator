@@ -1,83 +1,83 @@
-.exercise-selector-container {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-
-  > h2 {
-    margin: 0;
-    padding: 1em;
-    //background-color: white;
-    flex-shrink: 0;
-  }
-
-  > .filters-container {
-    padding: 0 1em 1em 1em;
-    //background-color: white;
-    flex-shrink: 0;
-  }
-}
-
-.table-container {
-  overflow-x: auto;
-  overflow-y: auto;
-  flex: 1;
-  padding: 0 1em 1em 1em;
-  position: relative;
-
-  .exercises-table {
-    width: auto;
-    table-layout: fixed;
-
-    .mat-mdc-header-row {
-      position: sticky;
-      top: 0;
-      z-index: 5;
-    }
-
-    th {
-      //background-color: white;
-      position: sticky;
-      top: 0;
-      z-index: 5;
-    }
-
-    th.resizable-header {
-      position: sticky;
-      top: 0;
-      overflow: hidden;
-      user-select: none;
-      width: 20em;
-      //background-color: white;
-      z-index: 5;
-
-      .resize-handle {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 3px;
-        height: 100%;
-        cursor: col-resize;
-        z-index: 1;
-        background-color: rgba(0, 0, 0, 0.2);
-
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.1);
-        }
-      }
-    }
-
-    td {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .exercise-description {
-      width: 20em;
-      white-space: wrap;
-    }
-  }
-}
+//.exercise-selector-container {
+//  display: flex;
+//  flex-direction: column;
+//  overflow: hidden;
+//
+//  > h2 {
+//    margin: 0;
+//    padding: 1em;
+//    //background-color: white;
+//    flex-shrink: 0;
+//  }
+//
+//  > .filters-container {
+//    padding: 0 1em 1em 1em;
+//    //background-color: white;
+//    flex-shrink: 0;
+//  }
+//}
+//
+//.table-container {
+//  overflow-x: auto;
+//  overflow-y: auto;
+//  flex: 1;
+//  padding: 0 1em 1em 1em;
+//  position: relative;
+//
+//  .exercises-table {
+//    width: auto;
+//    table-layout: fixed;
+//
+//    .mat-mdc-header-row {
+//      position: sticky;
+//      top: 0;
+//      z-index: 5;
+//    }
+//
+//    th {
+//      //background-color: white;
+//      position: sticky;
+//      top: 0;
+//      z-index: 5;
+//    }
+//
+//    th.resizable-header {
+//      position: sticky;
+//      top: 0;
+//      overflow: hidden;
+//      user-select: none;
+//      width: 20em;
+//      //background-color: white;
+//      z-index: 5;
+//
+//      .resize-handle {
+//        position: absolute;
+//        top: 0;
+//        right: 0;
+//        width: 3px;
+//        height: 100%;
+//        cursor: col-resize;
+//        z-index: 1;
+//        background-color: rgba(0, 0, 0, 0.2);
+//
+//        &:hover {
+//          background-color: rgba(0, 0, 0, 0.1);
+//        }
+//      }
+//    }
+//
+//    td {
+//      overflow: hidden;
+//      text-overflow: ellipsis;
+//      white-space: nowrap;
+//    }
+//
+//    .exercise-description {
+//      width: 20em;
+//      white-space: wrap;
+//    }
+//  }
+//}
 
 .exercise-image {
   max-width: 150px;

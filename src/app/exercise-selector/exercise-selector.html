@@ -3,7 +3,6 @@
 
   <!-- Filter Section -->
   <div class="filters-container">
-    <h3>Filters</h3>
     <mat-accordion multi>
       <mat-expansion-panel expanded="true">
         <mat-expansion-panel-header>
@@ -11,8 +10,8 @@
           <!--<mat-panel-description> This is a summary of the content </mat-panel-description>-->
         </mat-expansion-panel-header>
         <!-- General Filters -->
-        <div class="filter-section">
-          <div class="filter-row">
+<!--        <div class="filter-section">-->
+<!--          <div class="filter-row">-->
             <mat-form-field class="filter-input">
               <mat-label>Name</mat-label>
               <input
@@ -34,8 +33,8 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-          </div>
-        </div>
+<!--          </div>
+        </div>-->
       </mat-expansion-panel>
 
       <mat-expansion-panel>
@@ -47,7 +46,7 @@
 
         <div class="filter-section" *ngIf="getMuscleColumns().length > 0">
           <div class="filter-row">
-            <mat-form-field *ngFor="let column of getMuscleColumns()">
+            <mat-form-field *ngFor="let column of getMuscleColumns()" class="filter-input">
               <mat-label>{{ filters[column]?.label }}</mat-label>
               <mat-select
                 [(ngModel)]="filters[column].selectedValues"
@@ -70,7 +69,7 @@
         </mat-expansion-panel-header>
         <div class="filter-section" *ngIf="getEquipmentColumns().length > 0">
           <div class="filter-row">
-            <mat-form-field *ngFor="let column of getEquipmentColumns()">
+            <mat-form-field *ngFor="let column of getEquipmentColumns()" class="filter-input">
               <mat-label>{{ filters[column]?.label }}</mat-label>
               <mat-select
                 [(ngModel)]="filters[column].selectedValues"
@@ -100,7 +99,7 @@
   <div class="table-container">
     <table
       mat-table
-      [dataSource]="filteredExercises"
+      [dataSource]="pagedExercises"
       matSort
       (matSortChange)="sortData($event)"
       class="exercises-table"
@@ -178,5 +177,13 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+    <mat-paginator
+      [length]="filteredExercises.length"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChange($event)"
+      aria-label="Exercise table pagination"
+    />
   </div>
 </div>
