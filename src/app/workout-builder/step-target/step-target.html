@@ -1,4 +1,9 @@
-<form [formGroup]="stepTargetForm" (click)="$event.stopPropagation()">
+<form
+  [formGroup]="stepTargetForm"
+  (click)="$event.stopPropagation()"
+  (keyup.enter)="$event.stopPropagation()"
+  (keydown.enter)="$event.stopPropagation()"
+>
   <div class="step-target-header">
     <mat-form-field class="form-field">
       <mat-label>Type</mat-label>

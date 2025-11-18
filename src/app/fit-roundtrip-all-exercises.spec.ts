@@ -22,10 +22,12 @@ function screamingSnakeToCamel(input: string): string {
 function isExerciseSupportedByProfile(ex: Exercise): boolean {
   // Map CATEGORY_GARMIN (SCREAMING_SNAKE) -> ExerciseCategory key (camelCase)
   const categoryKey = screamingSnakeToCamel(ex.CATEGORY_GARMIN);
-  const enumVal = (ExerciseCategory as any)[categoryKey];
+  const enumVal = ExerciseCategory[categoryKey as keyof typeof ExerciseCategory] as
+    | number
+    | undefined;
   if (enumVal === undefined) return false;
   const mapKey = `${categoryKey}ExerciseName`;
-  const exerciseMap = (Profile.types as any)[mapKey];
+  const exerciseMap = (Profile.types as Record<string, Record<number, string> | undefined>)[mapKey];
   if (!exerciseMap) return false;
   const normalizedName = ex.NAME_GARMIN.toUpperCase().replace(/_/g, '');
   // check values of exerciseMap for a match
@@ -39,14 +41,14 @@ function buildBlocksFromExercises(exercises: Exercise[]): Block[] {
   // Create a simple WorkoutBlock per exercise; default TargetTime(60) is already set in ctor
   return exercises
     .filter(isExerciseSupportedByProfile)
-    .map((ex) => new WorkoutBlock(ex.Name, ex.seleced, ex.CATEGORY_GARMIN, ex.NAME_GARMIN));
+    .map((ex) => new WorkoutBlock(ex.Name, false, false, ex.CATEGORY_GARMIN, ex.NAME_GARMIN));
 }
 
 function normalizeForCompare(blocks: Block[]): { name: string; categoryGarmin: string }[] {
   return blocks.map((b) => {
     const w = b as WorkoutBlock;
     // Compare by human-readable name (nameOverride) and category; this remains stable via EXERCISE_TITLE
-    return { name: w.nameOverride ?? w.name, categoryGarmin: w.categoryGarmin };
+    return { name: w.nameOverride ?? w.name, categoryGarmin: w.categoryGarmin ?? '' };
   });
 }
 

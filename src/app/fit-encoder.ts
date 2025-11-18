@@ -58,7 +58,9 @@ export class FitEncoder {
     const exerciseMapKey = `${categoryKey}ExerciseName`;
 
     // Access the exercise name map from Profile.types
-    const exerciseMap = (Profile.types as any)[exerciseMapKey];
+    const exerciseMap = (Profile.types as Record<string, Record<number, string> | undefined>)[
+      exerciseMapKey
+    ];
 
     if (!exerciseMap) {
       throw new Error(`Exercise category map not found for: ${categoryKey}`);
@@ -68,7 +70,7 @@ export class FitEncoder {
     const normalizedInput = exerciseName.toUpperCase().replace(/_/g, '');
 
     // Find the exercise number by searching through the map
-    const entry = Object.entries(exerciseMap).find(([key, value]) => {
+    const entry = Object.entries(exerciseMap).find(([, value]) => {
       const normalizedKey = (value as string).toUpperCase().replace(/_/g, '');
       return normalizedKey === normalizedInput;
     });
@@ -87,7 +89,7 @@ export class FitEncoder {
     }
     const normalizedInput = searchString.toUpperCase().replace(/_/g, '');
 
-    const entry = Object.entries(enumObj).find(([key, value]) => {
+    const entry = Object.entries(enumObj).find(([key]) => {
       const normalizedKey = key.toUpperCase().replace(/_/g, '');
       return normalizedKey === normalizedInput;
     });

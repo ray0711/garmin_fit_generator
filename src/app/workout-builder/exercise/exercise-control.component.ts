@@ -34,7 +34,7 @@ export class ExerciseControl {
     $event.stopPropagation();
   }
 
-  clickExercise($event: any) {
+  clickExercise($event: MouseEvent) {
     $event.stopPropagation();
     $event.preventDefault();
   }

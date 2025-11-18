@@ -43,7 +43,13 @@
     }
 
     @if (isWorkout()) {
-      <form [formGroup]="workoutForm" class="form-grid" (click)="$event.stopPropagation()">
+      <form
+        [formGroup]="workoutForm"
+        class="form-grid"
+        (click)="$event.stopPropagation()"
+        (keyup.enter)="$event.stopPropagation()"
+        (keydown.enter)="$event.stopPropagation()"
+      >
         <mat-form-field class="form-field form-title">
           <mat-label>Name override</mat-label>
           <input matInput type="text" formControlName="nameOverride" placeholder="Custom name" />

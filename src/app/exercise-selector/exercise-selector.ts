@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, output } from '@angular/core';
+import { Component, inject, OnInit, output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
@@ -40,7 +40,6 @@ interface FilterOption {
 
 @Component({
   selector: 'app-exercise-selector',
-  standalone: true,
   imports: [
     CommonModule,
     MatTableModule,
@@ -85,7 +84,7 @@ export class ExerciseSelectorComponent implements OnInit {
   filterableColumns: string[] = [];
 
   // Always displayed columns (not filterable)
-  staticColumns = ['IMAGE'];
+  staticColumns: string[] = ['IMAGE'];
   private resizingColumn: string | null = null;
   private startX = 0;
   private startWidth = 0;
@@ -128,7 +127,7 @@ export class ExerciseSelectorComponent implements OnInit {
       const valuesSet = new Set<string>();
 
       this.allExercises.forEach((exercise) => {
-        const value = (exercise as any)[column];
+        const value = this.getValue(exercise, column);
         if (value === null || value === undefined || value === '') return;
 
         if (typeof value === 'number') {
@@ -176,6 +175,11 @@ export class ExerciseSelectorComponent implements OnInit {
     return stripped.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
   }
 
+  // Safe accessor for dynamic column keys from the Exercise model
+  private getValue(exercise: Exercise, key: string): unknown {
+    return exercise[key as keyof Exercise] as unknown;
+  }
+
   applyFilters(): void {
     this.filteredExercises = this.allExercises.filter((exercise) => {
       // Check all filters
@@ -183,7 +187,7 @@ export class ExerciseSelectorComponent implements OnInit {
         const filter = this.filters[column];
         if (!filter) continue;
 
-        const exerciseValue = (exercise as any)[column];
+        const exerciseValue = this.getValue(exercise, column);
 
         if (filter.isNumeric) {
           const valueNum =
@@ -279,15 +283,15 @@ export class ExerciseSelectorComponent implements OnInit {
 
     this.filteredExercises = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
-      const aValue = (a as any)[sort.active];
-      const bValue = (b as any)[sort.active];
+      const aValue = this.getValue(a, sort.active);
+      const bValue = this.getValue(b, sort.active);
 
       return this.compare(aValue, bValue, isAsc);
     });
     this.pageIndex = 0;
   }
 
-  compare(a: any, b: any, isAsc: boolean): number {
+  compare(a: unknown, b: unknown, isAsc: boolean): number {
     // Handle null/undefined
     if (a === null || a === undefined) return isAsc ? -1 : 1;
     if (b === null || b === undefined) return isAsc ? 1 : -1;

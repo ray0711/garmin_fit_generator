@@ -9,24 +9,38 @@ import {
 } from './workout-builder/block';
 import { intensity } from '../types_auto/fitsdk_enums';
 
+interface WorkoutNode {
+  name: string;
+  sets?: number;
+  children?: WorkoutNode[];
+  selected?: boolean;
+  categoryGarmin?: string;
+  nameGarmin?: string;
+  intensity?: number;
+  target?: { durationSeconds?: number; calories?: number };
+  nameOverride?: string;
+}
+
 function buildBlocksFromJson(json: string): Block[] {
-  const data = JSON.parse(json) as any[];
-  const toBlock = (node: any): Block => {
+  const data = JSON.parse(json) as unknown[];
+  const toBlock = (node: WorkoutNode): Block => {
     if (node.name === 'Repeat') {
       const r = new RepeatBlock();
       r.sets = node.sets ?? 1;
-      r.children = (node.children ?? []).map((c: any) => toBlock(c));
+      r.children = (node.children ?? []).map((c: WorkoutNode) => toBlock(c));
       return r;
     }
     const w = new WorkoutBlock(
       node.name,
-      node.selected,
+      Boolean(node.selected),
+      false,
       node.categoryGarmin,
       node.nameGarmin,
       node.intensity ?? intensity.active,
     );
     // target
     if (node.target?.durationSeconds != null) {
+      // Store as seconds (encoder will convert to ms)
       w.target = new TargetTime(node.target.durationSeconds);
     } else if (node.target?.calories != null) {
       w.target = new TargetCalories(node.target.calories);
@@ -34,16 +48,25 @@ function buildBlocksFromJson(json: string): Block[] {
     w.nameOverride = node.nameOverride ?? node.name;
     return w;
   };
-  return data.map(toBlock);
+  return (data as WorkoutNode[]).map(toBlock);
 }
 
-function normalize(blocks: Block[]): any {
+function normalize(blocks: Block[]): (
+  | { name: 'Repeat'; sets: number; children: unknown }
+  | {
+      name: 'Workout';
+      nameOverride?: string;
+      categoryGarmin?: string;
+      intensity: number;
+      target: { durationSeconds: number } | { calories: number } | 'lap';
+    }
+)[] {
   return blocks.map((b) => {
     if (b instanceof RepeatBlock) {
       return { name: 'Repeat', sets: b.sets, children: normalize(b.children) };
     }
     const w = b as WorkoutBlock;
-    const target: any =
+    const target: { durationSeconds: number } | { calories: number } | 'lap' =
       w.target instanceof TargetTime
         ? { durationSeconds: w.target.durationSeconds }
         : w.target instanceof TargetCalories
@@ -52,7 +75,6 @@ function normalize(blocks: Block[]): any {
     return {
       name: 'Workout',
       nameOverride: w.nameOverride,
-      nameGarmin: w.nameGarmin,
       categoryGarmin: w.categoryGarmin,
       intensity: w.intensity,
       target,

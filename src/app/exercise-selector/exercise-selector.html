@@ -23,10 +23,10 @@
             </mat-form-field>
             <div *ngFor="let column of getOtherColumns()" class="filter-input">
               @if (isNumericColumn(column)) {
-                <label class="filter-label"
+                <span class="filter-label" [id]="column + '-range-label'"
                   >{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{
                     filters[column]?.end
-                  }}</label
+                  }}</span
                 >
                 <div class="slider-row">
                   <mat-slider
@@ -35,7 +35,7 @@
                     [min]="$any(filters[column]?.min) ?? 0"
                     [max]="$any(filters[column]?.max) ?? 100"
                     [step]="1"
-                    aria-label="{{ filters[column]?.label }} range"
+                    [attr.aria-labelledby]="column + '-range-label'"
                   >
                     <input
                       matSliderStartThumb
@@ -81,10 +81,10 @@
           <div class="filter-row">
             <div *ngFor="let column of getMuscleColumns()" class="filter-input">
               @if (isNumericColumn(column)) {
-                <label class="filter-label"
+                <span class="filter-label" [id]="column + '-muscle-range-label'"
                   >{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{
                     filters[column]?.end
-                  }}</label
+                  }}</span
                 >
                 <div class="slider-row">
                   <mat-slider
@@ -93,7 +93,7 @@
                     [min]="$any(filters[column]?.min) ?? 0"
                     [max]="$any(filters[column]?.max) ?? 100"
                     [step]="1"
-                    aria-label="{{ filters[column]?.label }} range"
+                    [attr.aria-labelledby]="column + '-muscle-range-label'"
                   >
                     <input
                       matSliderStartThumb
@@ -138,11 +138,13 @@
             <div *ngFor="let column of getEquipmentColumns()" class="filter-input">
               @if (isNumericColumn(column)) {
                 @if (filters[column]?.isBinary) {
-                  <label class="filter-label">{{ filters[column]?.label }}</label>
+                  <span class="filter-label" [id]="column + '-binary-toggle-label'">{{
+                    filters[column]?.label
+                  }}</span>
                   <mat-button-toggle-group
                     [value]="$any(filters[column]?.binaryState ?? 'any')"
                     (change)="filters[column].binaryState = $any($event.value); applyFilters()"
-                    aria-label="{{ filters[column]?.label }} toggle"
+                    [attr.aria-labelledby]="column + '-binary-toggle-label'"
                     name="{{ column }}-toggle"
                   >
                     <mat-button-toggle value="any" aria-label="Any">Any</mat-button-toggle>
@@ -150,10 +152,10 @@
                     <mat-button-toggle value="no" aria-label="No">No</mat-button-toggle>
                   </mat-button-toggle-group>
                 } @else {
-                  <label class="filter-label"
+                  <span class="filter-label" [id]="column + '-equip-range-label'"
                     >{{ filters[column]?.label }}: {{ filters[column]?.start }}–{{
                       filters[column]?.end
-                    }}</label
+                    }}</span
                   >
                   <div class="slider-row">
                     <mat-slider

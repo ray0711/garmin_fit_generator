@@ -213,7 +213,7 @@ export class Control {
     return 'lap';
   }
 
-  toggleSelected($event: MouseEvent) {
+  toggleSelected($event: Event) {
     $event.stopPropagation();
     const b = this.block()?.clone();
     if (b) {

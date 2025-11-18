@@ -25,7 +25,7 @@ function camelToScreamingSnake(input: string): string {
 function resolveExerciseName(categoryKey: string, exerciseNumber: number | undefined): string {
   if (exerciseNumber == null) return '';
   const mapKey = `${categoryKey}ExerciseName`;
-  const exerciseMap = (Profile.types as any)[mapKey];
+  const exerciseMap = (Profile.types as Record<string, Record<number, string> | undefined>)[mapKey];
   if (!exerciseMap) return '';
   return exerciseMap[exerciseNumber] ?? '';
 }
@@ -90,7 +90,8 @@ export class FitDecoder {
       const targetType = step.targetType;
       let target: Target;
       if (durationType === WktStepDuration.time) {
-        target = new TargetTime(Math.max(0, step.durationValue ?? 0));
+        const duration = step.durationValue ?? 0;
+        target = new TargetTime(Math.max(0, duration / 1000));
       } else if (durationType === WktStepDuration.reps) {
         target = new TargetReps(Math.max(0, step.durationValue ?? 0), step.exerciseWeight ?? 0);
       } else if (durationType === WktStepDuration.calories) {
