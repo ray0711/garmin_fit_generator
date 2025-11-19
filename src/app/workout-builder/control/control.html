@@ -39,8 +39,7 @@
       </mat-slide-toggle>
 
       @if (autoRestBlock()) {
-      <app-step-target [workoutBlock]="autoRestBlock()" (workoutBlockChange)="updateAutoRest($event)"
-        class="step-target" />
+      <app-control [block]="autoRestBlock()" (blockChange)="updateAutoRest($event)" (deleteMe)="toggleAutoRest()" />
       }
     </div>
     }

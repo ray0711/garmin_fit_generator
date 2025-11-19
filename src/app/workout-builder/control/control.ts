@@ -78,6 +78,7 @@ interface WorkoutFormShape {
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
     MatExpansionPanelDescription,
+    Control,
   ],
   templateUrl: './control.html',
   styleUrl: './control.scss',
@@ -240,8 +241,8 @@ export class Control {
     }
   }
 
-  updateAutoRest(autoRest: WorkoutBlock | undefined) {
-    if (!autoRest) return;
+  updateAutoRest(autoRest: Block | undefined) {
+    if (!autoRest || !(autoRest instanceof WorkoutBlock)) return;
     const b = this.block()?.clone();
     if (b instanceof RepeatBlock) {
       b.autoRest = autoRest;
