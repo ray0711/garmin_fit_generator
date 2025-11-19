@@ -121,10 +121,24 @@ export class FitEncoder {
   getWorkoutStepMessage(block: Block): WORKOUT_STEP_AND_TITLE[] {
     if (block instanceof RepeatBlock) {
       // Emit children first, then a repeat marker that repeats the previous N steps "sets" times
-      const childrenMsgs = block.children.flatMap((child) => this.getWorkoutStepMessage(child));
+      let childrenMsgs: WORKOUT_STEP_AND_TITLE[] = [];
+      const autoRest = block.autoRest;
+      if (autoRest) {
+        childrenMsgs = block.children.flatMap((child) => {
+          const childSteps = this.getWorkoutStepMessage(child);
+          const restSteps = this.getWorkoutStepMessage(autoRest);
+          return [...childSteps, ...restSteps];
+        });
+      } else {
+        childrenMsgs = block.children.flatMap((child) => this.getWorkoutStepMessage(child));
+      }
+
       return [
         ...childrenMsgs,
-        { workoutStep: this.getRepeatMessage(block), exerciseTitle: undefined },
+        {
+          workoutStep: this.getRepeatMessage(block, childrenMsgs.length),
+          exerciseTitle: undefined,
+        },
       ];
     } else {
       const w = block as WorkoutBlock;
@@ -187,12 +201,12 @@ export class FitEncoder {
     }
   }
 
-  getRepeatMessage(block: RepeatBlock): Message_WORKOUT_STEP {
+  getRepeatMessage(block: RepeatBlock, stepCount: number): Message_WORKOUT_STEP {
     // Repeat the last N steps (children count) for the given number of sets
     return {
       mesgNum: MesgNum.WORKOUT_STEP,
       durationType: WktStepDuration.repeatUntilStepsCmplt,
-      durationValue: block.children.length,
+      durationValue: stepCount,
       targetType: WktStepTarget.open,
       targetValue: Math.max(1, Math.floor(block.sets)),
     } as Message_WORKOUT_STEP;

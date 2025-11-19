@@ -1,7 +1,7 @@
 import Decoder from '../types_generated/decoder.js';
 import Stream from '../types_generated/stream.js';
 import { Message_EXERCISE_TITLE, Message_WORKOUT_STEP } from '../types_auto/MessageTypes';
-import { ExerciseCategory, WktStepDuration, WktStepTarget } from '../types_auto/fitsdk_enums';
+import { ExerciseCategory, WktStepDuration, WktStepTarget, intensity } from '../types_auto/fitsdk_enums';
 import {
   Block,
   RepeatBlock,
@@ -59,7 +59,40 @@ export class FitDecoder {
         const children = stack.splice(stack.length - count, count);
         const repeat = new RepeatBlock();
         repeat.sets = sets;
-        repeat.children = children;
+
+        // Heuristic: Check if children follow [Step, Rest, Step, Rest...] pattern
+        // 1. Must have even number of children (pairs of Step+Rest)
+        // 2. Must have at least 2 children
+        if (children.length > 0 && children.length % 2 === 0) {
+          const firstRest = children[1];
+          // Check if the potential rest block is actually a rest
+          if (
+            firstRest instanceof WorkoutBlock &&
+            firstRest.intensity === intensity.rest
+          ) {
+            // Verify all even indices (0, 2, 4...) are steps and odd indices (1, 3, 5...) are identical rests
+            const isAutoRestPattern = children.every((child, index) => {
+              if (index % 2 === 1) {
+                // Odd index: must match the first rest block
+                return child.equals(firstRest);
+              }
+              return true; // Even index: can be any step
+            });
+
+            if (isAutoRestPattern) {
+              repeat.autoRest = firstRest;
+              // Filter out the rest blocks, keeping only the steps
+              repeat.children = children.filter((_, index) => index % 2 === 0);
+            } else {
+              repeat.children = children;
+            }
+          } else {
+            repeat.children = children;
+          }
+        } else {
+          repeat.children = children;
+        }
+
         stack.push(repeat);
         continue;
       }
