@@ -133,8 +133,8 @@ export class WorkoutBuilder {
       } else if (itemBeforeParent && !(moving.block instanceof RepeatBlock)) {
         console.log(
           'inserting into parent at index: ' +
-            itemBeforeParent.children.indexOf(itemBefore.block) +
-            1,
+          itemBeforeParent.children.indexOf(itemBefore.block) +
+          1,
         );
         itemBeforeParent.children.splice(
           itemBeforeParent.children.indexOf(itemBefore.block) + 1,
@@ -191,6 +191,15 @@ export class WorkoutBuilder {
         const clone = blockLevel.block.clone();
         clone.target = this.templateTarget().target;
         this.updateBlockInWorkout(clone);
+      } else if (
+        blockLevel.block instanceof RepeatBlock &&
+        blockLevel.block.autoRest?.selected
+      ) {
+        const clone = blockLevel.block.clone();
+        if (clone.autoRest) {
+          clone.autoRest.target = this.templateTarget().target;
+          this.updateBlockInWorkout(clone);
+        }
       }
     }
   }
