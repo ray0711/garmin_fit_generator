@@ -24,6 +24,7 @@ export class RepeatBlock implements BasicBlock {
   sets = 2;
   children: Block[] = [];
   opened = false;
+  autoRest?: WorkoutBlock;
   equals(other: Block): boolean {
     return (
       other instanceof RepeatBlock &&
@@ -31,15 +32,24 @@ export class RepeatBlock implements BasicBlock {
       other.sets == this.sets &&
       other.children.length == this.children.length &&
       other.children.every((child, index) => child.equals(this.children[index])) &&
-      this.opened == other.opened
+      this.opened == other.opened &&
+      (this.autoRest ? this.autoRest.equals(other.autoRest) : other.autoRest == undefined)
     );
   }
-  constructor(name?: string, sets?: number, children?: Block[], opened?: boolean, uuid?: string) {
+  constructor(
+    name?: string,
+    sets?: number,
+    children?: Block[],
+    opened?: boolean,
+    uuid?: string,
+    autoRest?: WorkoutBlock,
+  ) {
     if (name) this.name = name;
     if (sets) this.sets = sets;
     if (children) this.children = children;
     if (opened) this.opened = opened;
     if (uuid) this.uuid = uuid;
+    if (autoRest) this.autoRest = autoRest;
   }
   cloneWithNewUuid() {
     const repeatBlock = this.clone();
@@ -53,6 +63,7 @@ export class RepeatBlock implements BasicBlock {
       this.children.map((child) => child.clone()),
       this.opened,
       this.uuid,
+      this.autoRest ? this.autoRest.clone() : undefined,
     );
   }
   flat(level: number): BlockLevel[] {
@@ -75,7 +86,7 @@ interface BaseTarget {
 }
 
 export class TargetTime implements BaseTarget {
-  constructor(public durationSeconds: number) {}
+  constructor(public durationSeconds: number) { }
   equals(other: Target | undefined): boolean {
     if (other == undefined) return false;
     if (other instanceof TargetTime) {
@@ -89,7 +100,7 @@ export class TargetReps implements BaseTarget {
   constructor(
     public reps: number,
     public weight: number,
-  ) {}
+  ) { }
   equals(other: Target | undefined): boolean {
     if (other == undefined) return false;
     if (other instanceof TargetReps) {
@@ -103,7 +114,7 @@ export class HeartRateTarget implements BaseTarget {
   constructor(
     public heartRate: number,
     public type: 'above' | 'below',
-  ) {}
+  ) { }
   equals(other: Target | undefined): boolean {
     if (other == undefined) return false;
     if (other instanceof HeartRateTarget) {
@@ -114,7 +125,7 @@ export class HeartRateTarget implements BaseTarget {
 }
 
 export class TargetCalories implements BaseTarget {
-  constructor(public calories: number) {}
+  constructor(public calories: number) { }
   equals(other: Target | undefined): boolean {
     if (other == undefined) return false;
     if (other instanceof TargetCalories) {

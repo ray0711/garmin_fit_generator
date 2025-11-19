@@ -25,6 +25,7 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import { StepTarget } from '../step-target/step-target';
 import { MatIcon } from '@angular/material/icon';
@@ -69,6 +70,7 @@ interface WorkoutFormShape {
     MatInput,
     MatSelect,
     MatOption,
+    MatSlideToggle,
     CdkDragHandle,
     StepTarget,
     MatIcon,
@@ -121,6 +123,10 @@ export class Control {
   readonly isRepeat = computed(() => this.block() instanceof RepeatBlock);
   readonly isWorkout = computed(() => this.block() instanceof WorkoutBlock);
   workoutOrUndefined = this.block as ModelSignal<WorkoutBlock | undefined>;
+  autoRestBlock = computed(() => {
+    const b = this.block();
+    return b instanceof RepeatBlock ? b.autoRest : undefined;
+  });
 
   // Intensity options for select
   readonly intensityOptions: readonly { label: string; value: intensity }[] = [
@@ -218,6 +224,27 @@ export class Control {
     const b = this.block()?.clone();
     if (b) {
       b.selected = !b.selected;
+      this.block.set(b);
+    }
+  }
+
+  toggleAutoRest() {
+    const b = this.block()?.clone();
+    if (b instanceof RepeatBlock) {
+      if (b.autoRest) {
+        b.autoRest = undefined;
+      } else {
+        b.autoRest = new WorkoutBlock('Rest', false, false, undefined, undefined, intensity.rest);
+      }
+      this.block.set(b);
+    }
+  }
+
+  updateAutoRest(autoRest: WorkoutBlock | undefined) {
+    if (!autoRest) return;
+    const b = this.block()?.clone();
+    if (b instanceof RepeatBlock) {
+      b.autoRest = autoRest;
       this.block.set(b);
     }
   }
