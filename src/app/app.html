@@ -28,15 +28,8 @@
     <mat-step label="Build Workout" completed="false">
       <app-workout-builder
         [selectedExercise]="selectedExercise()"
-        [importWorkout]="importWorkout()"
         (workoutOutput)="currentWorkout.set($event)"
       ></app-workout-builder>
-    </mat-step>
-    <mat-step label="Import/Export Workout" completed="false">
-      <app-fit-control
-        [currentWorkout]="currentWorkout()"
-        (importWorkout)="onWorkoutSelected($event)"
-      />
     </mat-step>
   </mat-stepper>
 </main>

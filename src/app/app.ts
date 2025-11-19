@@ -1,6 +1,5 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FitControl } from './fit-control/fit-control';
 import { ExerciseSelectorComponent } from './exercise-selector/exercise-selector';
 import { WorkoutBuilder } from './workout-builder/workout-builder';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,7 +12,6 @@ import { MatStep, MatStepper, MatStepperIcon } from '@angular/material/stepper';
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    FitControl,
     ExerciseSelectorComponent,
     WorkoutBuilder,
     MatIcon,
@@ -29,12 +27,6 @@ export class App {
   private _snackBar = inject(MatSnackBar);
   selectedExercise = signal<Exercise | undefined>(undefined);
   currentWorkout = signal<Block[]>([]);
-  importWorkout = signal<Block[]>([]);
-
-  onWorkoutSelected(workout: Block[]): void {
-    this.importWorkout.set(workout);
-    this._snackBar.open('Workout loaded');
-  }
 
   onExerciseSelected(exercise: Exercise): void {
     this.selectedExercise.set(exercise);

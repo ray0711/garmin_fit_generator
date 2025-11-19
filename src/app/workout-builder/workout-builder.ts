@@ -30,6 +30,7 @@ import { StepTarget } from './step-target/step-target';
 import { MatIcon } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatFabButton } from '@angular/material/button';
+import { FitControl } from '../fit-control/fit-control';
 
 @Component({
   selector: 'app-workout-builder',
@@ -51,6 +52,7 @@ import { MatFabButton } from '@angular/material/button';
     MatCardActions,
     MatIcon,
     MatFabButton,
+    FitControl,
   ],
   templateUrl: './workout-builder.html',
   styleUrl: './workout-builder.scss',
@@ -232,5 +234,10 @@ export class WorkoutBuilder {
       block.target = this.templateTarget().target;
     }
     this.workout.set(this.workout().concat(block.cloneWithNewUuid()));
+  }
+
+  onWorkoutSelected(workout: Block[]): void {
+    this.workout.set([...workout]);
+    this._snackBar.open('Workout loaded');
   }
 }

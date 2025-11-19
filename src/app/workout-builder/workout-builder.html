@@ -30,6 +30,18 @@
 
   <div class="list-header">
     <h2>Workout</h2>
+    <mat-card appearance="outlined" style="margin-bottom: 16px;">
+      <mat-card-header>
+        <mat-card-title>Import / Export</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <app-fit-control
+          [currentWorkout]="workout()"
+          (importWorkout)="onWorkoutSelected($event)"
+        />
+      </mat-card-content>
+    </mat-card>
+
     <mat-tree
       [dataSource]="flatWorkoutOutput()"
       [trackBy]="treeTracker"
