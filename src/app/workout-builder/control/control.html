@@ -1,12 +1,17 @@
-<mat-expansion-panel [expanded]="block()?.opened" (opened)="openPanel()" (closed)="closePanel()" cdkDragHandle>
+<mat-expansion-panel
+  [expanded]="block()?.opened"
+  (opened)="openPanel()"
+  (closed)="closePanel()"
+  cdkDragHandle
+>
   <mat-expansion-panel-header>
     <mat-panel-title>
       <mat-icon aria-hidden="true" cdkDragHandle>drag_indicator</mat-icon>
       @if (isWorkout()) {
-      {{ this.workoutForm.get('nameOverride')?.value }}
+        {{ this.workoutForm.get('nameOverride')?.value }}
       }
       @if (isRepeat()) {
-      {{ block()?.name }}
+        {{ block()?.name }}
       }
     </mat-panel-title>
     <mat-panel-description>
@@ -14,11 +19,13 @@
       <div>
         <mat-icon aria-hidden="true" (click)="this.delete()">delete</mat-icon>
         @if (isWorkout()) {
-        @if (this.block()?.selected) {
-        <mat-icon aria-hidden="true" (click)="this.toggleSelected($event)">check_box</mat-icon>
-        } @else {
-        <mat-icon aria-hidden="true" (click)="this.toggleSelected($event)">check_box_outline_blank</mat-icon>
-        }
+          @if (this.block()?.selected) {
+            <mat-icon aria-hidden="true" (click)="this.toggleSelected($event)">check_box</mat-icon>
+          } @else {
+            <mat-icon aria-hidden="true" (click)="this.toggleSelected($event)"
+              >check_box_outline_blank</mat-icon
+            >
+          }
         }
       </div>
     </mat-panel-description>
@@ -27,48 +34,66 @@
   <div class="control" [class.selected]="this.block()?.selected">
     <div class="card-title" [title]="block()?.name">{{ block()?.name }}</div>
     @if (isRepeat()) {
-    <form [formGroup]="repeatForm" class="form-grid">
-      <mat-form-field class="form-field form-title">
-        <mat-label>Sets</mat-label>
-        <input matInput type="number" formControlName="sets" min="1" />
-      </mat-form-field>
+      <form [formGroup]="repeatForm" class="form-grid">
+        <mat-form-field class="form-field form-title">
+          <mat-label>Sets</mat-label>
+          <input matInput type="number" formControlName="sets" min="1" />
+        </mat-form-field>
 
-      <mat-slide-toggle [checked]="!!autoRestBlock()" (change)="toggleAutoRest()" (click)="$event.stopPropagation()"
-        class="auto-rest-toggle">
-        Auto Rest
-      </mat-slide-toggle>
-    </form>
+        <mat-slide-toggle
+          [checked]="!!autoRestBlock()"
+          (change)="toggleAutoRest()"
+          (click)="$event.stopPropagation()"
+          class="auto-rest-toggle"
+        >
+          Auto Rest
+        </mat-slide-toggle>
+      </form>
 
-    @if (autoRestBlock()) {
-    <div class="auto-rest-section">
-      <app-control [block]="autoRestBlock()" (blockChange)="updateAutoRest($event)" (deleteMe)="toggleAutoRest()" />
-    </div>
-    }
+      @if (autoRestBlock()) {
+        <div class="auto-rest-section">
+          <app-control
+            [block]="autoRestBlock()"
+            (blockChange)="updateAutoRest($event)"
+            (deleteMe)="toggleAutoRest()"
+          />
+        </div>
+      }
     }
 
     @if (isWorkout()) {
-    <form [formGroup]="workoutForm" class="form-grid" (click)="$event.stopPropagation()"
-      (keyup.enter)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()">
-      <mat-form-field class="form-field form-title">
-        <mat-label>Name override</mat-label>
-        <input matInput type="text" formControlName="nameOverride" placeholder="Custom name" />
-      </mat-form-field>
+      <form
+        [formGroup]="workoutForm"
+        class="form-grid"
+        (click)="$event.stopPropagation()"
+        (keyup.enter)="$event.stopPropagation()"
+        (keydown.enter)="$event.stopPropagation()"
+      >
+        <mat-form-field class="form-field form-title">
+          <mat-label>Name override</mat-label>
+          <input matInput type="text" formControlName="nameOverride" placeholder="Custom name" />
+        </mat-form-field>
 
-      <mat-form-field class="form-field">
-        <mat-label>Intensity</mat-label>
-        <mat-select formControlName="intensity">
-          @for (opt of intensityOptions; track opt.value) {
-          <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <app-step-target [(workoutBlock)]="this.workoutOrUndefined" class="step-target" />
-      <mat-form-field class="form-field form-notes">
-        <mat-label>Notes</mat-label>
-        <textarea matInput formControlName="notes" rows="1" aria-label="Workout step notes"
-          placeholder="Add notes or cues"></textarea>
-      </mat-form-field>
-    </form>
+        <mat-form-field class="form-field">
+          <mat-label>Intensity</mat-label>
+          <mat-select formControlName="intensity">
+            @for (opt of intensityOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <app-step-target [(workoutBlock)]="this.workoutOrUndefined" class="step-target" />
+        <mat-form-field class="form-field form-notes">
+          <mat-label>Notes</mat-label>
+          <textarea
+            matInput
+            formControlName="notes"
+            rows="1"
+            aria-label="Workout step notes"
+            placeholder="Add notes or cues"
+          ></textarea>
+        </mat-form-field>
+      </form>
     }
   </div>
 </mat-expansion-panel>

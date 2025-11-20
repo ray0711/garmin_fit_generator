@@ -1,7 +1,12 @@
 import Decoder from '../types_generated/decoder.js';
 import Stream from '../types_generated/stream.js';
 import { Message_EXERCISE_TITLE, Message_WORKOUT_STEP } from '../types_auto/MessageTypes';
-import { ExerciseCategory, WktStepDuration, WktStepTarget, intensity } from '../types_auto/fitsdk_enums';
+import {
+  ExerciseCategory,
+  WktStepDuration,
+  WktStepTarget,
+  intensity,
+} from '../types_auto/fitsdk_enums';
 import {
   Block,
   RepeatBlock,
@@ -66,10 +71,7 @@ export class FitDecoder {
         if (children.length > 0 && children.length % 2 === 0) {
           const firstRest = children[1];
           // Check if the potential rest block is actually a rest
-          if (
-            firstRest instanceof WorkoutBlock &&
-            firstRest.intensity === intensity.rest
-          ) {
+          if (firstRest instanceof WorkoutBlock && firstRest.intensity === intensity.rest) {
             // Verify all even indices (0, 2, 4...) are steps and odd indices (1, 3, 5...) are identical rests
             const isAutoRestPattern = children.every((child, index) => {
               if (index % 2 === 1) {

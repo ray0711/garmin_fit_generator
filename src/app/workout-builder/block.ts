@@ -86,7 +86,7 @@ interface BaseTarget {
 }
 
 export class TargetTime implements BaseTarget {
-  constructor(public durationSeconds: number) { }
+  constructor(public durationSeconds: number) {}
   equals(other: Target | undefined): boolean {
     if (other == undefined) return false;
     if (other instanceof TargetTime) {
@@ -100,7 +100,7 @@ export class TargetReps implements BaseTarget {
   constructor(
     public reps: number,
     public weight: number,
-  ) { }
+  ) {}
   equals(other: Target | undefined): boolean {
     if (other == undefined) return false;
     if (other instanceof TargetReps) {
@@ -114,7 +114,7 @@ export class HeartRateTarget implements BaseTarget {
   constructor(
     public heartRate: number,
     public type: 'above' | 'below',
-  ) { }
+  ) {}
   equals(other: Target | undefined): boolean {
     if (other == undefined) return false;
     if (other instanceof HeartRateTarget) {
@@ -125,7 +125,7 @@ export class HeartRateTarget implements BaseTarget {
 }
 
 export class TargetCalories implements BaseTarget {
-  constructor(public calories: number) { }
+  constructor(public calories: number) {}
   equals(other: Target | undefined): boolean {
     if (other == undefined) return false;
     if (other instanceof TargetCalories) {
