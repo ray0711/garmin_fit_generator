@@ -31,7 +31,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatFabButton } from '@angular/material/button';
 import { FitControl } from '../fit-control/fit-control';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 
 @Component({
@@ -58,6 +58,7 @@ import { MatInput } from '@angular/material/input';
     FitControl,
     MatFormField,
     MatLabel,
+    MatHint,
     MatInput,
   ],
   templateUrl: './workout-builder.html',

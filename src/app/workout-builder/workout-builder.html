@@ -37,7 +37,16 @@
       <mat-card-content>
         <mat-form-field style="width: 100%; margin-bottom: 16px">
           <mat-label>Workout Name</mat-label>
-          <input matInput type="text" [(ngModel)]="workoutName" placeholder="Enter workout name" />
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="workoutName"
+            placeholder="Enter workout name"
+            maxlength="255"
+          />
+          @if (workoutName().length >= 255) {
+            <mat-hint align="end">Maximum character limit reached (255)</mat-hint>
+          }
         </mat-form-field>
         <app-fit-control
           [currentWorkout]="workout()"

@@ -21,12 +21,13 @@ import {
 } from '../block';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { intensity } from '../../../types_auto/fitsdk_enums';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatLabel, MatHint, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { StepTarget } from '../step-target/step-target';
 import { MatIcon } from '@angular/material/icon';
 import {
@@ -68,11 +69,13 @@ interface WorkoutFormShape {
     ReactiveFormsModule,
     MatFormField,
     MatLabel,
+    MatHint,
     MatInput,
     MatSelect,
     MatOption,
     MatSlideToggle,
     CdkDragHandle,
+    CdkTextareaAutosize,
     StepTarget,
     MatIcon,
     MatExpansionPanel,
@@ -101,8 +104,14 @@ export class Control {
   // Workout form
   readonly workoutForm = this.fb.group<WorkoutFormShape>({
     name: this.fb.control<string>('', { nonNullable: true }),
-    nameOverride: this.fb.control<string>('', { nonNullable: true }),
-    notes: this.fb.control<string>('', { nonNullable: true }),
+    nameOverride: this.fb.control<string>('', {
+      nonNullable: true,
+      validators: [Validators.maxLength(255)],
+    }),
+    notes: this.fb.control<string>('', {
+      nonNullable: true,
+      validators: [Validators.maxLength(255)],
+    }),
     intensity: this.fb.control<intensity>(intensity.active, { nonNullable: true }),
     targetType: this.fb.control<TargetType>('time', { nonNullable: true }),
     // time
@@ -126,8 +135,8 @@ export class Control {
   readonly isWorkout = computed(() => this.block() instanceof WorkoutBlock);
   readonly nameOverrideLabel = computed(() => {
     const b = this.block();
-    if(b instanceof WorkoutBlock){
-      if(b.nameOverride.trim() !== b.name.trim()) return ` for: ${b.nameGarmin}`;
+    if (b instanceof WorkoutBlock) {
+      if (b.nameOverride.trim() !== b.name.trim()) return ` for: ${b.nameGarmin}`;
     }
     return '';
   });
