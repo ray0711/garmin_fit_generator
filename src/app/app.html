@@ -1,5 +1,5 @@
 <main class="main">
-  <mat-stepper [linear]="false" #stepper>
+  <mat-stepper [linear]="false" #stepper (selectionChange)="onStepChange($event)">
     <!-- Custom stepper icons -->
     <!--    <ng-template matStepperIcon="edit">-->
     <!--      <mat-icon aria-label="Edit step">add</mat-icon>-->
