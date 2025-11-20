@@ -18,7 +18,7 @@ import { MatTree, MatTreeNode, MatTreeNodeDef } from '@angular/material/tree';
 import { Exercise } from '../Exercise';
 import { intensity } from '../../types_auto/fitsdk_enums';
 import { ExerciseControl } from './exercise/exercise-control.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
   MatCard,
   MatCardActions,
@@ -31,6 +31,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatFabButton } from '@angular/material/button';
 import { FitControl } from '../fit-control/fit-control';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-workout-builder',
@@ -44,6 +46,7 @@ import { FitControl } from '../fit-control/fit-control';
     CdkDropListGroup,
     ExerciseControl,
     ReactiveFormsModule,
+    FormsModule,
     MatCard,
     MatCardHeader,
     MatCardTitle,
@@ -53,6 +56,9 @@ import { FitControl } from '../fit-control/fit-control';
     MatIcon,
     MatFabButton,
     FitControl,
+    MatFormField,
+    MatLabel,
+    MatInput,
   ],
   templateUrl: './workout-builder.html',
   styleUrl: './workout-builder.scss',
@@ -73,6 +79,7 @@ export class WorkoutBuilder {
   buildingBlocks: Block[] = this.staticBuildingBlocks.concat(this.dynamicBuildingBlocks);
 
   workout = signal<Block[]>([]);
+  workoutName = signal<string>('');
   workoutOutput = output<Block[]>();
   flatWorkoutOutput = computed(() => this.flatWorkout(this.workout()));
 

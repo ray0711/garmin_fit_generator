@@ -19,4 +19,15 @@ describe('WorkoutBuilder', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('workoutName', () => {
+    it('should initialize workoutName signal with empty string', () => {
+      expect(component.workoutName()).toBe('');
+    });
+
+    it('should update workoutName signal when set', () => {
+      component.workoutName.set('Test Workout');
+      expect(component.workoutName()).toBe('Test Workout');
+    });
+  });
 });

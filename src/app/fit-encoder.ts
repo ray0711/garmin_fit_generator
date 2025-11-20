@@ -253,7 +253,7 @@ export class FitEncoder {
     } as Message_EXERCISE_TITLE;
   }
 
-  public encode(workout: Block[]): Uint8Array {
+  public encode(workout: Block[], workoutName: string = ''): Uint8Array {
     const encoder = new Encoder();
     let workoutstepandtitles: WORKOUT_STEP_AND_TITLE[] = [];
 
@@ -272,7 +272,7 @@ export class FitEncoder {
         workoutstepandtitles.length,
         Sport.training,
         SubSport.strengthTraining,
-        'test ' + new Date().toISOString(),
+        workoutName || 'Workout',
         'description: ' + new Date().toISOString(),
       ),
     );

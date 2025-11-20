@@ -92,8 +92,43 @@ describe('FitDecoder', () => {
     const encoder = new FitEncoder();
     const bytes = encoder.encode(original);
 
-    const decoded = FitDecoder.decode(bytes);
+    const result = FitDecoder.decode(bytes);
 
-    expect(normalize(decoded)).toEqual(normalize(original));
+    expect(normalize(result.blocks)).toEqual(normalize(original));
+  });
+
+  describe('workoutName extraction', () => {
+    it('should return object with blocks and workoutName', () => {
+      const encoder = new FitEncoder();
+      const bytes = encoder.encode([], 'Test Workout');
+
+      const result = FitDecoder.decode(bytes);
+
+      expect(result).toEqual(
+        jasmine.objectContaining({
+          blocks: jasmine.any(Array),
+          workoutName: jasmine.any(String),
+        }),
+      );
+    });
+
+    it('should extract workoutName from encoded FIT file', () => {
+      const encoder = new FitEncoder();
+      const workoutName = 'My Custom Workout';
+      const bytes = encoder.encode([], workoutName);
+
+      const result = FitDecoder.decode(bytes);
+
+      expect(result.workoutName).toBe(workoutName);
+    });
+
+    it('should return default name when no workout name provided', () => {
+      const encoder = new FitEncoder();
+      const bytes = encoder.encode([]);
+
+      const result = FitDecoder.decode(bytes);
+
+      expect(result.workoutName).toBe('Workout');
+    });
   });
 });

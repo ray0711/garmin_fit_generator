@@ -35,7 +35,16 @@
         <mat-card-title>Import / Export</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <app-fit-control [currentWorkout]="workout()" (importWorkout)="onWorkoutSelected($event)" />
+        <mat-form-field style="width: 100%; margin-bottom: 16px">
+          <mat-label>Workout Name</mat-label>
+          <input matInput type="text" [(ngModel)]="workoutName" placeholder="Enter workout name" />
+        </mat-form-field>
+        <app-fit-control
+          [currentWorkout]="workout()"
+          [workoutName]="workoutName()"
+          (importWorkout)="onWorkoutSelected($event)"
+          (workoutNameChange)="workoutName.set($event)"
+        />
       </mat-card-content>
     </mat-card>
 

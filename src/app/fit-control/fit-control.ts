@@ -13,16 +13,22 @@ import FitDecoder from '../fit-decoder';
 })
 export class FitControl {
   currentWorkout = input<Block[]>([]);
+  workoutName = input<string>('');
   importWorkout = output<Block[]>();
+  workoutNameChange = output<string>();
 
   download(): void {
     const fitEncode: FitEncoder = new FitEncoder();
-    const fitFile: Uint8Array<ArrayBufferLike> = fitEncode.encode(this.currentWorkout());
+    const fitFile: Uint8Array<ArrayBufferLike> = fitEncode.encode(
+      this.currentWorkout(),
+      this.workoutName(),
+    );
     const a = document.createElement('a');
     const buffer = fitFile.buffer as ArrayBuffer;
     const objectUrl = URL.createObjectURL(new Blob([buffer], { type: 'application/octet-stream' }));
     a.href = objectUrl;
-    a.download = 'file.fit';
+    const filename = this.workoutName() ? `${this.workoutName()}.fit` : 'workout.fit';
+    a.download = filename;
     a.click();
     URL.revokeObjectURL(objectUrl);
   }
@@ -39,8 +45,11 @@ export class FitControl {
       }
       const arrayBuffer = await file.arrayBuffer();
       const bytes = new Uint8Array(arrayBuffer);
-      const blocks = FitDecoder.decode(bytes);
-      this.importWorkout.emit(blocks);
+      const result = FitDecoder.decode(bytes);
+      this.importWorkout.emit(result.blocks);
+      if (result.workoutName) {
+        this.workoutNameChange.emit(result.workoutName);
+      }
     } catch (e) {
       console.error('Failed to decode FIT file:', e);
     } finally {

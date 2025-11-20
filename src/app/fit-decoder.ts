@@ -1,6 +1,10 @@
 import Decoder from '../types_generated/decoder.js';
 import Stream from '../types_generated/stream.js';
-import { Message_EXERCISE_TITLE, Message_WORKOUT_STEP } from '../types_auto/MessageTypes';
+import {
+  Message_EXERCISE_TITLE,
+  Message_WORKOUT,
+  Message_WORKOUT_STEP,
+} from '../types_auto/MessageTypes';
 import {
   ExerciseCategory,
   WktStepDuration,
@@ -36,7 +40,7 @@ function resolveExerciseName(categoryKey: string, exerciseNumber: number | undef
 }
 
 export class FitDecoder {
-  public static decode(data: Uint8Array | number[]): Block[] {
+  public static decode(data: Uint8Array | number[]): { blocks: Block[]; workoutName: string } {
     const byteArr: number[] = Array.isArray(data)
       ? (data as number[])
       : Array.from(data as Uint8Array);
@@ -50,6 +54,11 @@ export class FitDecoder {
     const titleMessages: Message_EXERCISE_TITLE[] = (messages['exerciseTitleMesgs'] ??
       messages['exercise_title'] ??
       []) as Message_EXERCISE_TITLE[];
+    const workoutMessages: Message_WORKOUT[] = (messages['workoutMesgs'] ??
+      messages['workout'] ??
+      []) as Message_WORKOUT[];
+
+    const workoutName = workoutMessages[0]?.wktName ?? '';
 
     // Some decoders return camelCase arrays, some snake_case; normalize above.
     const titlesQueue = [...titleMessages];
@@ -161,7 +170,7 @@ export class FitDecoder {
       stack.push(wb);
     }
 
-    return stack;
+    return { blocks: stack, workoutName };
   }
 }
 

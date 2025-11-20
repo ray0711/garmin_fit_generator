@@ -72,7 +72,8 @@ describe('FIT round-trip for full Exercise Library', () => {
     const bytes = encoder.encode(originalBlocks);
 
     // Simulate download/upload by decoding the bytes back into blocks
-    const decodedBlocks = FitDecoder.decode(bytes);
+    const result = FitDecoder.decode(bytes);
+    const decodedBlocks = result.blocks;
 
     // Compare by Garmin identifiers and order
     const orig = normalizeForCompare(originalBlocks);
