@@ -1,59 +1,70 @@
-# GarminWorkoutGenerator
+# Garmin Workout Generator
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.5.
+A web application for creating custom strength training workouts compatible with Garmin devices. Built with Angular and designed to generate FIT files that can be imported into Garmin Connect.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- **Exercise Library**: Browse and select from Garmin's complete exercise library with advanced filtering
+- **Workout Builder**: Drag-and-drop interface to build custom workouts with repeats and rest periods
+- **Angular Material UI**: Modern, responsive interface following Material Design principles
+- **FIT File Export**: Generate Garmin-compatible FIT files with custom workout names
+- **FIT File Import**: Load existing workouts from FIT files for editing
+- **URL-based Navigation**: Direct navigation to specific steps via URL
 
-```bash
-ng serve
-```
+## Development
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+This project was built using various Vibe and Agent tools. You might notice from the interesting code style.
 
-## Code scaffolding
+### Prerequisites
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Node.js and npm
+- Angular CLI
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+### Getting Started
 
 ```bash
-ng build
+# Install dependencies
+npm install
+
+# Start development server
+npm run start
+
+# Run tests
+npm run test
+
+# Format code
+npm run prettier
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The application will be available at `http://localhost:4200/`
 
-## Running unit tests
+### Navigation
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- `/exercises` - Browse and select exercises from the Garmin library
+- `/workout` - Build your custom workout
 
-```bash
-ng test
-```
+## Technology Stack
 
-## Running end-to-end tests
+- **Angular 20** - Modern web framework with standalone components
+- **Angular Material** - UI component library
+- **TypeScript** - Type-safe development
+- **FIT SDK** - Garmin FIT file encoding/decoding
+- **Karma/Jasmine** - Testing framework
 
-For end-to-end (e2e) testing, run:
+## Project Structure
 
-```bash
-ng e2e
-```
+- `src/app/exercise-selector/` - Exercise browsing and filtering
+- `src/app/workout-builder/` - Workout creation interface
+- `src/app/fit-control/` - FIT file import/export functionality
+- `src/app/fit-encoder.ts` - FIT file encoding logic
+- `src/app/fit-decoder.ts` - FIT file decoding logic
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Disclaimer
 
-## Additional Resources
+⚠️ **Use at your own risk!** This software is provided as-is with no warranties whatsoever. It might break your watch, your life, or anything else. 
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+That said... it works for me! 😊
+
+## Important Notes
+
+📱 **USB Import Required**: The created FIT file needs to be imported directly via USB to your Garmin watch. Garmin doesn't support importing custom workouts via Garmin Connect - you must transfer the file manually to your device.
