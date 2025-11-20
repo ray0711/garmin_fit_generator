@@ -40,14 +40,24 @@
           <input matInput type="number" formControlName="sets" min="1" />
         </mat-form-field>
 
-        <mat-slide-toggle
-          [checked]="!!autoRestBlock()"
-          (change)="toggleAutoRest()"
-          (click)="$event.stopPropagation()"
-          class="auto-rest-toggle"
-        >
-          Auto Rest
-        </mat-slide-toggle>
+        <div class="auto-rest-row">
+          <mat-slide-toggle
+            [checked]="!!autoRestBlock()"
+            (change)="toggleAutoRest()"
+            (click)="$event.stopPropagation()"
+            class="auto-rest-toggle"
+          >
+            Auto Rest
+          </mat-slide-toggle>
+          <mat-icon
+            class="info-icon"
+            matTooltip="Auto-rest generates a rest period after each workout in the repeat"
+            matTooltipPosition="right"
+            aria-label="Auto-rest information"
+          >
+            info
+          </mat-icon>
+        </div>
       </form>
 
       @if (autoRestBlock()) {
@@ -70,7 +80,7 @@
         (keydown.enter)="$event.stopPropagation()"
       >
         <mat-form-field class="form-field form-title">
-          <mat-label>Name override</mat-label>
+          <mat-label>Name override{{this.nameOverrideLabel()}}</mat-label>
           <input matInput type="text" formControlName="nameOverride" placeholder="Custom name" />
         </mat-form-field>
 

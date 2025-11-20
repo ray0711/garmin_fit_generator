@@ -35,6 +35,7 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
+import { MatTooltip } from '@angular/material/tooltip';
 
 export type TargetType = 'time' | 'reps' | 'lap' | 'calories' | 'hr';
 export type HrType = 'above' | 'below';
@@ -78,7 +79,7 @@ interface WorkoutFormShape {
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
     MatExpansionPanelDescription,
-    Control,
+    MatTooltip,
   ],
   templateUrl: './control.html',
   styleUrl: './control.scss',
@@ -123,6 +124,13 @@ export class Control {
   // Helpers to switch UI based on block subtype
   readonly isRepeat = computed(() => this.block() instanceof RepeatBlock);
   readonly isWorkout = computed(() => this.block() instanceof WorkoutBlock);
+  readonly nameOverrideLabel = computed(() => {
+    const b = this.block();
+    if(b instanceof WorkoutBlock){
+      if(b.nameOverride.trim() !== b.name.trim()) return ` for: ${b.nameGarmin}`;
+    }
+    return '';
+  });
   workoutOrUndefined = this.block as ModelSignal<WorkoutBlock | undefined>;
   autoRestBlock = computed(() => {
     const b = this.block();
