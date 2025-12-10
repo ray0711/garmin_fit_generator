@@ -118,25 +118,31 @@ export class FitEncoder {
     return target instanceof HeartRateTarget;
   }
 
-  getWorkoutStepMessage(block: Block): WORKOUT_STEP_AND_TITLE[] {
+  getWorkoutStepMessage(block: Block, currentPos: number): WORKOUT_STEP_AND_TITLE[] {
     if (block instanceof RepeatBlock) {
       // Emit children first, then a repeat marker that repeats the previous N steps "sets" times
-      let childrenMsgs: WORKOUT_STEP_AND_TITLE[] = [];
+      let childrenMsgs: WORKOUT_STEP_AND_TITLE[];
       const autoRest = block.autoRest;
       if (autoRest) {
-        childrenMsgs = block.children.flatMap((child) => {
-          const childSteps = this.getWorkoutStepMessage(child);
-          const restSteps = this.getWorkoutStepMessage(autoRest);
+        childrenMsgs = block.children.flatMap((child, index) => {
+          const childSteps = this.getWorkoutStepMessage(child, currentPos + index);
+          const restSteps = this.getWorkoutStepMessage(autoRest, currentPos + index + 1);
           return [...childSteps, ...restSteps];
         });
       } else {
-        childrenMsgs = block.children.flatMap((child) => this.getWorkoutStepMessage(child));
+        childrenMsgs = block.children.flatMap((child, index) =>
+          this.getWorkoutStepMessage(child, currentPos + index),
+        );
       }
 
       return [
         ...childrenMsgs,
         {
-          workoutStep: this.getRepeatMessage(block, childrenMsgs.length),
+          workoutStep: this.getRepeatMessage(
+            block,
+            currentPos + childrenMsgs.length,
+            childrenMsgs.length,
+          ),
           exerciseTitle: undefined,
         },
       ];
@@ -150,7 +156,7 @@ export class FitEncoder {
       // Base message with exercise metadata
       const workoutStepMessage: Message_WORKOUT_STEP = {
         mesgNum: MesgNum.WORKOUT_STEP,
-        messageIndex: undefined,
+        messageIndex: currentPos,
         wktStepName: w.name,
         exerciseCategory: exerciseCategory,
         exerciseName: exerciseName,
@@ -201,14 +207,21 @@ export class FitEncoder {
     }
   }
 
-  getRepeatMessage(block: RepeatBlock, stepCount: number): Message_WORKOUT_STEP {
-    // Repeat the last N steps (children count) for the given number of sets
+  getRepeatMessage(
+    block: RepeatBlock,
+    currentPos: number,
+    stepCount: number,
+  ): Message_WORKOUT_STEP {
+    // Repeat the last stepCount steps (children count) for the given number of sets
+    const jumpBackToMessageIndex = currentPos - stepCount;
+    console.log('jumpBackToMessageIndex', jumpBackToMessageIndex);
     return {
       mesgNum: MesgNum.WORKOUT_STEP,
       durationType: WktStepDuration.repeatUntilStepsCmplt,
-      durationValue: stepCount,
+      durationValue: jumpBackToMessageIndex,
       targetType: WktStepTarget.open,
       targetValue: Math.max(1, Math.floor(block.sets)),
+      messageIndex: currentPos,
     } as Message_WORKOUT_STEP;
   }
 
@@ -253,7 +266,7 @@ export class FitEncoder {
     } as Message_EXERCISE_TITLE;
   }
 
-  public encode(workout: Block[], workoutName: string = ''): Uint8Array {
+  public encode(workout: Block[], workoutName = ''): Uint8Array {
     const encoder = new Encoder();
     let workoutstepandtitles: WORKOUT_STEP_AND_TITLE[] = [];
 
@@ -261,10 +274,9 @@ export class FitEncoder {
     encoder.writeMesg(this.getFileCreatorMessage());
 
     for (const block of workout) {
-      workoutstepandtitles = workoutstepandtitles.concat(this.getWorkoutStepMessage(block));
-    }
-    for (let i = 0; i < workoutstepandtitles.length; i++) {
-      workoutstepandtitles[i].workoutStep.messageIndex = i;
+      let pos = 0;
+      workoutstepandtitles = workoutstepandtitles.concat(this.getWorkoutStepMessage(block, pos));
+      pos = workoutstepandtitles[workoutstepandtitles.length - 1].workoutStep.messageIndex + 1;
     }
 
     encoder.writeMesg(

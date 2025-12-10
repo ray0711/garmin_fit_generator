@@ -21,7 +21,7 @@ import {
 } from '../block';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { intensity } from '../../../types_auto/fitsdk_enums';
-import { MatFormField, MatLabel, MatHint, MatError } from '@angular/material/form-field';
+import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';

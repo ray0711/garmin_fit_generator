@@ -68,9 +68,9 @@ export class FitDecoder {
     for (const step of stepMessages) {
       // Identify repeat markers
       if (step.durationType === WktStepDuration.repeatUntilStepsCmplt) {
-        const count = Math.max(0, step.durationValue ?? 0);
+        const countChildren = step.messageIndex - step.durationValue!;
         const sets = Math.max(1, step.targetValue ?? 1);
-        const children = stack.splice(stack.length - count, count);
+        const children = stack.splice(stack.length - countChildren, stack.length);
         const repeat = new RepeatBlock();
         repeat.sets = sets;
 
