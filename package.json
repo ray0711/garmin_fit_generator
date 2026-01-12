@@ -9,7 +9,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --no-watch",
-    "fit-sdk-patch-relative-paths": "sed -i 's/from\\ \\\"\\..\\/src\\//from\\ \\\".\\//' ./src/types_generated/decoder.js",
+    "fit-sdk-patch-relative-paths": "sed -i 's/from\\ \\\"\\..\\/src\\//from\\ \\\".\\//' ./src/types_generated/decoder.js && sed -i 's/!field?.hasComponents ?? false/!field?.hasComponents/' ./src/types_generated/decoder.js",
     "fit-sdk-generate": "npx -p typescript tsc -p ./scripts/tsconfig.fitsdk.json && npm run fit-sdk-patch-relative-paths",
     "fit-sdk-generate-types": "node ./scripts/generate-fit-types.mjs",
     "generate": "npm run fit-sdk-generate && npm run fit-sdk-generate-types && echo \"Generated FIT SDK types\"",

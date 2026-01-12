@@ -156,6 +156,9 @@ export class FitDecoder {
         target = new TargetLapButton();
       }
       wb.target = target;
+      if (step.intensity) {
+        wb.intensity = step.intensity;
+      }
 
       // Consume next exercise title for nameOverride if available
       const nextTitle = titlesQueue[0];

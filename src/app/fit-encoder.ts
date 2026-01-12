@@ -14,6 +14,7 @@ import {
   SubSport,
   WktStepDuration,
   WktStepTarget,
+  intensity,
 } from '../types_auto/fitsdk_enums';
 import {
   Block,
@@ -158,7 +159,7 @@ export class FitEncoder {
         mesgNum: MesgNum.WORKOUT_STEP,
         messageIndex: currentPos,
         wktStepName: w.name,
-        exerciseCategory: exerciseCategory,
+        exerciseCategory: w.intensity === intensity.rest ? undefined : exerciseCategory,
         exerciseName: exerciseName,
         notes: w.notes,
       };
