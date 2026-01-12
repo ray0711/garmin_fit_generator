@@ -217,3 +217,13 @@ export class WorkoutBlock implements BasicBlock {
     return [{ block: this, level: level }];
   }
 }
+
+export const intensityOptions: readonly { label: string; value: intensity }[] = [
+  { label: 'Active', value: intensity.active },
+  { label: 'Rest', value: intensity.rest },
+  { label: 'Warmup', value: intensity.warmup },
+  { label: 'Cooldown', value: intensity.cooldown },
+  { label: 'Recovery', value: intensity.recovery },
+  { label: 'Interval', value: intensity.interval },
+  { label: 'Other', value: intensity.other },
+];

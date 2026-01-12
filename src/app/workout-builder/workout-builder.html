@@ -17,6 +17,17 @@
         <mat-card-title>Default Step Target</mat-card-title>
       </mat-card-header>
       <mat-card-content>
+        <mat-form-field style="width: 100%; margin-bottom: 8px">
+          <mat-label>Intensity</mat-label>
+          <mat-select
+            [ngModel]="templateTarget().intensity"
+            (ngModelChange)="updateTemplateIntensity($event)"
+          >
+            @for (opt of intensityOptions; track opt.value) {
+              <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
         <app-step-target [(workoutBlock)]="templateTarget" />
         <mat-card-actions>
           <button matFab extended (click)="applyDefaultTarget()">

@@ -11,7 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
-import { Block, BlockLevel, RepeatBlock, WorkoutBlock } from './block';
+import { Block, BlockLevel, RepeatBlock, WorkoutBlock, intensityOptions } from './block';
 import { Control } from './control/control';
 import { MatTree, MatTreeNode, MatTreeNodeDef } from '@angular/material/tree';
 
@@ -33,6 +33,8 @@ import { MatFabButton } from '@angular/material/button';
 import { FitControl } from '../fit-control/fit-control';
 import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'app-workout-builder',
@@ -60,6 +62,8 @@ import { MatInput } from '@angular/material/input';
     MatLabel,
     MatHint,
     MatInput,
+    MatSelect,
+    MatOption,
   ],
   templateUrl: './workout-builder.html',
   styleUrl: './workout-builder.scss',
@@ -70,6 +74,9 @@ export class WorkoutBuilder {
   selectedExercise = input<Exercise | undefined>();
   importWorkout = input<Block[] | undefined>();
   templateTarget = model<WorkoutBlock>(new WorkoutBlock('', false, false, ':', '', intensity.rest));
+
+  // Intensity options for select
+  readonly intensityOptions = intensityOptions;
 
   staticBuildingBlocks: Block[] = [
     new RepeatBlock(),
@@ -191,18 +198,23 @@ export class WorkoutBuilder {
 
   protected applyDefaultTarget() {
     this._snackBar.open(
-      'Applying default target: ' + JSON.stringify(this.templateTarget().target),
+      'Applying default target: ' +
+        JSON.stringify(this.templateTarget().target) +
+        ' intensity: ' +
+        this.templateTarget().intensity,
       'Close',
     );
     for (const blockLevel of this.flatWorkoutOutput()) {
       if (blockLevel.block instanceof WorkoutBlock && blockLevel.block.selected) {
         const clone = blockLevel.block.clone();
         clone.target = this.templateTarget().target;
+        clone.intensity = this.templateTarget().intensity;
         this.updateBlockInWorkout(clone);
       } else if (blockLevel.block instanceof RepeatBlock && blockLevel.block.autoRest?.selected) {
         const clone = blockLevel.block.clone();
         if (clone.autoRest) {
           clone.autoRest.target = this.templateTarget().target;
+          clone.autoRest.intensity = this.templateTarget().intensity;
           this.updateBlockInWorkout(clone);
         }
       }
@@ -253,5 +265,13 @@ export class WorkoutBuilder {
   onWorkoutSelected(workout: Block[]): void {
     this.workout.set([...workout]);
     this._snackBar.open('Workout loaded');
+  }
+
+  updateTemplateIntensity(newIntensity: intensity) {
+    this.templateTarget.update((t) => {
+      const next = t.clone();
+      next.intensity = newIntensity;
+      return next;
+    });
   }
 }

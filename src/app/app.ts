@@ -7,6 +7,7 @@ import { Exercise } from './Exercise';
 import { Block } from './workout-builder/block';
 import { MatIcon } from '@angular/material/icon';
 import { MatStep, MatStepper, MatStepperIcon } from '@angular/material/stepper';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-root',
@@ -52,7 +53,7 @@ export class App implements AfterViewInit {
     }
   }
 
-  onStepChange(event: any): void {
+  onStepChange(event: StepperSelectionEvent): void {
     const index = event.selectedIndex;
     if (index === 0) {
       this.router.navigate(['/exercises']);

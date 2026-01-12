@@ -18,6 +18,7 @@ import {
   TargetReps,
   TargetCalories,
   HeartRateTarget,
+  intensityOptions,
 } from '../block';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { intensity } from '../../../types_auto/fitsdk_enums';
@@ -147,15 +148,7 @@ export class Control {
   });
 
   // Intensity options for select
-  readonly intensityOptions: readonly { label: string; value: intensity }[] = [
-    { label: 'Active', value: intensity.active },
-    { label: 'Rest', value: intensity.rest },
-    { label: 'Warmup', value: intensity.warmup },
-    { label: 'Cooldown', value: intensity.cooldown },
-    { label: 'Recovery', value: intensity.recovery },
-    { label: 'Interval', value: intensity.interval },
-    { label: 'Other', value: intensity.other },
-  ];
+  readonly intensityOptions = intensityOptions;
 
   intensityLabel(value: intensity | undefined): string {
     return this.intensityOptions.find((o) => o.value === value)?.label ?? 'Unknown';
